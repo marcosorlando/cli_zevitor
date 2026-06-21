@@ -1,0 +1,1 @@
+/Users/marcosorlando/Sites/zen-ai-squad/agents/copilot/wc_theme_adapter.agent.md

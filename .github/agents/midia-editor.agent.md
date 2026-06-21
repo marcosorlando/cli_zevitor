@@ -1,0 +1,1 @@
+/Users/marcosorlando/Sites/zen-ai-squad/agents/copilot/midia-editor.agent.md

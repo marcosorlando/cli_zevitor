@@ -1,0 +1,305 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?orkqwr');
+  src: url('../fonts/icomoon.eot?orkqwr#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?orkqwr') format('truetype'),
+    url('../fonts/icomoon.woff?orkqwr') format('woff'),
+    url('../fonts/icomoon.svg?orkqwr#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+
+
+
+
+.icon-brake-disc:before {
+  content: "\e900";
+}
+
+.icon-low-beam:before {
+  content: "\e901";
+}
+
+.icon-left:before {
+  content: "\e902";
+}
+
+.icon-facebook-app-symbol:before {
+  content: "\e903";
+}
+
+.icon-twitter:before {
+  content: "\e904";
+}
+
+.icon-twitter-1:before {
+  content: "\e905";
+}
+
+.icon-instagram:before {
+  content: "\e906";
+}
+
+.icon-linkedin:before {
+  content: "\e907";
+}
+
+.icon-pinterest:before {
+  content: "\e908";
+}
+
+.icon-share:before {
+  content: "\e909";
+}
+
+.icon-calendar:before {
+  content: "\e90a";
+}
+
+.icon-user:before {
+  content: "\e90b";
+}
+
+.icon-comment:before {
+  content: "\e90c";
+}
+
+.icon-shield:before {
+  content: "\e90d";
+}
+
+.icon-customer-review:before {
+  content: "\e90e";
+}
+
+.icon-phone-call:before {
+  content: "\e90f";
+}
+
+.icon-clock-1:before {
+  content: "\e910";
+}
+
+.icon-affordable:before {
+  content: "\e911";
+}
+
+.icon-satisfaction:before {
+  content: "\e912";
+}
+
+.icon-call-center:before {
+  content: "\e913";
+}
+
+.icon-technology:before {
+  content: "\e914";
+}
+
+.icon-spark-plug:before {
+  content: "\e915";
+}
+
+.icon-part:before {
+  content: "\e916";
+}
+
+.icon-spare-parts:before {
+  content: "\e917";
+}
+
+.icon-breakdown:before {
+  content: "\e918";
+}
+
+.icon-motor:before {
+  content: "\e919";
+}
+
+.icon-spare-parts-1:before {
+  content: "\e91a";
+}
+
+.icon-flat-tire:before {
+  content: "\e91b";
+}
+
+.icon-tire-pressure:before {
+  content: "\e91c";
+}
+
+.icon-tyre:before {
+  content: "\e91d";
+}
+
+.icon-diagnostic:before {
+  content: "\e91e";
+}
+
+.icon-tire:before {
+  content: "\e91f";
+}
+
+.icon-oil:before {
+  content: "\e920";
+}
+
+.icon-mechanical:before {
+  content: "\e921";
+}
+
+.icon-battery:before {
+  content: "\e922";
+}
+
+.icon-brake:before {
+  content: "\e923";
+}
+
+.icon-next:before {
+  content: "\e924";
+}
+
+.icon-back:before {
+  content: "\e925";
+}
+
+.icon-tools-1:before {
+  content: "\e926";
+}
+
+.icon-call:before {
+  content: "\e927";
+}
+
+.icon-pin:before {
+  content: "\e928";
+}
+
+.icon-email:before {
+  content: "\e929";
+}
+
+.icon-mail:before {
+  content: "\e92a";
+}
+
+.icon-investment:before {
+  content: "\e92b";
+}
+
+.icon-right:before {
+  content: "\e92c";
+}
+
+.icon-clock:before {
+  content: "\e92d";
+}
+
+.icon-location:before {
+  content: "\e92e";
+}
+
+.icon-electrical-mechanic:before {
+  content: "\e92f";
+}
+
+.icon-technician:before {
+  content: "\e930";
+}
+
+.icon-tire-1:before {
+  content: "\e931";
+}
+
+.icon-check-1:before {
+  content: "\e932";
+}
+
+.icon-fan:before {
+  content: "\e933";
+}
+
+.icon-steering-wheel:before {
+  content: "\e934";
+}
+
+.icon-car-parts:before {
+  content: "\e935";
+}
+
+.icon-tools:before {
+  content: "\e936";
+}
+
+.icon-professional-services:before {
+  content: "\e937";
+}
+
+.icon-guarantee:before {
+  content: "\e938";
+}
+
+.icon-time-management:before {
+  content: "\e939";
+}
+
+.icon-price-tag:before {
+  content: "\e93a";
+}
+
+.icon-medal:before {
+  content: "\e93b";
+}
+
+.icon-trophy:before {
+  content: "\e93c";
+}
+
+.icon-car:before {
+  content: "\e93d";
+}
+
+.icon-costumer:before {
+  content: "\e93e";
+}
+
+.icon-expert-team:before {
+  content: "\e93f";
+}
+
+.icon-fast:before {
+  content: "\e940";
+}
+
+.icon-24-hours:before {
+  content: "\e941";
+}
+
+.icon-checked:before {
+  content: "\e942";
+}
+
+.icon-check:before {
+  content: "\e943";
+}

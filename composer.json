@@ -1,0 +1,47 @@
+{
+  "name": "localhost/doripel",
+  "description": "Website da Doripel Móveis",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "App\\": "_app/"
+    },
+    "files": [
+      "_app/Config/bootstrap.php"
+    ]
+  },
+  "require": {
+    "league/glide": "^3.0.1",
+    "phpmailer/phpmailer": "^6.10",
+    "vlucas/phpdotenv": "^5.6",
+    "php": "^8.5",
+    "ext-fileinfo": "*"
+  },
+  "suggest": {
+    "ext-gd": "One of ext-gd or ext-imagick is required for image manipulation with Glide.",
+    "ext-imagick": "One of ext-imagick or ext-gd is required for image manipulation with Glide."
+  },
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "platform": {
+      "php": "8.5.3"
+    }
+  },
+  "scripts": {
+    "stub": "/opt/homebrew/opt/php@8.5/bin/php bin/generate-constants-stub.php",
+    "clean:minmin:check": "find . -type f -name '*.min.min*' -not -path './vendor/*' -print",
+    "clean:minmin": "find . -type f -name '*.min.min*' -not -path './vendor/*' -print -delete",
+    "cs:fix": "/opt/homebrew/opt/php@8.5/bin/php vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --using-cache=yes --sequential",
+    "cs:check": "/opt/homebrew/opt/php@8.5/bin/php vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --using-cache=yes --sequential --dry-run --diff",
+    "wc:module-dr": "bash .github/skills/wc_module_migrator/scripts/fix_php_legacy.sh --dry-run <dir>",
+    "wc:module-apply": "bash .github/skills/wc_module_migrator/scripts/fix_php_legacy.sh --apply <dir>",
+    "wc:module-report": "bash .github/skills/wc_module_migrator/scripts/fix_php_legacy.sh --apply <dir> --report reports/wc-module.txt",
+    "lint": "find admin/_siswc/products -name '*.php' -print | xargs -n1 php -l"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.94"
+  }
+}
