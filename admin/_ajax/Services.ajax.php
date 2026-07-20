@@ -52,7 +52,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
             $SvcId = $PostData['svc_id'];
             $PostData['svc_status'] = (empty($PostData['svc_status']) ? '0' : $PostData['svc_status']);
 
-            $Read->exeRead(DB_SVC, 'WHERE svc_id = :id', 'id=' . $SvcId);
+            $Read->exeRead(DB_SERVICES, 'WHERE svc_id = :id', 'id=' . $SvcId);
 
             if (!$Read->getResult()) {
                 $jSON['trigger'] = Check::ajaxErro(
@@ -70,7 +70,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
 
                 $PostData['svc_name'] = Check::name($PostData['svc_title']);
 
-                if (!empty($_FILES['svc_cover'])) {
+                if (isset($_FILES['svc_cover']) && (int)($_FILES['svc_cover']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
                     $File = $_FILES['svc_cover'];
 
                     if (
@@ -98,7 +98,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                     }
                 }
 
-                if (!empty($_FILES['svc_icon'])) {
+                if (isset($_FILES['svc_icon']) && (int)($_FILES['svc_icon']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
                     $File = $_FILES['svc_icon'];
 
                     if (
@@ -126,21 +126,24 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                     }
                 }
 
-                if (!empty($_FILES['image'])) {
+                if (!empty($_FILES['image']['tmp_name']) && is_array($_FILES['image']['tmp_name'])) {
                     $File = $_FILES['image'];
-                    $gbFile = [];
                     $gbCount = count($File['type']);
                     $gbKeys = array_keys($File);
                     $gbLoop = 0;
 
                     for ($gb = 0; $gb < $gbCount; ++$gb) {
+                        if ((int)($File['error'][$gb] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+                            continue;
+                        }
+
                         foreach ($gbKeys as $Keys) {
                             $gbFiles[$gb][$Keys] = $File[$Keys][$gb];
                         }
                     }
 
                     $jSON['gallery'] = null;
-                    foreach ($gbFiles as $UploadFile) {
+                    foreach (($gbFiles ?? []) as $UploadFile) {
                         ++$gbLoop;
                         $Upload->image(
                             $UploadFile,
@@ -149,7 +152,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                         );
                         if ($Upload->getResult()) {
                             $gbCreate = ['svc_id' => $SvcId, 'image' => $Upload->getResult()];
-                            $Create->exeCreate(DB_SVC_GALLERY, $gbCreate);
+                            $Create->exeCreate(DB_SERVICES_GALLERY, $gbCreate);
                             $jSON['gallery'] .= sprintf(
                                 "<img rel='Services' id='%s' alt='Imagem em %s' title='Imagem em %s' src='../uploads/%s'/>",
                                 $Create->getResult(),
@@ -162,7 +165,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                 }
 
                 $Read->fullRead(
-                    'SELECT svc_id FROM ' . DB_SVC . ' WHERE svc_name = :nm AND svc_id != :id',
+                    'SELECT svc_id FROM ' . DB_SERVICES . ' WHERE svc_name = :nm AND svc_id != :id',
                     sprintf('nm=%s&id=%s', $PostData['svc_name'], $SvcId)
                 );
                 if ($Read->getResult()) {
@@ -179,8 +182,9 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                 );
 
                 $PostData['svc_status'] = (empty($PostData['svc_status']) ? '0' : '1');
+                $PostData['svc_category'] = (empty($PostData['svc_category']) ? null : (int)$PostData['svc_category']);
 
-                $Update->exeUpdate(DB_SVC, $PostData, 'WHERE svc_id = :id', 'id=' . $SvcId);
+                $Update->exeUpdate(DB_SERVICES, $PostData, 'WHERE svc_id = :id', 'id=' . $SvcId);
                 $jSON['view'] = BASE . '/servico/' . $PostData['svc_name'];
             }
 
@@ -189,7 +193,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
         case 'sendimage':
             $NewImage = $_FILES['image'];
             $Read->fullRead(
-                'SELECT svc_title, svc_name FROM ' . DB_SVC . ' WHERE svc_id = :id',
+                'SELECT svc_title, svc_name FROM ' . DB_SERVICES . ' WHERE svc_id = :id',
                 'id=' . $PostData['svc_id']
             );
             if (!$Read->getResult()) {
@@ -204,11 +208,9 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                 $Upload = new Upload('../../uploads/');
                 $Upload->image($NewImage, $PostData['svc_id'] . '-' . time(), IMAGE_W);
                 if ($Upload->getResult()) {
-                    $PostData['svc_id'] = $PostData['svc_id'];
                     $PostData['image'] = $Upload->getResult();
-                    unset($PostData['svc_id']);
 
-                    $Create->exeCreate(DB_SVC_IMAGE, $PostData);
+                    $Create->exeCreate(DB_SERVICES_IMAGE, $PostData);
                     $jSON['tinyMCE'] = sprintf(
                         "<img title='%s' alt='%s' src='../uploads/%s'/>",
                         $Read->getResult()[0]['svc_title'],
@@ -228,10 +230,93 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
 
             break;
 
+        case 'category_add':
+            $CatId = $PostData['category_id'];
+            unset($PostData['category_id']);
+
+            $PostData['category_slug'] = Check::name($PostData['category_title']);
+            $PostData['category_parent'] = ('' !== $PostData['category_parent'] && '0' !== $PostData['category_parent'] ? $PostData['category_parent'] : null);
+
+            $Read->fullRead(
+                'SELECT category_id FROM ' . DB_SERVICES_CATEGORIES . ' WHERE category_slug = :cn AND category_id != :ci',
+                sprintf('cn=%s&ci=%s', $PostData['category_slug'], $CatId)
+            );
+            if ($Read->getResult()) {
+                $PostData['category_slug'] = $PostData['category_slug'] . '-' . $CatId;
+            }
+
+            $Read->fullRead(
+                'SELECT category_id FROM ' . DB_SERVICES_CATEGORIES . ' WHERE category_parent = :ci',
+                'ci=' . $CatId
+            );
+            if (
+                $Read->getResult()
+                && isset($PostData['category_parent'])
+                && '' !== $PostData['category_parent']
+                && '0' !== $PostData['category_parent']
+            ) {
+                $jSON['trigger'] = Check::ajaxErro(
+                    sprintf(
+                        '<b>OPPSSS: </b> %s, uma seção que possui categorias filhas não pode ser atribuída como filha de outra seção.',
+                        $_SESSION['userLogin']['user_name']
+                    ),
+                    E_USER_WARNING
+                );
+            } else {
+                $Update->exeUpdate(DB_SERVICES_CATEGORIES, $PostData, 'WHERE category_id = :id', 'id=' . $CatId);
+                $jSON['trigger'] = Check::ajaxErro(
+                    sprintf('<b>TUDO CERTO: </b> A categoria <b>%s</b> foi atualizada com sucesso!', $PostData['category_title'])
+                );
+            }
+
+            break;
+
+        case 'category_remove':
+            $PostData['category_id'] = $PostData['del_id'];
+            $Read->fullRead(
+                'SELECT category_title, category_id FROM ' . DB_SERVICES_CATEGORIES . ' WHERE category_parent = :cat',
+                'cat=' . $PostData['category_id']
+            );
+
+            if ($Read->getResult()) {
+                $jSON['trigger'] = Check::ajaxErro(
+                    sprintf(
+                        '<b>OPPSSS: </b> Olá %s, para deletar uma categoria certifique-se que ela não tem categorias filhas cadastradas!',
+                        $_SESSION['userLogin']['user_name']
+                    ),
+                    E_USER_WARNING
+                );
+            } else {
+                $Read->fullRead(
+                    'SELECT svc_id FROM ' . DB_SERVICES . ' WHERE svc_category = :cat',
+                    'cat=' . $PostData['category_id']
+                );
+
+                if ($Read->getResult()) {
+                    $jSON['trigger'] = Check::ajaxErro(
+                        sprintf(
+                            '<b>%s SERVIÇOS: </b> Olá %s, não é possível remover categorias com serviços cadastrados!',
+                            $Read->getRowCount(),
+                            $_SESSION['userLogin']['user_name']
+                        ),
+                        E_USER_WARNING
+                    );
+                } else {
+                    $Delete->exeDelete(
+                        DB_SERVICES_CATEGORIES,
+                        'WHERE category_id = :cat',
+                        'cat=' . $PostData['category_id']
+                    );
+                    $jSON['success'] = true;
+                }
+            }
+
+            break;
+
         case 'delete':
             $SvcId = $PostData['del_id'];
-            $Read->exeRead(DB_SVC, 'WHERE svc_id = :id', 'id=' . $SvcId);
-            $Service = $Read->getResult()[0];
+            $Read->exeRead(DB_SERVICES, 'WHERE svc_id = :id', 'id=' . $SvcId);
+            $Service = $Read->getResult()[0] ?? null;
 
             if (!$Service) {
                 $jSON['trigger'] = Check::ajaxErro(
@@ -248,7 +333,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                     unlink($SvcCover);
                 }
 
-                $Read->exeRead(DB_SVC_IMAGE, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
+                $Read->exeRead(DB_SERVICES_IMAGE, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
                 if ($Read->getResult()) {
                     foreach ($Read->getResult() as $SvcImage) {
                         $SvcImageIs = '../../uploads/' . $SvcImage['image'];
@@ -257,10 +342,10 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                         }
                     }
 
-                    $Delete->exeDelete(DB_SVC_IMAGE, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
+                    $Delete->exeDelete(DB_SERVICES_IMAGE, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
                 }
 
-                $Read->exeRead(DB_SVC_GALLERY, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
+                $Read->exeRead(DB_SERVICES_GALLERY, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
                 if ($Read->getResult()) {
                     foreach ($Read->getResult() as $SvcGallery) {
                         $SvcGalleryImage = '../../uploads/' . $SvcGallery['image'];
@@ -269,24 +354,24 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                         }
                     }
 
-                    $Delete->exeDelete(DB_SVC_GALLERY, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
+                    $Delete->exeDelete(DB_SERVICES_GALLERY, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
                 }
 
-                $Delete->exeDelete(DB_SVC, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
+                $Delete->exeDelete(DB_SERVICES, 'WHERE svc_id = :id', 'id=' . $Service['svc_id']);
                 $jSON['success'] = true;
             }
 
             break;
 
         case 'gbremove':
-            $Read->fullRead('SELECT image FROM ' . DB_SVC_GALLERY . ' WHERE id = :id', 'id=' . $PostData['img']);
+            $Read->fullRead('SELECT image FROM ' . DB_SERVICES_GALLERY . ' WHERE id = :id', 'id=' . $PostData['img']);
             if ($Read->getResult()) {
                 $ImageRemove = '../../uploads/' . $Read->getResult()[0]['image'];
                 if (file_exists($ImageRemove) && !is_dir($ImageRemove)) {
                     unlink($ImageRemove);
                 }
 
-                $Delete->exeDelete(DB_SVC_GALLERY, 'WHERE id = :id', 'id=' . $PostData['img']);
+                $Delete->exeDelete(DB_SERVICES_GALLERY, 'WHERE id = :id', 'id=' . $PostData['img']);
                 $jSON['success'] = true;
             }
 

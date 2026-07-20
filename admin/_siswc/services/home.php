@@ -13,16 +13,16 @@
     // AUTO DELETE SERVICE TRASH
     if (DB_AUTO_TRASH !== 0) {
         $Delete = new Delete();
-        $Delete->exeDelete(DB_SVC, 'WHERE svc_title IS NULL AND svc_description IS NULL and svc_status = :st', 'st=0');
+        $Delete->exeDelete(DB_SERVICES, 'WHERE svc_title IS NULL AND svc_description IS NULL and svc_status = :st', 'st=0');
         $Read ??= new Read();
         // AUTO TRASH IMAGES
         $Read->fullRead(
-            'SELECT image FROM ' . DB_SVC_IMAGE . ' WHERE svc_id NOT IN(SELECT svc_id FROM ' . DB_SVC . ')'
+            'SELECT image FROM ' . DB_SERVICES_IMAGE . ' WHERE svc_id NOT IN(SELECT svc_id FROM ' . DB_SERVICES . ')'
         );
         if ($Read->getResult()) {
             $Delete->exeDelete(
-                DB_SVC_IMAGE,
-                'WHERE id >= :id AND service_id NOT IN(SELECT svc_id FROM ' . DB_SVC . ')',
+                DB_SERVICES_IMAGE,
+                'WHERE id >= :id AND svc_id NOT IN(SELECT svc_id FROM ' . DB_SERVICES . ')',
                 'id=1'
             );
 
@@ -59,7 +59,7 @@
 
 <header class="dashboard_header">
 	<div class="dashboard_header_title">
-		<h1 class="icon-hammer2">Processos</h1>
+		<h1 class="icon-hammer2">Serviços</h1>
 		<p class="dashboard_header_breadcrumbs">
 			&raquo; <?php
                 echo ADMIN_NAME; ?>
@@ -67,7 +67,7 @@
 			<a title="<?php
                 echo ADMIN_NAME; ?>" href="dashboard.php?wc=home">Dashboard</a>
 			<span class="crumb">/</span>
-			Processos
+			Serviços
 		</p>
 	</div>
 
@@ -92,7 +92,7 @@
         $Pager = new Pager(sprintf('dashboard.php?wc=services/home%s&page=', $RedirectOpt), '<<', '>>', 5);
         $Pager->exePager($Page, 12);
         $Read->exeRead(
-            DB_SVC,
+            DB_SERVICES,
             sprintf('WHERE 1 = 1 %s %s ORDER BY svc_created DESC LIMIT :limit OFFSET :offset', $WhereString, $WhereOpt),
             sprintf('limit=%d&offset=%d', $Pager->getLimit(), $Pager->getOffset())
         );
@@ -133,7 +133,7 @@
                     </article>";
             }
 
-            $Pager->exePaginator(DB_SVC, sprintf('WHERE 1 = 1 %s %s', $WhereString, $WhereOpt));
+            $Pager->exePaginator(DB_SERVICES, sprintf('WHERE 1 = 1 %s %s', $WhereString, $WhereOpt));
             echo $Pager->getPaginator();
         }
     ?>

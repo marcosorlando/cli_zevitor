@@ -11,6 +11,70 @@
         Check::accessBlocked();
     }
 
+    /**
+     * Recria a tabela de configurações a partir das constantes carregadas no bootstrap atual.
+     * No reset, isso roda apenas após um redirect, quando o boot já ocorreu sem overrides do banco.
+     */
+    $createConfigDefaults = static function (): void {
+
+        foreach (get_defined_constants(true)['user'] as $Key => $Value) {
+            $AppType = substr($Key, 0, strpos($Key, '_'));
+            $ArrCreateConf = ['conf_key' => $Key, 'conf_value' => $Value, 'conf_type' => $AppType];
+            $Create = new Create();
+            $Create->exeCreate(DB_CONF, $ArrCreateConf);
+        }
+
+        $Delete = new Delete();
+        $Delete->exeDelete(
+            DB_CONF,
+            'WHERE conf_type = :type1 OR conf_type = :type2 OR conf_type = :type3 OR conf_type = :type4 OR conf_type = :type5',
+            'type1=DB&type2=SIS&type3=REQUIRE&type4=INCLUDE&type5=WORKCONTROL_CONFIG'
+        );
+
+        $Update = new Update();
+        $UpdateNull = ['conf_type' => 'ADMIN'];
+        $Update->exeUpdate(DB_CONF, $UpdateNull, 'WHERE conf_type = :null', 'null=');
+
+        $UpdateE = ['conf_type' => 'ECOMMERCE'];
+        $Update->exeUpdate(DB_CONF, $UpdateE, 'WHERE conf_type = :e', 'e=E');
+
+        $UpdateAD = ['conf_type' => 'SITE_ADDR'];
+        $Update->exeUpdate(DB_CONF, $UpdateAD, "WHERE conf_key LIKE '%SITE_ADDR%'", '');
+
+        $UpdateS = ['conf_type' => 'SOCIAL'];
+        $Update->exeUpdate(DB_CONF, $UpdateS, "WHERE conf_key LIKE '%SITE_SOCIAL%'", '');
+
+        $UpdateAcc = ['conf_type' => 'APP'];
+        $Update->exeUpdate(DB_CONF, $UpdateAcc, "WHERE conf_key LIKE '%ACC_%'", '');
+
+        $UpdateImage = ['conf_type' => 'IMAGE'];
+        $Update->exeUpdate(
+            DB_CONF,
+            $UpdateImage,
+            'WHERE conf_type = :t OR conf_type = :a OR conf_type = :s',
+            't=THUMB&a=AVATAR&s=SLIDE'
+        );
+    };
+
+    $getResetConfig = filter_input(INPUT_GET, 'wc_recet_config', FILTER_VALIDATE_BOOLEAN);
+    if ($getResetConfig) {
+        $Delete = new Delete();
+        $Delete->exeDelete(DB_CONF, 'WHERE conf_id >= :conf', 'conf=1');
+        header('Location: dashboard.php?wc=config/home');
+
+        exit;
+    }
+
+    $Read = $Read ?? new Read();
+    $Read->fullRead('SELECT conf_type FROM ' . DB_CONF . ' GROUP BY conf_type ORDER BY conf_type ASC');
+    $StartConfig = !$Read->getResult();
+    if ($StartConfig) {
+        $createConfigDefaults();
+        header('Location: dashboard.php?wc=config/home');
+
+        exit;
+    }
+
     // AUTO DELETE POST TRASH
     if (DB_AUTO_TRASH !== 0) {
         $Delete = new Delete();
@@ -44,8 +108,6 @@
 </header>
 <div class="dashboard_content">
     <?php
-        $Read = $Read ?? new Read();
-        $Read->fullRead('SELECT conf_type FROM ' . DB_CONF . ' GROUP BY conf_type');
         if ($Read->getResult()) {
             echo "<div class='box box70' style='padding: 0'>";
             $iForm = 0;
@@ -114,60 +176,6 @@
                 . '</article>';
         } else {
             $StartConfig = true;
-        }
-
-        $getResetConfig = filter_input(INPUT_GET, 'wc_recet_config', FILTER_VALIDATE_BOOLEAN);
-        if ($getResetConfig) {
-            $Delete = new Delete();
-            $Delete->exeDelete(DB_CONF, 'WHERE conf_id >= :conf', 'conf=1');
-            header('Location: dashboard.php?wc=config/home');
-
-            exit;
-        }
-
-        $CreateConfig = (!empty($StartConfig));
-        if ($CreateConfig) {
-            foreach (get_defined_constants(true)['user'] as $Key => $Value) {
-                $AppType = substr($Key, 0, strpos($Key, '_'));
-                $ArrCreateConf = ['conf_key' => $Key, 'conf_value' => $Value, 'conf_type' => $AppType];
-                $Create = new Create();
-                $Create->exeCreate(DB_CONF, $ArrCreateConf);
-            }
-
-            $Delete = new Delete();
-            $Delete->exeDelete(
-                DB_CONF,
-                'WHERE conf_type = :type1 OR conf_type = :type2 OR conf_type = :type3 OR conf_type = :type4 OR conf_type = :type5',
-                'type1=DB&type2=SIS&type3=REQUIRE&type4=INCLUDE&type5=WORKCONTROL_CONFIG'
-            );
-
-            $Update = new Update();
-            $UpdateNull = ['conf_type' => 'ADMIN'];
-            $Update->exeUpdate(DB_CONF, $UpdateNull, 'WHERE conf_type = :null', 'null=');
-
-            $UpdateE = ['conf_type' => 'ECOMMERCE'];
-            $Update->exeUpdate(DB_CONF, $UpdateE, 'WHERE conf_type = :e', 'e=E');
-
-            $UpdateAD = ['conf_type' => 'SITE_ADDR'];
-            $Update->exeUpdate(DB_CONF, $UpdateAD, "WHERE conf_key LIKE '%SITE_ADDR%'", '');
-
-            $UpdateS = ['conf_type' => 'SOCIAL'];
-            $Update->exeUpdate(DB_CONF, $UpdateS, "WHERE conf_key LIKE '%SITE_SOCIAL%'", '');
-
-            $UpdateAcc = ['conf_type' => 'APP'];
-            $Update->exeUpdate(DB_CONF, $UpdateAcc, "WHERE conf_key LIKE '%ACC_%'", '');
-
-            $UpdateImage = ['conf_type' => 'IMAGE'];
-            $Update->exeUpdate(
-                DB_CONF,
-                $UpdateImage,
-                'WHERE conf_type = :t OR conf_type = :a OR conf_type = :s',
-                't=THUMB&a=AVATAR&s=SLIDE'
-            );
-
-            header('Location: dashboard.php?wc=config/home');
-
-            exit;
         }
     ?>
 </div>

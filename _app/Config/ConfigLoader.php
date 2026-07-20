@@ -99,12 +99,15 @@
         private static function defineBasePaths(): void
         {
 
-            $host = $_SERVER['HTTP_HOST'] ?? null;
-            $isLocal = (is_string($host) && 'localhost' === $host);
+            $isLocal = self::isLocalRequest();
+            $localPath = trim((string)self::env('APP_LOCALHOST', ''), '/');
+            $localBase = 'https://localhost' . ('' !== $localPath ? '/' . $localPath : '');
+            $productionDomain = trim((string)self::env('APP_DOMAIN', ''), '/');
+            $productionBase = '' !== $productionDomain ? 'https://' . $productionDomain : (string)self::env('APP_URL', '');
 
             self::defineIfNotDefined(
                 'BASE',
-                self::env('APP_URL', ($isLocal ? 'https://localhost/zen' : 'https://zen.ppg.br'))
+                $isLocal ? $localBase : $productionBase
             );
 
             if (!defined('THEME')) {
@@ -183,8 +186,8 @@
                 'APP_SLIDE' => 1,
                 'APP_USERS' => 1,
                 'APP_VIDEOS' => 0,
-                'APP_MATERIALS' => 0,
-                'APP_DEPOSITIONS' => 0,
+                'APP_MATERIALS' => 1,
+                'APP_DEPOSITIONS' => 1,
                 'APP_ALBUMS' => 0,
                 'APP_CURIOSITIES' => 0,
                 'APP_CV' => 0,
@@ -199,6 +202,8 @@
                 'APP_REPRESENTATIVES' => 0,
                 'APP_LINKTREE' => 0,
                 'APP_PRODUCTS_DORIPEL' => 0,
+                'APP_SERVICES' => 1,
+                'APP_PROJECTS' => 1,
                 'APP_DEBUG' => self::env('APP_DEBUG')
             ];
 
@@ -209,6 +214,8 @@
         {
 
             $levels = [
+                'LEVEL_WC_SERVICES' => 6,
+                'LEVEL_WC_PROJECTS' => 6,
                 'LEVEL_WC_POSTS' => 6,
                 'LEVEL_WC_COMMENTS' => 6,
                 'LEVEL_WC_LINKTREE' => 6,
@@ -223,7 +230,6 @@
                 'LEVEL_WC_PARTNERS' => 9,
                 'LEVEL_WC_ALBUMS' => 9,
                 'LEVEL_WC_PRODUCTS_DORIPEL' => 9,
-                'LEVEL_WC_SERVICES' => 9,
                 'LEVEL_WC_SEGMENTS' => 9,
                 'LEVEL_WC_CURIOSITIES' => 9,
                 'LEVEL_WC_CV' => 9,
@@ -325,7 +331,6 @@
                 'DB_LANDING_PAGES' => 'ws_landingpages',
                 'DB_LANDING_PAGES_IMAGES' => 'ws_landingpages_images',
                 'DB_THANKYOU_PAGES' => 'ws_thankyoupages',
-
                 'DB_PDT_DORIPEL' => 'ws_products_doripel',
                 'DB_PDT_IMAGE_DORIPEL' => 'ws_products_images_doripel',
                 'DB_PDT_IMAGE_CAT_DORIPEL' => 'ws_products_images_cat_doripel',
@@ -335,8 +340,15 @@
                 'DB_PDT_COLORS_DORIPEL' => 'ws_products_colors_doripel',
                 'DB_PDT_STOCK_DORIPEL' => 'ws_products_stock_doripel',
                 'DB_PDT_VOLUMES_DORIPEL' => 'ws_products_volumes_doripel',
+                'DB_SERVICES' => 'zv_services',
+                'DB_SERVICES_CATEGORIES' => 'zv_services_categories',
+                'DB_SERVICES_IMAGE' => 'zv_services_images',
+                'DB_SERVICES_GALLERY' => 'zv_services_gallery',
+                'DB_PROJECTS' => 'zv_projects',
+                'DB_PROJECTS_CATEGORIES' => 'zv_projects_categories',
+                'DB_PROJECTS_IMAGE' => 'zv_projects_images',
+                'DB_PROJECTS_GALLERY' => 'zv_projects_gallery',
                 'DB_CTAS' => 'ws_ctas',
-
                 'DB_REPRESENTATIVES' => 'ws_representatives',
                 'DB_STATES' => 'states',
                 'DB_CITIES' => 'cities',
@@ -354,7 +366,7 @@
         private static function defineDatabaseCredentials(): void
         {
 
-            $isLocal = isset($_SERVER['HTTP_HOST']) && 'localhost' === $_SERVER['HTTP_HOST'];
+            $isLocal = self::isLocalRequest();
 
             if ($isLocal) {
                 self::defineIfNotDefined('SIS_DB_HOST', self::env('DB_HOST_DEV', 'localhost'));
@@ -378,7 +390,10 @@
         private static function validateRequiredEnv(): void
         {
 
-            $commonRequired = ['APP_ENV', 'APP_URL', 'APP_THEME'];
+            $commonRequired = ['APP_DOMAIN', 'APP_THEME'];
+            if (self::isLocalRequest()) {
+                $commonRequired[] = 'APP_LOCALHOST';
+            }
             $dbRequired = ['DB_HOST_DEV', 'DB_NAME_DEV', 'DB_USER_DEV'];
             $mailRequired = ['MAIL_HOST', 'MAIL_PORT', 'MAIL_USER', 'MAIL_SMTP', 'MAIL_SENDER', 'MAIL_MODE'];
 
@@ -433,7 +448,19 @@
 
             $appEnv = strtolower((string)self::env('APP_ENV', 'local'));
 
-            return in_array($appEnv, ['production', 'prod'], true);
+            return in_array($appEnv, ['production', 'prod'], true)
+                || ('' !== (string)($_SERVER['HTTP_HOST'] ?? '') && !self::isLocalRequest());
+        }
+
+        private static function isLocalRequest(): bool
+        {
+
+            $host = strtolower((string)($_SERVER['HTTP_HOST'] ?? ''));
+            $host = preg_replace('/:\d+$/', '', $host) ?? $host;
+            $appEnv = strtolower((string)self::env('APP_ENV', ''));
+
+            return in_array($host, ['localhost', '127.0.0.1', '::1'], true)
+                || in_array($appEnv, ['local', 'development', 'dev'], true);
         }
 
         /**

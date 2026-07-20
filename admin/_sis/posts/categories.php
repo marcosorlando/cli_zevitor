@@ -60,7 +60,15 @@
             );
         } else {
             foreach ($Read->getResult() as $Sess) {
-                echo "<article class='single_category box box100' id='{$Sess['category_id']}'>
+                $Read->exeRead(
+                    DB_CATEGORIES,
+                    'WHERE category_parent = :cid ORDER BY category_title ASC',
+                    'cid=' . $Sess['category_id']
+                );
+                $SubCategories = $Read->getResult() ?: [];
+                $CategoryClass = ($SubCategories ? ' single_category_has_children' : '');
+
+                echo "<article class='single_category{$CategoryClass} box box100' id='{$Sess['category_id']}'>
                     <header>
                         <h1 class='icon-price-tags'>{$Sess['category_title']}:</h1>
                         <p class='tagline'>" . Check::Words($Sess['category_content'], 60) . "</p>
@@ -72,13 +80,8 @@
                         </div>
                     </header>";
 
-                $Read->exeRead(
-                    DB_CATEGORIES,
-                    'WHERE category_parent = :cid ORDER BY category_title ASC',
-                    'cid=' . $Sess['category_id']
-                );
-                if ($Read->getResult()) {
-                    foreach ($Read->getResult() as $Cat) {
+                if ($SubCategories) {
+                    foreach ($SubCategories as $Cat) {
                         echo "<article class='box_content single_category_sub' id='{$Cat['category_id']}'>
                             <h1 class='icon-price-tag'>{$Cat['category_title']}</h1>
                             <p class='tagline'>" . Check::Words($Cat['category_content'], 60) . "</p>

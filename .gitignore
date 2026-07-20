@@ -7,6 +7,10 @@
 .editorconfig
 .htaccess
 Thumbs.db
+/themes/doripel
+/themes/zevitor/assets/images/base-fotos-para-site.zip
+_conteudo
+_conteudo/*
 
 # Logs e arquivos temporários
 *.log
@@ -25,6 +29,7 @@ relatorios
 phpinfo.php
 .php-cs-fixer.cache
 .php-cs-fixer.php
+.php-cs-fixer.dist.php
 /bin/php-legacy-psr-fixer-all.sh
 /bin/php-legacy-psr-fixer.sh
 arvore-do-projeto.txt

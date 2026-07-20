@@ -90,7 +90,9 @@
                     return;
                 }
 
-                unset($PostData['post_id']);
+                // Remove a PK e o valor do botão "public" (name do botão ATUALIZAR):
+                // a coluna `public` não existe em ws_posts e quebraria o UPDATE (erro 1054).
+                unset($PostData['post_id'], $PostData['public']);
 
                 $Read->exeRead(DB_POSTS, 'WHERE post_id = :id', 'id=' . $PostId);
                 if (!$Read->getResult()) {

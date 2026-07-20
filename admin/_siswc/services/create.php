@@ -15,13 +15,25 @@ use App\Helpers\Check;
     // AUTO INSTANCE OBJECT CREATE
     $Create ??= new Create();
 
+    $ServiceDefaults = [
+        'svc_id' => null,
+        'svc_name' => '',
+        'svc_title' => '',
+        'svc_subtitle' => '',
+        'svc_description' => '',
+        'svc_cover' => '',
+        'svc_icon' => '',
+        'svc_category' => '',
+        'svc_status' => 0,
+    ];
+
     $SvcId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     if ($SvcId) {
-        $Read->exeRead(DB_SVC, 'WHERE svc_id = :id', 'id=' . $SvcId);
+        $Read->exeRead(DB_SERVICES, 'WHERE svc_id = :id', 'id=' . $SvcId);
         if ($Read->getResult()) {
             $FormData = array_map(
                 fn($v) => htmlspecialchars((string)(is_scalar($v) ? $v : ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
-                $Read->getResult()[0]
+                array_replace($ServiceDefaults, $Read->getResult()[0])
             );
             extract($FormData);
         } else {
@@ -34,20 +46,22 @@ use App\Helpers\Check;
             exit;
         }
     } else {
-        $Read->fullRead('SELECT count(svc_id) as Total FROM ' . DB_SVC . ' WHERE svc_status = :st', 'st=1');
+        $Read->fullRead('SELECT count(svc_id) as Total FROM ' . DB_SERVICES . ' WHERE svc_status = :st', 'st=1');
 
         $SvcCreate = [
             'svc_created' => date('Y-m-d H:i:s'),
             'svc_status' => 0,
         ];
-        $Create->exeCreate(DB_SVC, $SvcCreate);
+        $Create->exeCreate(DB_SERVICES, $SvcCreate);
         header('Location: dashboard.php?wc=services/create&id=' . $Create->getResult());
+
+        exit;
     }
 
     $Search = filter_input_array(INPUT_POST);
     if ($Search && $Search['s']) {
         $S = urlencode((string)$Search['s']);
-        header('Location: dashboard.php?wc=service/search&s=' . $S);
+        header('Location: dashboard.php?wc=services/home&s=' . $S);
 
         exit;
     }
@@ -56,7 +70,7 @@ use App\Helpers\Check;
 <header class="dashboard_header">
 	<div class="dashboard_header_title">
 		<h1 class="icon-hammer"><?php
-                echo $svc_title ?? 'Novo Processo'; ?></h1>
+                echo $svc_title ?? 'Novo Serviço'; ?></h1>
 		<p class="dashboard_header_breadcrumbs">
 			&raquo; <?php
                 echo ADMIN_NAME; ?>
@@ -65,9 +79,9 @@ use App\Helpers\Check;
                 echo ADMIN_NAME; ?>" href="dashboard.php?wc=home">Dashboard</a>
 			<span class="crumb">/</span>
 			<a title="<?php
-                echo ADMIN_NAME; ?>" href="dashboard.php?wc=services/home">Processos</a>
+                echo ADMIN_NAME; ?>" href="dashboard.php?wc=services/home">Serviços</a>
 			<span class="crumb">/</span>
-			Gerenciar Processo
+			Gerenciar Serviço
 		</p>
 	</div>
 
@@ -121,10 +135,10 @@ use App\Helpers\Check;
 		<div class="box box70">
 			<div class="box_content">
 				<label class="label">
-					<span class="legend">Processo:</span>
+					<span class="legend">Serviço:</span>
 					<input class="font_large" type="text" name="svc_title" value="<?php
                         echo $svc_title; ?>"
-					       placeholder="Nome do Processo:" required/>
+					       placeholder="Nome do Serviço:" required/>
 				</label>
 
 				<label class="label">
@@ -140,13 +154,44 @@ use App\Helpers\Check;
                             echo $svc_description; ?></textarea>
 				</label>
 
+				<label class="label">
+					<span class="legend">Categoria:</span>
+					<select name="svc_category">
+						<option value="">Selecione uma categoria</option>
+                        <?php
+                            $Read->exeRead(
+                                DB_SERVICES_CATEGORIES,
+                                'WHERE category_parent IS NULL ORDER BY category_title ASC'
+                            );
+                            if ($Read->getResult()) {
+                                foreach ($Read->getResult() as $Category) {
+                                    $Selected = ((string)$svc_category === (string)$Category['category_id'] ? ' selected' : '');
+                                    echo "<option value='{$Category['category_id']}'{$Selected}>{$Category['category_title']}</option>";
+
+                                    $Read->exeRead(
+                                        DB_SERVICES_CATEGORIES,
+                                        'WHERE category_parent = :parent ORDER BY category_title ASC',
+                                        'parent=' . $Category['category_id']
+                                    );
+                                    if ($Read->getResult()) {
+                                        foreach ($Read->getResult() as $SubCategory) {
+                                            $Selected = ((string)$svc_category === (string)$SubCategory['category_id'] ? ' selected' : '');
+                                            echo "<option value='{$SubCategory['category_id']}'{$Selected}>&raquo;&raquo; {$SubCategory['category_title']}</option>";
+                                        }
+                                    }
+                                }
+                            }
+                        ?>
+					</select>
+				</label>
+
 				<div class="clear"></div>
 			</div>
 		</div>
 
 		<div class="box box30">
 			<div class="panel_header default">
-				<h2 class="icon-file-picture">Imagem Principal do Processo:</h2>
+				<h2 class="icon-file-picture">Imagem Principal do Serviço:</h2>
 				<label class='label'>
 					<span class='legend'>Tamanho (JPG <?php
                             echo IMAGE_W; ?>x<?php
@@ -158,7 +203,7 @@ use App\Helpers\Check;
                         '../uploads/' . $svc_cover
                     ) ? 'uploads/' . $svc_cover : 'admin/_img/no_image.jpg');
                 ?>
-				<img class="svc_cover" alt="Capa do Processo" title="Capa do Processo"
+				<img class="svc_cover" alt="Capa do Serviço" title="Capa do Serviço"
 				     src="../tim.php?src=<?php
                          echo $Image; ?>&w=<?php
                          echo IMAGE_W; ?>&h=<?php
@@ -168,7 +213,7 @@ use App\Helpers\Check;
                          echo IMAGE_W; ?>&h=<?php
                          echo IMAGE_H; ?>">
                 <?php
-                    $Read->exeRead(DB_SVC_GALLERY, 'WHERE svc_id = :id', 'id=' . $svc_id);
+                    $Read->exeRead(DB_SERVICES_GALLERY, 'WHERE svc_id = :id', 'id=' . $svc_id);
                     if ($Read->getResult()) {
                         echo '<div class="pdt_images gallery pdt_single_image">';
                         foreach ($Read->getResult() as $Image) {

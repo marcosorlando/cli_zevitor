@@ -280,6 +280,52 @@
         <?php
     }
 
+    if (APP_SERVICES && $Admin['user_level'] >= LEVEL_WC_SERVICES) {
+        ?>
+		<li class="dashboard_nav_menu_li <?= strstr($getViewInput, 'services/') ? 'dashboard_nav_menu_active' : ''; ?>">
+			<a class="icon-hammer" title="Serviços" href="dashboard.php?wc=services/home">Serviços</a>
+
+			<ul class="dashboard_nav_menu_sub">
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'services/create' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=services/create">&raquo; Novo Serviço</a>
+				</li>
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'services/home' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=services/home">&raquo; Ver Serviços </a>
+				</li>
+				<li class="dashboard_nav_menu_sub_li <?= strstr(
+                    $getViewInput,
+                    'services/categor'
+                ) ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=services/categories">&raquo; Categorias</a>
+				</li>
+			</ul>
+		</li>
+        <?php
+    }
+
+    if (APP_PROJECTS && $Admin['user_level'] >= LEVEL_WC_PROJECTS) {
+        ?>
+		<li class="dashboard_nav_menu_li <?= strstr($getViewInput, 'projects/') ? 'dashboard_nav_menu_active' : ''; ?>">
+			<a class="icon-stack" title="Projetos" href="dashboard.php?wc=projects/home">Projetos</a>
+
+			<ul class="dashboard_nav_menu_sub">
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'projects/create' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=projects/create">&raquo; Novo Projeto</a>
+				</li>
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'projects/home' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=projects/home">&raquo; Ver Projetos </a>
+				</li>
+				<li class="dashboard_nav_menu_sub_li <?= strstr(
+                    $getViewInput,
+                    'projects/categor'
+                ) ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=projects/categories">&raquo; Categorias</a>
+				</li>
+			</ul>
+		</li>
+        <?php
+    }
+
     if (APP_LANDING_PAGES && $Admin['user_level'] >= LEVEL_WC_LANDING_PAGES) {
         ?>
 		<li class="dashboard_nav_menu_li <?= strstr(

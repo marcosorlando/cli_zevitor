@@ -106,7 +106,7 @@ if (!defined('APP_CV')) {
 }
 
 if (!defined('APP_DEBUG')) {
-    define('APP_DEBUG', 'true');
+    define('APP_DEBUG', false);
 }
 
 if (!defined('APP_DEPOSITIONS')) {
@@ -169,6 +169,10 @@ if (!defined('APP_POSTS')) {
     define('APP_POSTS', 1);
 }
 
+if (!defined('APP_PROJECTS')) {
+    define('APP_PROJECTS', 1);
+}
+
 if (!defined('APP_POSTS_AMP')) {
     define('APP_POSTS_AMP', 0);
 }
@@ -178,7 +182,7 @@ if (!defined('APP_POSTS_INSTANT_ARTICLE')) {
 }
 
 if (!defined('APP_PRODUCTS_DORIPEL')) {
-    define('APP_PRODUCTS_DORIPEL', 1);
+    define('APP_PRODUCTS_DORIPEL', 0);
 }
 
 if (!defined('APP_REPRESENTATIVES')) {
@@ -187,6 +191,10 @@ if (!defined('APP_REPRESENTATIVES')) {
 
 if (!defined('APP_SEARCH')) {
     define('APP_SEARCH', 1);
+}
+
+if (!defined('APP_SERVICES')) {
+    define('APP_SERVICES', 1);
 }
 
 if (!defined('APP_SLIDE')) {
@@ -214,7 +222,7 @@ if (!defined('AVATAR_W')) {
 }
 
 if (!defined('BASE')) {
-    define('BASE', 'https://localhost/doripel');
+    define('BASE', 'https://localhost/cli_zevitor');
 }
 
 if (!defined('COMMENT_MODERATE')) {
@@ -397,12 +405,44 @@ if (!defined('DB_POSTS_IMAGE')) {
     define('DB_POSTS_IMAGE', 'ws_posts_images');
 }
 
+if (!defined('DB_PROJECTS')) {
+    define('DB_PROJECTS', 'zv_projects');
+}
+
+if (!defined('DB_PROJECTS_CATEGORIES')) {
+    define('DB_PROJECTS_CATEGORIES', 'zv_projects_categories');
+}
+
+if (!defined('DB_PROJECTS_GALLERY')) {
+    define('DB_PROJECTS_GALLERY', 'zv_projects_gallery');
+}
+
+if (!defined('DB_PROJECTS_IMAGE')) {
+    define('DB_PROJECTS_IMAGE', 'zv_projects_images');
+}
+
 if (!defined('DB_REPRESENTATIVES')) {
     define('DB_REPRESENTATIVES', 'ws_representatives');
 }
 
 if (!defined('DB_SEARCH')) {
     define('DB_SEARCH', 'ws_search');
+}
+
+if (!defined('DB_SERVICES')) {
+    define('DB_SERVICES', 'zv_services');
+}
+
+if (!defined('DB_SERVICES_CATEGORIES')) {
+    define('DB_SERVICES_CATEGORIES', 'zv_services_categories');
+}
+
+if (!defined('DB_SERVICES_GALLERY')) {
+    define('DB_SERVICES_GALLERY', 'zv_services_gallery');
+}
+
+if (!defined('DB_SERVICES_IMAGE')) {
+    define('DB_SERVICES_IMAGE', 'zv_services_images');
 }
 
 if (!defined('DB_SLIDES')) {
@@ -462,7 +502,7 @@ if (!defined('IMAGE_W')) {
 }
 
 if (!defined('INCLUDE_PATH')) {
-    define('INCLUDE_PATH', 'https://localhost/doripel/themes/doripel');
+    define('INCLUDE_PATH', 'https://localhost/cli_zevitor/themes/zevitor');
 }
 
 if (!defined('LEVEL_WC_ALBUMS')) {
@@ -545,6 +585,10 @@ if (!defined('LEVEL_WC_PRODUCTS_DORIPEL')) {
     define('LEVEL_WC_PRODUCTS_DORIPEL', 9);
 }
 
+if (!defined('LEVEL_WC_PROJECTS')) {
+    define('LEVEL_WC_PROJECTS', 6);
+}
+
 if (!defined('LEVEL_WC_REPORTS')) {
     define('LEVEL_WC_REPORTS', 9);
 }
@@ -558,7 +602,7 @@ if (!defined('LEVEL_WC_SEGMENTS')) {
 }
 
 if (!defined('LEVEL_WC_SERVICES')) {
-    define('LEVEL_WC_SERVICES', 9);
+    define('LEVEL_WC_SERVICES', 6);
 }
 
 if (!defined('LEVEL_WC_SLIDES')) {
@@ -578,7 +622,7 @@ if (!defined('LEVEL_WC_VIDEOS')) {
 }
 
 if (!defined('MAIL_HOST')) {
-    define('MAIL_HOST', 'mail.doripel.com.br');
+    define('MAIL_HOST', 'mail.mecanicazevitor.com.br');
 }
 
 if (!defined('MAIL_MODE')) {
@@ -594,11 +638,11 @@ if (!defined('MAIL_PORT')) {
 }
 
 if (!defined('MAIL_SENDER')) {
-    define('MAIL_SENDER', 'Doripel Móveis');
+    define('MAIL_SENDER', 'Mecânica Zé Vitor');
 }
 
 if (!defined('MAIL_SMTP')) {
-    define('MAIL_SMTP', 'doripel@doripel.com.br');
+    define('MAIL_SMTP', 'contato@mecanicazevitor.com.br');
 }
 
 if (!defined('MAIL_TESTER')) {
@@ -606,11 +650,11 @@ if (!defined('MAIL_TESTER')) {
 }
 
 if (!defined('MAIL_USER')) {
-    define('MAIL_USER', 'doripel@doripel.com.br');
+    define('MAIL_USER', 'contato@mecanicazevitor.com.br');
 }
 
 if (!defined('REQUIRE_PATH')) {
-    define('REQUIRE_PATH', 'themes/doripel');
+    define('REQUIRE_PATH', 'themes/zevitor');
 }
 
 if (!defined('SEGMENT_FB_PAGE_ID')) {
@@ -658,27 +702,27 @@ if (!defined('SIS_DB_HOST')) {
 }
 
 if (!defined('SIS_DB_NAME')) {
-    define('SIS_DB_NAME', 'uwdoripel_website');
+    define('SIS_DB_NAME', '');
 }
 
 if (!defined('SIS_DB_PASS')) {
-    define('SIS_DB_PASS', 'gs2Ju000~');
+    define('SIS_DB_PASS', '');
 }
 
 if (!defined('SIS_DB_USER')) {
-    define('SIS_DB_USER', 'uwdoripel_website');
+    define('SIS_DB_USER', '');
 }
 
 if (!defined('SITE_ADDR_ADDR')) {
-    define('SITE_ADDR_ADDR', 'Av. Julio Vanzin, 1600 - Área Industrial');
+    define('SITE_ADDR_ADDR', 'Rua João Paternoster, 476');
 }
 
 if (!defined('SITE_ADDR_CITY')) {
-    define('SITE_ADDR_CITY', 'Lagoa Vermelha');
+    define('SITE_ADDR_CITY', 'Caxias do Sul - RS');
 }
 
 if (!defined('SITE_ADDR_CNPJ')) {
-    define('SITE_ADDR_CNPJ', '90.608.084/0001-33');
+    define('SITE_ADDR_CNPJ', '87.830.865/0001-63');
 }
 
 if (!defined('SITE_ADDR_COUNTRY')) {
@@ -686,11 +730,11 @@ if (!defined('SITE_ADDR_COUNTRY')) {
 }
 
 if (!defined('SITE_ADDR_DISTRICT')) {
-    define('SITE_ADDR_DISTRICT', 'Industrial II');
+    define('SITE_ADDR_DISTRICT', 'Rio Branco');
 }
 
 if (!defined('SITE_ADDR_EMAIL')) {
-    define('SITE_ADDR_EMAIL', 'doripel@doripel.com.br');
+    define('SITE_ADDR_EMAIL', 'contato@mecanicazevitor.com.br');
 }
 
 if (!defined('SITE_ADDR_IE')) {
@@ -698,19 +742,19 @@ if (!defined('SITE_ADDR_IE')) {
 }
 
 if (!defined('SITE_ADDR_NAME')) {
-    define('SITE_ADDR_NAME', 'Doripel Móveis');
+    define('SITE_ADDR_NAME', 'Mecânica Zé Vitor');
 }
 
 if (!defined('SITE_ADDR_PHONE_A')) {
-    define('SITE_ADDR_PHONE_A', '(54) 3358-6500');
+    define('SITE_ADDR_PHONE_A', '(54) 3226-2082');
 }
 
 if (!defined('SITE_ADDR_RS')) {
-    define('SITE_ADDR_RS', 'MOVEIS DORIPEL LTDA');
+    define('SITE_ADDR_RS', 'MECANICA ZE VITOR LTDA.');
 }
 
 if (!defined('SITE_ADDR_SITE')) {
-    define('SITE_ADDR_SITE', 'zen.ppg.br');
+    define('SITE_ADDR_SITE', 'https://mecanicazevitor.com.br');
 }
 
 if (!defined('SITE_ADDR_UF')) {
@@ -718,15 +762,15 @@ if (!defined('SITE_ADDR_UF')) {
 }
 
 if (!defined('SITE_ADDR_WHATS')) {
-    define('SITE_ADDR_WHATS', '(54) 3358-6500');
+    define('SITE_ADDR_WHATS', '(54) 99174-7279');
 }
 
 if (!defined('SITE_ADDR_ZIP')) {
-    define('SITE_ADDR_ZIP', '93300-000');
+    define('SITE_ADDR_ZIP', '95099-260');
 }
 
 if (!defined('SITE_DESC')) {
-    define('SITE_DESC', 'Doripel Móveis é uma indústria de móveis especializada em dormitórios das linhas casal, solteiro e infantil. Esta localizada na cidade de Lagoa Vermelha no estado do Rio Grande do Sul.');
+    define('SITE_DESC', 'Mecânica Zé Vitor, desde 1970 garantindo segurança nas ruas. Tecnologia, tradição e atenção em cada detalhe. Acesse nosso site.');
 }
 
 if (!defined('SITE_FONT_NAME')) {
@@ -738,7 +782,7 @@ if (!defined('SITE_FONT_WHIGHT')) {
 }
 
 if (!defined('SITE_NAME')) {
-    define('SITE_NAME', 'Doripel');
+    define('SITE_NAME', 'Mecânica Zé Vitor');
 }
 
 if (!defined('SITE_SOCIAL_FB')) {
@@ -750,7 +794,7 @@ if (!defined('SITE_SOCIAL_FB_APP')) {
 }
 
 if (!defined('SITE_SOCIAL_FB_AUTHOR')) {
-    define('SITE_SOCIAL_FB_AUTHOR', 'DoripelMoveis');
+    define('SITE_SOCIAL_FB_AUTHOR', 'zevitormecanica');
 }
 
 if (!defined('SITE_SOCIAL_FB_DOMAIN_VERIFICATION')) {
@@ -758,7 +802,7 @@ if (!defined('SITE_SOCIAL_FB_DOMAIN_VERIFICATION')) {
 }
 
 if (!defined('SITE_SOCIAL_FB_PAGE')) {
-    define('SITE_SOCIAL_FB_PAGE', 'DoripelMoveis');
+    define('SITE_SOCIAL_FB_PAGE', 'zevitormecanica');
 }
 
 if (!defined('SITE_SOCIAL_FB_PAGE_ID')) {
@@ -766,7 +810,7 @@ if (!defined('SITE_SOCIAL_FB_PAGE_ID')) {
 }
 
 if (!defined('SITE_SOCIAL_INSTAGRAM')) {
-    define('SITE_SOCIAL_INSTAGRAM', 'moveis.doripel');
+    define('SITE_SOCIAL_INSTAGRAM', 'zevitormecanica');
 }
 
 if (!defined('SITE_SOCIAL_LINKEDIN')) {
@@ -774,7 +818,7 @@ if (!defined('SITE_SOCIAL_LINKEDIN')) {
 }
 
 if (!defined('SITE_SOCIAL_NAME')) {
-    define('SITE_SOCIAL_NAME', 'Doripel Móveis');
+    define('SITE_SOCIAL_NAME', 'Mecânica Zé Vitor');
 }
 
 if (!defined('SITE_SOCIAL_TWITTER')) {
@@ -786,7 +830,7 @@ if (!defined('SITE_SOCIAL_YOUTUBE')) {
 }
 
 if (!defined('SITE_SUBNAME')) {
-    define('SITE_SUBNAME', 'Móveis');
+    define('SITE_SUBNAME', 'Desde 1970');
 }
 
 if (!defined('SLIDE_H')) {
@@ -798,7 +842,7 @@ if (!defined('SLIDE_W')) {
 }
 
 if (!defined('THEME')) {
-    define('THEME', 'doripel');
+    define('THEME', 'zevitor');
 }
 
 if (!defined('THUMB_H')) {

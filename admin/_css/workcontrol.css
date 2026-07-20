@@ -1514,6 +1514,22 @@ div.mce-fullscreen {
     padding: 20px;
 }
 
+.single_category > header {
+    border-radius: var(--wc-radius);
+}
+
+.single_category_has_children > header {
+    border-radius: var(--wc-radius) var(--wc-radius) 0 0;
+}
+
+.single_category > .single_category_sub {
+    border-radius: 0;
+}
+
+.single_category > .single_category_sub:last-child {
+    border-radius: 0 0 var(--wc-radius) var(--wc-radius);
+}
+
 .single_category_actions {
     font-size: 0.875em;
 }
@@ -1536,6 +1552,10 @@ div.mce-fullscreen {
 .single_category_sub {
     padding-bottom: 20px;
     border-bottom: 1px dotted #ccc;
+}
+
+.single_category > .single_category_sub:last-child {
+    border-bottom: 1px solid var(--wc-border);
 }
 
 .single_category_sub h1 {

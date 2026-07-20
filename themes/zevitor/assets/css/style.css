@@ -58,11 +58,11 @@
   --servixa-font: "Inter", sans-serif;
   --servixa-gray: #585b6b;
   --servixa-gray-rgb: 88, 91, 107;
-  --servixa-base: #d90202;
+  --servixa-base: #dd1628;
   --servixa-base-rgb: 217, 2, 2;
   --servixa-primary: #ebebeb;
   --servixa-primary-rgb: 235, 235, 235;
-  --servixa-black: #111111;
+  --servixa-black: #062738;
   --servixa-black-rgb: 17, 17, 17;
   --servixa-white: #ffffff;
   --servixa-white-rgb: 255, 255, 255;
@@ -1486,6 +1486,11 @@ xs sidebar
   display: block;
   padding: 15px 0;
   z-index: 1;
+}
+
+.main-menu__logo img{
+    width: 190px;
+    height: auto;
 }
 
 .main-menu__main-menu-box {
@@ -10526,7 +10531,10 @@ FAQ Page
   position: relative;
   display: block;
 }
-
+.footer-widget__logo img{
+    width: 180px;
+    height: auto;
+}
 .footer-widget__about-text {
   color: rgba(var(--servixa-white-rgb), .80);
   margin-top: 29px;
@@ -20837,7 +20845,7 @@ testimonials Page V3
 
 
 /*==============================================
-    Video One  
+    Video One
 ===============================================*/
 .video-one {
   position: relative;

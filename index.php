@@ -137,25 +137,25 @@
 	<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
 	<link href='https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap' rel='stylesheet'>
 
-	<link rel='stylesheet' href='assets/css/bootstrap.min.css'>
-	<link rel='stylesheet' href='assets/css/animate.min.css'>
-	<link rel='stylesheet' href='assets/css/custom-animate.css'>
-	<link rel='stylesheet' href='assets/css/swiper.min.css'>
-	<link rel='stylesheet' href='assets/css/font-awesome-all.css'>
-	<link rel='stylesheet' href='assets/css/jarallax.css'>
-	<link rel='stylesheet' href='assets/css/jquery.magnific-popup.css'>
-	<link rel='stylesheet' href='assets/css/flaticon.css'>
-	<link rel='stylesheet' href='assets/css/owl.carousel.min.css'>
-	<link rel='stylesheet' href='assets/css/owl.theme.default.min.css'>
-	<link rel='stylesheet' href='assets/css/nice-select.css'>
-	<link rel='stylesheet' href='assets/css/jquery-ui.css'>
-	<link rel='stylesheet' href='assets/css/aos.css'>
-	<link rel='stylesheet' href='assets/css/odometer.min.css'>
-	<link rel='stylesheet' href='assets/css/twentytwenty.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/bootstrap.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/animate.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/custom-animate.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/swiper.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/font-awesome-all.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/jarallax.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/jquery.magnific-popup.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/flaticon.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/owl.carousel.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/owl.theme.default.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/nice-select.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/jquery-ui.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/aos.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/odometer.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/twentytwenty.css'>
 
 	<!-- template styles -->
-	<link rel='stylesheet' href='assets/css/style.css'>
-	<link rel='stylesheet' href='assets/css/responsive.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/style.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/responsive.css'>
 
 	<!--ZEN THEME JS-->
 	<!-- JS BASE ASSETS PROJECT -->
@@ -218,7 +218,9 @@
     ?>
 </head>
 
-<body data-scrolling-animations="true" class="">
+
+
+<body class='custom-cursor'>
 <?php
     if (SEGMENT_GL_TAGMANAGER !== '' && SEGMENT_GL_TAGMANAGER !== '0') {
         // <!-- Google Tag Manager (noscript) -->
@@ -228,8 +230,139 @@
         // <!-- End Google Tag Manager (noscript) -->
     }
 ?>
+<div class='custom-cursor__cursor'></div>
+<div class='custom-cursor__cursor-two'></div>
 
-<div id="texto">
+<!--Start Preloader-->
+<div id='preloader'>
+	<div class='preloader'>
+		<span></span>
+		<span></span>
+	</div>
+</div>
+<!--End Preloader-->
+
+<div class='chat-icon'>
+	<button type='button' class='chat-toggler'><i class='fa fa-comment'></i></button>
+</div>
+<!--Chat Popup-->
+<div id='chat-popup' class='chat-popup'>
+	<div class='popup-inner'>
+		<div class='close-chat'><i class='fa fa-times'></i></div>
+		<div class='chat-form'>
+			<p>Preencha o formulário abaixo e retornaremos o mais breve possível.</p>
+			<form action='assets/inc/sendemail.php' method='POST' class='contact-form-validated'>
+				<div class='form-group'>
+					<input type='text' name='name' placeholder='Seu nome' required>
+				</div>
+				<div class='form-group'>
+					<input type='email' name='email' placeholder='Seu e-mail' required>
+				</div>
+				<div class='form-group'>
+					<textarea name='message' placeholder='Sua mensagem' required></textarea>
+				</div>
+				<div class='form-group message-btn'>
+					<button type='submit' class='thm-btn'>Enviar agora<span class='icon-next'></span>
+					</button>
+				</div>
+				<div class='result'></div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- Start sidebar widget content -->
+<div class='xs-sidebar-group info-group info-sidebar'>
+	<div class='xs-overlay xs-bg-black'></div>
+	<div class='xs-sidebar-widget'>
+		<div class='sidebar-widget-container'>
+			<div class='widget-heading'>
+				<a href='#' class='close-side-widget'>X</a>
+			</div>
+			<div class='sidebar-textwidget'>
+				<div class='sidebar-info-contents'>
+					<div class='content-inner'>
+						<div class='logo'>
+							<a href='index.html'><img src='assets/images/resources/logo-1.png' alt=''></a>
+						</div>
+						<div class='content-box'>
+							<h4>Sobre nós</h4>
+							<div class='inner-text'>
+								<p>Ao contrário da crença popular, Lorem Ipsum não é simplesmente um texto aleatório.
+									Tem
+									raízes em uma peça de literatura latina clássica de 45 aC, tornando-se
+									2.000 anos.
+								</p>
+							</div>
+						</div>
+
+						<div class='form-inner'>
+							<h4>Faça um orçamento grátis</h4>
+							<form action='assets/inc/sendemail.php' method='POST' class='contact-form-validated'>
+								<div class='form-group'>
+									<input type='text' name='name' placeholder='Nome' required=''>
+								</div>
+								<div class='form-group'>
+									<input type='email' name='email' placeholder='E-mail' required=''>
+								</div>
+								<div class='form-group'>
+									<textarea name='message' placeholder='Mensagem...' required=''></textarea>
+								</div>
+								<div class='form-group message-btn'>
+									<button class='thm-btn' data-text='Enviar agora +' type='submit'
+									        data-loading-text='Por favor, aguarde...'>Enviar agora<span
+												class='icon-next'></span>
+									</button>
+								</div>
+								<div class='result'></div>
+							</form>
+
+
+						</div>
+
+						<div class='sidebar-contact-info'>
+							<h4>Informações de contato</h4>
+							<ul class='list-unstyled'>
+								<li>
+									<span class='icon-pin'></span> Rua Broklyn, 88, Nova York
+								</li>
+								<li>
+									<span class='icon-phone-call'></span>
+									<a href='tel:123456789'>+1 555-9990-153</a>
+								</li>
+								<li>
+									<span class='icon-email'></span>
+									<a href='mailto:info@example.com'>info@example.com</a>
+								</li>
+							</ul>
+						</div>
+						<div class='thm-social-link1'>
+							<ul class='social-box list-unstyled'>
+								<li>
+									<a href='#'><i class='fab fa-facebook-f' aria-hidden='true'></i></a>
+								</li>
+								<li>
+									<a href='#'><i class='fab fa-twitter' aria-hidden='true'></i></a>
+								</li>
+								<li>
+									<a href='#'><i class='fab fa-pinterest-p' aria-hidden='true'></i></a>
+								</li>
+								<li>
+									<a href='#'><i class='fab fa-instagram' aria-hidden='true'></i></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End sidebar widget content -->
+
+
+<div class='page-wrapper'>
     <?php
         // MESSAGE MAINTENANCE FOR ADMIN
         if (
@@ -470,40 +603,40 @@
             echo "\r\n<!--/JS Codes-->\r\n\r\n\r\n";
         }
         /*if (!empty(SEGMENT_FB_PIXEL_ID)) {
-    require 'assets/wc_track.php';
+    require '<?= INCLUDE_PATH  ?>/assets/wc_track.php';
     }*/
     ?>
 
 </div>
 
 <!--THEME JS-->
-<script src='assets/js/jquery-latest.js'></script>
-<script src='assets/js/bootstrap.bundle.min.js'></script>
-<script src='assets/js/jarallax.min.js'></script>
-<script src='assets/js/jquery.ajaxchimp.min.js'></script>
-<script src='assets/js/jquery.appear.min.js'></script>
-<script src='assets/js/swiper.min.js'></script>
-<script src='assets/js/jquery.magnific-popup.min.js'></script>
-<script src='assets/js/jquery.validate.min.js'></script>
-<script src='assets/js/wNumb.min.js'></script>
-<script src='assets/js/wow.js'></script>
-<script src='assets/js/isotope.js'></script>
-<script src='assets/js/owl.carousel.min.js'></script>
-<script src='assets/js/jquery-ui.js'></script>
-<script src='assets/js/jquery.nice-select.min.js'></script>
-<script src='assets/js/marquee.min.js'></script>
-<script src='assets/js/countdown.min.js'></script>
-<script src='assets/js/jquery-sidebar-content.js'></script>
-<script src='assets/js/aos.js'></script>
-<script src='assets/js/odometer.min.js'></script>
-<script src='assets/js/twentytwenty.js'></script>
-<script src='assets/js/jquery.event.move.js'></script>
-<script src='assets/js/jquery.circle-progress.min.js'></script>
-<script src='assets/js/gsap/gsap.js'></script>
-<script src='assets/js/gsap/ScrollTrigger.js'></script>
-<script src='assets/js/gsap/SplitText.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery-latest.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/bootstrap.bundle.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jarallax.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.ajaxchimp.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.appear.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/swiper.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.magnific-popup.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.validate.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/wNumb.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/wow.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/isotope.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/owl.carousel.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery-ui.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.nice-select.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/marquee.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/countdown.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery-sidebar-content.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/aos.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/odometer.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/twentytwenty.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.event.move.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.circle-progress.min.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/gsap/gsap.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/gsap/ScrollTrigger.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/gsap/SplitText.js'></script>
 <!-- template js -->
-<script src='assets/js/script.js'></script>
+<script src='<?= INCLUDE_PATH  ?>/assets/js/script.js'></script>
 <!--END THEME JS-->
 <?php
     // MAIN SCRIPT THEME

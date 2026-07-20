@@ -50,18 +50,25 @@ final class ErrorHandler
                     header('Content-Type: application/json; charset=UTF-8');
                 }
 
+                $debug = self::isDebugEnabled();
                 $payload = [
                     'error' => true,
-                    'message' => 'Erro interno',
+                    'message' => $debug ? $e->getMessage() : 'Erro interno',
                     'type' => (new ReflectionClass($e))->getShortName(),
                     'code' => $e->getCode(),
                 ];
 
-                if (self::isDebugEnabled()) {
-                    $payload['exception_message'] = $e->getMessage();
-                    $payload['file'] = $e->getFile();
-                    $payload['line'] = $e->getLine();
-                    $payload['trace'] = $e->getTrace();
+                if ($debug) {
+                    $payload['where'] = $e->getFile() . ':' . $e->getLine();
+                    $payload['trace'] = \array_slice(
+                        \array_map(
+                            static fn(array $f): string => ($f['file'] ?? '?') . ':' . ($f['line'] ?? '?')
+                                . ' ' . ($f['class'] ?? '') . ($f['type'] ?? '') . ($f['function'] ?? ''),
+                            $e->getTrace()
+                        ),
+                        0,
+                        5
+                    );
                 }
 
                 echo json_encode($payload, JSON_UNESCAPED_UNICODE);
@@ -329,7 +336,15 @@ HTML;
             return in_array($normalized, ['1', 'true', 'on', 'yes'], true);
         }
 
-        return false;
+        // Sem APP_DEBUG definido: em desenvolvimento (localhost) mostra os detalhes do
+        // erro para facilitar o diagnóstico; em produção continua genérico.
+        $host = strtolower(trim((string)($_SERVER['HTTP_HOST'] ?? '')));
+        $colon = \strpos($host, ':');
+        if (false !== $colon) {
+            $host = \substr($host, 0, $colon);
+        }
+
+        return in_array($host, ['localhost', '127.0.0.1', '::1'], true);
     }
 
     private static function extractColumnFromThrowable(Throwable $e): ?int

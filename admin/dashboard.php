@@ -96,10 +96,10 @@
 
 		<link rel="stylesheet" href="../assets/datepicker/datepicker.min.css"/>
 		<link rel="stylesheet" href="../assets/bootcss/fonticon.min.css"/>
-		<link rel="stylesheet" href="_css/reset.css"/>
-		<link rel="stylesheet" href="_css/workcontrol.css"/>
-		<link rel="stylesheet" href="_css/workcontrol-860.css" media="screen and (max-width: 860px)"/>
-		<link rel="stylesheet" href="_css/workcontrol-480.css" media="screen and (max-width: 480px)"/>
+		<link rel="stylesheet" href="_css/reset.css?v=<?= filemtime(__DIR__ . '/_css/reset.css'); ?>"/>
+		<link rel="stylesheet" href="_css/workcontrol.css?v=<?= filemtime(__DIR__ . '/_css/workcontrol.css'); ?>"/>
+		<link rel="stylesheet" href="_css/workcontrol-860.css?v=<?= filemtime(__DIR__ . '/_css/workcontrol-860.css'); ?>" media="screen and (max-width: 860px)"/>
+		<link rel="stylesheet" href="_css/workcontrol-480.css?v=<?= filemtime(__DIR__ . '/_css/workcontrol-480.css'); ?>" media="screen and (max-width: 480px)"/>
 
 		<script src="../assets/js/jquery.js"></script>
 		<script src="../assets/js/jquery.form.js"></script>
