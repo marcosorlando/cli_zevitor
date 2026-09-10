@@ -24,6 +24,7 @@
             self::$booted = true;
 
             self::loadEnv();
+            self::configureTimezone();
             self::validateRequiredEnv();
             self::defineDatabaseTableConstants();
             self::defineCacheConfig();
@@ -50,6 +51,16 @@
                 $dotenv = Dotenv::createImmutable($envDir);
                 $dotenv->safeLoad();
             }
+        }
+
+        /**
+         * Alinha o fuso horário do PHP com APP_TIMEZONE, evitando divergência entre
+         * datas gravadas via PHP e comparações feitas com NOW() no MySQL (time_zone=SYSTEM).
+         */
+        private static function configureTimezone(): void
+        {
+
+            date_default_timezone_set((string)self::env('APP_TIMEZONE', 'America/Sao_Paulo'));
         }
 
         private static function defineAgencyConstants(): void
@@ -103,7 +114,10 @@
             $localPath = trim((string)self::env('APP_LOCALHOST', ''), '/');
             $localBase = 'https://localhost' . ('' !== $localPath ? '/' . $localPath : '');
             $productionDomain = trim((string)self::env('APP_DOMAIN', ''), '/');
-            $productionBase = '' !== $productionDomain ? 'https://' . $productionDomain : (string)self::env('APP_URL', '');
+            $productionBase = '' !== $productionDomain ? 'https://' . $productionDomain : (string)self::env(
+                'APP_URL',
+                ''
+            );
 
             self::defineIfNotDefined(
                 'BASE',
@@ -164,7 +178,7 @@
                 'AVATAR_W' => 500,
                 'AVATAR_H' => 500,
                 'SLIDE_W' => 1920,
-                'SLIDE_H' => 1080,
+                'SLIDE_H' => 930,
                 'VIDEO_W' => 1280,
                 'VIDEO_H' => 720,
             ];

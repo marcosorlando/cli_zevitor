@@ -98,8 +98,12 @@
 		<link rel="stylesheet" href="../assets/bootcss/fonticon.min.css"/>
 		<link rel="stylesheet" href="_css/reset.css?v=<?= filemtime(__DIR__ . '/_css/reset.css'); ?>"/>
 		<link rel="stylesheet" href="_css/workcontrol.css?v=<?= filemtime(__DIR__ . '/_css/workcontrol.css'); ?>"/>
-		<link rel="stylesheet" href="_css/workcontrol-860.css?v=<?= filemtime(__DIR__ . '/_css/workcontrol-860.css'); ?>" media="screen and (max-width: 860px)"/>
-		<link rel="stylesheet" href="_css/workcontrol-480.css?v=<?= filemtime(__DIR__ . '/_css/workcontrol-480.css'); ?>" media="screen and (max-width: 480px)"/>
+		<link rel="stylesheet"
+		      href="_css/workcontrol-860.css?v=<?= filemtime(__DIR__ . '/_css/workcontrol-860.css'); ?>"
+		      media="screen and (max-width: 860px)"/>
+		<link rel="stylesheet"
+		      href="_css/workcontrol-480.css?v=<?= filemtime(__DIR__ . '/_css/workcontrol-480.css'); ?>"
+		      media="screen and (max-width: 480px)"/>
 
 		<script src="../assets/js/jquery.js"></script>
 		<script src="../assets/js/jquery.form.js"></script>
@@ -238,17 +242,23 @@
                                 $getViewInput,
                                 'slide/'
                             ) ? 'dashboard_nav_menu_active' : ''; ?>"><a class="icon-images" title="Em destaque"
-						                                                 href="dashboard.php?wc=slide/home">Slides<?php
+						                                                 href="dashboard.php?wc=slide/home">Slide
+								Banners<?php
                                     echo $wc_slide_alerts; ?></a>
 							<ul class="dashboard_nav_menu_sub">
 								<li class="dashboard_nav_menu_sub_li <?php
+                                    echo 'slide/create' == $getViewInput ? 'dashboard_nav_menu_active' : ''; ?>">
+									<a title='Destaques ativos' href='dashboard.php?wc=slide/create'>&raquo;
+										Adicionar banner</a>
+								</li>
+								<li class="dashboard_nav_menu_sub_li <?php
                                     echo 'slide/home' == $getViewInput ? 'dashboard_nav_menu_active' : ''; ?>">
-									<a title="Destaques ativos" href="dashboard.php?wc=slide/home">&raquo; Em
-										Destaque</a>
+									<a title="Destaques ativos" href="dashboard.php?wc=slide/home">&raquo; Banners
+										Ativos</a>
 								</li>
 								<li class="dashboard_nav_menu_sub_li <?php
                                     echo 'slide/end' == $getViewInput ? 'dashboard_nav_menu_active' : ''; ?>">
-									<a title="Agendados ou Inativos" href="dashboard.php?wc=slide/end">&raquo; Slides
+									<a title="Agendados ou Inativos" href="dashboard.php?wc=slide/end">&raquo; Banners
 										Inativos<?php
                                             echo $wc_slide_alerts; ?></a>
 								</li>

@@ -9,14 +9,14 @@
 						<i class='section-title__circle'></i>
 					</div>
 				</div>
-				<h6 class='section-title__tagline'>Processo de Trabalho</h6>
+				<h6 class='section-title__tagline'>CONHEÇA NOSSO</h6>
 				<div class='section-title__tagline-border'>
 					<div class='section-title__shape-2'>
 						<i class='section-title__circle'></i>
 					</div>
 				</div>
 			</div>
-			<h3 class='section-title__title title-animation'>Como trabalhar <span>Isto</span>
+			<h3 class='section-title__title title-animation'>Processo de <span>trabalho</span>
 			</h3>
 		</div>
 		<div class='process-one__inner'>
@@ -32,11 +32,10 @@
 							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
 							</div>
 							<div class='process-one__content'>
-								<h3 class='process-one__title'>Agendar agora</h3>
-								<p class='process-one__text'>Escolha seu serviço, escolha um horário - reserve seu carro
-									serviço
-									ou
-									reparar em apenas alguns cliques.</p>
+								<h3 class='process-one__title'>Agendamento</h3>
+								<p class='process-one__text'>Você pode vir até o nosso endereço e tomar um café
+									conosco, ou nos chamar pelos canais de comunicação, WhatsApp ou telefone para
+									agendar o seu horário</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>
@@ -54,11 +53,10 @@
 							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
 							</div>
 							<div class='process-one__content'>
-								<h3 class='process-one__title'>Inspeção Veicular</h3>
-								<p class='process-one__text'>Escolha seu serviço, escolha um horário - reserve seu carro
-									serviço
-									ou
-									reparar em apenas alguns cliques.</p>
+								<h3 class='process-one__title'>Recepção do Véiculos</h3>
+								<p class='process-one__text'>Anamnese para alinhar as expectativas em relação ao
+									serviços, deixando o carro aos cuidados da Mecanixa Zé Vitor para avaliação.
+									.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>
@@ -76,11 +74,11 @@
 							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
 							</div>
 							<div class='process-one__content'>
-								<h3 class='process-one__title'>Serviço especializado</h3>
-								<p class='process-one__text'>Escolha seu serviço, escolha um horário - reserve seu carro
-									serviço
-									ou
-									reparar em apenas alguns cliques.</p>
+								<h3 class='process-one__title'>Diagnóstico preliminar</h3>
+								<p class='process-one__text'>Faz um teste drive para levantar possiveis anomalias
+									detectadas e depois inicia o diagnóstico completo em caso de revisão os dos itens
+									apontados pelo técnico e cliente.
+									.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>

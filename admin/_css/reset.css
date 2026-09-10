@@ -643,11 +643,15 @@ select {
 
 .label .legend {
     font-size: 0.8em;
-    font-weight: 300;
+    font-weight: 400;
     display: block;
     margin-bottom: 5px;
     text-transform: uppercase;
     color: #333;
+}
+
+.label .legend > b, .label .legend > strong {
+    font-weight: bold;
 }
 
 .label_check {

@@ -725,7 +725,6 @@
 
         /**
          * Retorna as classes de botões CTA ou o rótulo de uma classe específica.
-         *
          * @return array<string, string>|string|null
          */
         public static function getWcBtnCta(?string $class = null): array|string|null
@@ -753,7 +752,6 @@
 
         /**
          * Retorna as opções de arredondamento de botões ou o rótulo da opção informada.
-         *
          * @return array<int, string>|string|null
          */
         public static function getWcBtnRounded(int|string|null $rounded = null): array|string|null
@@ -775,7 +773,6 @@
 
         /**
          * Retorna as opções de opacidade dos slides ou o rótulo de uma opção específica.
-         *
          * @return array<string, string>|string|null
          */
         public static function getWcOpacitySlides(?string $opacity = null): array|string|null

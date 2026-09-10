@@ -25,12 +25,13 @@
 ?>
 <!--Page Header Start-->
 <section class='page-header'>
-	<div class='page-header__bg' style='background-image: url(assets/images/backgrounds/page-header-bg.jpg);'>
+	<div class='page-header__bg'
+	     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/page-header-bg.jpg);'>
 	</div>
 	<div class='container'>
 		<div class='page-header__inner'>
 			<div class='page-header__img-1'>
-				<img src='assets/images/resources/page-header-img-1.png' alt=''>
+				<img src='<?= INCLUDE_PATH ?>/assets/images/resources/page-header-img-1.png' alt=''>
 			</div>
 			<h3>Sobre nós</h3>
 			<div class='thm-breadcrumb__inner'>
@@ -48,10 +49,10 @@
 <!--About One Start -->
 <section class='about-one'>
 	<div class='about-one__shape-1 float-bob-x'>
-		<img src='assets/images/shapes/about-one-shape-1.png' alt=''>
+		<img src='<?= INCLUDE_PATH ?>/assets/images/shapes/about-one-shape-1.png' alt=''>
 	</div>
 	<div class='about-one__shape-2 float-bob-y'>
-		<img src='assets/images/shapes/about-one-shape-2.png' alt=''>
+		<img src='<?= INCLUDE_PATH ?>/assets/images/shapes/about-one-shape-2.png' alt=''>
 	</div>
 	<div class='container'>
 		<div class='row'>
@@ -59,7 +60,7 @@
 				<div class='about-one__left wow slideInLeft' data-wow-delay='100ms' data-wow-duration='2500ms'>
 					<div class='about-one__img-box'>
 						<div class='about-one__img'>
-							<img src='assets/images/resources/about-one-img-1.jpg' alt=''>
+							<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-img-1.jpg' alt=''>
 							<div class='about-one__video-link'>
 								<a href='https://www.youtube.com/watch?v=Get7rqXYrbQ' class='video-popup'>
 									<div class='about-one__video-icon'>
@@ -70,7 +71,7 @@
 							</div>
 						</div>
 						<div class='about-one__img-two'>
-							<img src='assets/images/resources/about-one-img-2.jpg' alt=''>
+							<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-img-2.jpg' alt=''>
 						</div>
 						<div class='about-one__experience-box'>
 							<div class='about-one__experience-count'>
@@ -168,22 +169,26 @@
 							<ul class='list-unstyled about-one__review-list'>
 								<li>
 									<div class='about-one__review-img'>
-										<img src='assets/images/resources/about-one-review-img-1-1.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-1.jpg'
+										     alt=''>
 									</div>
 								</li>
 								<li>
 									<div class='about-one__review-img'>
-										<img src='assets/images/resources/about-one-review-img-1-2.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-2.jpg'
+										     alt=''>
 									</div>
 								</li>
 								<li>
 									<div class='about-one__review-img'>
-										<img src='assets/images/resources/about-one-review-img-1-3.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-3.jpg'
+										     alt=''>
 									</div>
 								</li>
 								<li>
 									<div class='about-one__review-img'>
-										<img src='assets/images/resources/about-one-review-img-1-4.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-4.jpg'
+										     alt=''>
 									</div>
 								</li>
 							</ul>
@@ -206,7 +211,8 @@
 							<div class='about-one__author-details'>
 								<div class='about-one__author-img-box'>
 									<div class='about-one__author-img'>
-										<img src='assets/images/resources/about-one-author-img-1.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-author-img-1.jpg'
+										     alt=''>
 									</div>
 								</div>
 								<div class='about-one__author-content'>
@@ -215,7 +221,7 @@
 								</div>
 							</div>
 							<div class='about-one__author-sign'>
-								<img src='assets/images/resources/about-one-author-sign.png' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-author-sign.png' alt=''>
 							</div>
 						</div>
 					</div>
@@ -297,7 +303,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-1.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-1.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-diagnostic'></span>
@@ -326,7 +333,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-2.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-2.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-car-parts'></span>
@@ -356,7 +364,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-3.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-3.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-tools'></span>
@@ -386,7 +395,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-4.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-4.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-fan'></span>
@@ -416,7 +426,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-5.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-5.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-mechanical'></span>
@@ -446,7 +457,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-6.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-6.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-spare-parts'></span>
@@ -475,7 +487,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-2.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-2.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-car-parts'></span>
@@ -513,7 +526,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-7.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-7.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-oil'></span>
@@ -543,7 +557,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-8.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-8.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-car'></span>
@@ -573,7 +588,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-9.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-9.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-spare-parts-1'></span>
@@ -603,7 +619,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-10.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-10.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-spare-parts'></span>
@@ -633,7 +650,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-11.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-11.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-part'></span>
@@ -663,7 +681,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-12.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-12.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-clock-1'></span>
@@ -693,7 +712,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-8.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-8.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-spark-plug'></span>
@@ -731,7 +751,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-13.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-13.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-brake-disc'></span>
@@ -761,7 +782,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-14.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-14.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-motor'></span>
@@ -790,7 +812,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-15.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-15.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-brake'></span>
@@ -820,7 +843,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-16.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-16.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-diagnostic'></span>
@@ -849,7 +873,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-17.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-17.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-technology'></span>
@@ -878,7 +903,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-18.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-18.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-breakdown'></span>
@@ -908,7 +934,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-14.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-14.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-spare-parts-1'></span>
@@ -945,7 +972,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-19.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-19.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-spare-parts'></span>
@@ -974,7 +1002,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-20.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-20.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-fan'></span>
@@ -1003,7 +1032,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-21.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-21.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-motor'></span>
@@ -1033,7 +1063,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-22.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-22.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-diagnostic'></span>
@@ -1063,7 +1094,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-23.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-23.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-part'></span>
@@ -1093,7 +1125,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-24.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-24.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-breakdown'></span>
@@ -1123,7 +1156,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-20.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-20.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-fan'></span>
@@ -1160,7 +1194,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-25.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-25.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-tire-1'></span>
@@ -1189,7 +1224,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-26.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-26.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-steering-wheel'></span>
@@ -1219,7 +1255,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-27.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-27.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-tire'></span>
@@ -1249,7 +1286,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-28.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-28.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-tyre'></span>
@@ -1279,7 +1317,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-29.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-29.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-flat-tire'></span>
@@ -1309,7 +1348,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-30.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-30.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-spare-parts-1'></span>
@@ -1339,7 +1379,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-27.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-27.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-tyre'></span>
@@ -1377,7 +1418,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-31.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-31.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-battery'></span>
@@ -1407,7 +1449,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-32.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-32.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-battery'></span>
@@ -1437,7 +1480,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-33.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-33.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-check-1'></span>
@@ -1467,7 +1511,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-34.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-34.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-motor'></span>
@@ -1497,7 +1542,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-35.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-35.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-low-beam'></span>
@@ -1527,7 +1573,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-36.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-36.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-diagnostic'></span>
@@ -1557,7 +1604,8 @@
 											<div class='service-three__single'>
 												<div class='service-three__img-box'>
 													<div class='service-three__img'>
-														<img src='assets/images/services/services-3-34.jpg' alt=''>
+														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-34.jpg'
+														     alt=''>
 													</div>
 													<div class='service-three__icon'>
 														<span class='icon-motor'></span>
@@ -1689,8 +1737,8 @@
 					<div class='why-choose-two__img-box'>
 						<div class='why-choose-two__img'>
 							<div class='before-after-twentytwenty' id='wrinkle-before-after'>
-								<img src='assets/images/resources/why-choose-two-img-1.png' alt=''>
-								<img src='assets/images/resources/why-choose-two-img-2.png' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/resources/why-choose-two-img-1.png' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/resources/why-choose-two-img-2.png' alt=''>
 							</div>
 						</div>
 					</div>
@@ -1711,7 +1759,7 @@
 					<div class='swiper-slide'>
 						<div class='brand-one__single'>
 							<div class='brand-one__single-inner'>
-								<a href='#'><img src='assets/images/brand/brand-1-1.png' alt=''></a>
+								<a href='#'><img src='<?= INCLUDE_PATH ?>/assets/images/brand/brand-1-1.png' alt=''></a>
 							</div>
 						</div>
 					</div>
@@ -1721,7 +1769,7 @@
 					<div class='swiper-slide'>
 						<div class='brand-one__single'>
 							<div class='brand-one__single-inner'>
-								<a href='#'><img src='assets/images/brand/brand-1-2.png' alt=''></a>
+								<a href='#'><img src='<?= INCLUDE_PATH ?>/assets/images/brand/brand-1-2.png' alt=''></a>
 							</div>
 						</div>
 					</div>
@@ -1731,7 +1779,7 @@
 					<div class='swiper-slide'>
 						<div class='brand-one__single'>
 							<div class='brand-one__single-inner'>
-								<a href='#'><img src='assets/images/brand/brand-1-3.png' alt=''></a>
+								<a href='#'><img src='<?= INCLUDE_PATH ?>/assets/images/brand/brand-1-3.png' alt=''></a>
 							</div>
 						</div>
 					</div>
@@ -1741,7 +1789,7 @@
 					<div class='swiper-slide'>
 						<div class='brand-one__single'>
 							<div class='brand-one__single-inner'>
-								<a href='#'><img src='assets/images/brand/brand-1-4.png' alt=''></a>
+								<a href='#'><img src='<?= INCLUDE_PATH ?>/assets/images/brand/brand-1-4.png' alt=''></a>
 							</div>
 						</div>
 					</div>
@@ -1751,7 +1799,7 @@
 					<div class='swiper-slide'>
 						<div class='brand-one__single'>
 							<div class='brand-one__single-inner'>
-								<a href='#'><img src='assets/images/brand/brand-1-5.png' alt=''></a>
+								<a href='#'><img src='<?= INCLUDE_PATH ?>/assets/images/brand/brand-1-5.png' alt=''></a>
 							</div>
 						</div>
 					</div>
@@ -1766,7 +1814,7 @@
 <!--Team One Start -->
 <section class='team-one'>
 	<div class='team-one__shape-1 float-bob-x'>
-		<img src='assets/images/shapes/team-one-shape-1.png' alt=''>
+		<img src='<?= INCLUDE_PATH ?>/assets/images/shapes/team-one-shape-1.png' alt=''>
 	</div>
 	<div class='container'>
 		<div class='section-title text-center sec-title-animation animation-style1'>
@@ -1794,7 +1842,7 @@
 					<div class='team-one__single'>
 						<div class='team-one__img-box'>
 							<div class='team-one__img'>
-								<img src='assets/images/team/team-1-1.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-1-1.jpg' alt=''>
 							</div>
 							<div class='team-one__social-box'>
 								<div class='team-one__plus'>
@@ -1820,7 +1868,7 @@
 					<div class='team-one__single'>
 						<div class='team-one__img-box'>
 							<div class='team-one__img'>
-								<img src='assets/images/team/team-1-2.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-1-2.jpg' alt=''>
 							</div>
 							<div class='team-one__social-box'>
 								<div class='team-one__plus'>
@@ -1846,7 +1894,7 @@
 					<div class='team-one__single'>
 						<div class='team-one__img-box'>
 							<div class='team-one__img'>
-								<img src='assets/images/team/team-1-3.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-1-3.jpg' alt=''>
 							</div>
 							<div class='team-one__social-box'>
 								<div class='team-one__plus'>
@@ -1872,7 +1920,7 @@
 					<div class='team-one__single'>
 						<div class='team-one__img-box'>
 							<div class='team-one__img'>
-								<img src='assets/images/team/team-1-4.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-1-4.jpg' alt=''>
 							</div>
 							<div class='team-one__social-box'>
 								<div class='team-one__plus'>
@@ -1902,7 +1950,7 @@
 <!--Video One Start -->
 <section class='video-one'>
 	<div class='video-one__bg jarallax' data-jarallax data-speed='0.2' data-imgposition='50% 0%'
-	     style='background-image: url(assets/images/backgrounds/video-one-bg.jpg);'>
+	     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/video-one-bg.jpg);'>
 	</div>
 	<div class='container'>
 		<div class='video-one__inner'>
@@ -1918,7 +1966,7 @@
 			</h2>
 			<div class='video-one__btn-box'>
 				<div class='video-one__shape-1'>
-					<img src='assets/images/shapes/video-one-shape-1.png' alt=''>
+					<img src='<?= INCLUDE_PATH ?>/assets/images/shapes/video-one-shape-1.png' alt=''>
 				</div>
 				<a href='about.html' class='thm-btn'>Ver mais
 					<span class='icon-next'></span>
@@ -1967,10 +2015,11 @@
 					<div class='project-one__single'>
 						<div class='project-one__img-box'>
 							<div class='project-one__img'>
-								<img src='assets/images/project/project-1-1.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/project/project-1-1.jpg' alt=''>
 							</div>
 							<div class='project-one__arrow'>
-								<a href='assets/images/project/project-1-1.jpg' class='img-popup'><span
+								<a href='<?= INCLUDE_PATH ?>/assets/images/project/project-1-1.jpg'
+								   class='img-popup'><span
 											class='icon-next'></span></a>
 							</div>
 							<div class='project-one__content-inner'>
@@ -2000,10 +2049,11 @@
 					<div class='project-one__single'>
 						<div class='project-one__img-box'>
 							<div class='project-one__img'>
-								<img src='assets/images/project/project-1-2.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/project/project-1-2.jpg' alt=''>
 							</div>
 							<div class='project-one__arrow'>
-								<a href='assets/images/project/project-1-2.jpg' class='img-popup'><span
+								<a href='<?= INCLUDE_PATH ?>/assets/images/project/project-1-2.jpg'
+								   class='img-popup'><span
 											class='icon-next'></span></a>
 							</div>
 							<div class='project-one__content-inner'>
@@ -2033,10 +2083,11 @@
 					<div class='project-one__single'>
 						<div class='project-one__img-box'>
 							<div class='project-one__img'>
-								<img src='assets/images/project/project-1-3.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/project/project-1-3.jpg' alt=''>
 							</div>
 							<div class='project-one__arrow'>
-								<a href='assets/images/project/project-1-3.jpg' class='img-popup'><span
+								<a href='<?= INCLUDE_PATH ?>/assets/images/project/project-1-3.jpg'
+								   class='img-popup'><span
 											class='icon-next'></span></a>
 							</div>
 							<div class='project-one__content-inner'>
@@ -2067,10 +2118,11 @@
 					<div class='project-one__single'>
 						<div class='project-one__img-box'>
 							<div class='project-one__img'>
-								<img src='assets/images/project/project-1-4.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/project/project-1-4.jpg' alt=''>
 							</div>
 							<div class='project-one__arrow'>
-								<a href='assets/images/project/project-1-4.jpg' class='img-popup'><span
+								<a href='<?= INCLUDE_PATH ?>/assets/images/project/project-1-4.jpg'
+								   class='img-popup'><span
 											class='icon-next'></span></a>
 							</div>
 							<div class='project-one__content-inner'>
@@ -2100,10 +2152,11 @@
 					<div class='project-one__single'>
 						<div class='project-one__img-box'>
 							<div class='project-one__img'>
-								<img src='assets/images/project/project-1-5.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/project/project-1-5.jpg' alt=''>
 							</div>
 							<div class='project-one__arrow'>
-								<a href='assets/images/project/project-1-5.jpg' class='img-popup'><span
+								<a href='<?= INCLUDE_PATH ?>/assets/images/project/project-1-5.jpg'
+								   class='img-popup'><span
 											class='icon-next'></span></a>
 							</div>
 							<div class='project-one__content-inner'>
@@ -2133,10 +2186,11 @@
 					<div class='project-one__single'>
 						<div class='project-one__img-box'>
 							<div class='project-one__img'>
-								<img src='assets/images/project/project-1-6.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/project/project-1-6.jpg' alt=''>
 							</div>
 							<div class='project-one__arrow'>
-								<a href='assets/images/project/project-1-6.jpg' class='img-popup'><span
+								<a href='<?= INCLUDE_PATH ?>/assets/images/project/project-1-6.jpg'
+								   class='img-popup'><span
 											class='icon-next'></span></a>
 							</div>
 							<div class='project-one__content-inner'>
@@ -2253,10 +2307,10 @@
 			<div class='col-xl-4 col-lg-4'>
 				<div class='pricing-two__img-box'>
 					<div class='pricing-two__img'>
-						<img src='assets/images/resources/pricing-one-img-1.png' alt=''>
+						<img src='<?= INCLUDE_PATH ?>/assets/images/resources/pricing-one-img-1.png' alt=''>
 					</div>
 					<div class='pricing-two__top-img-1'>
-						<img src='assets/images/resources/pricing-two-top-img-1.png' alt=''>
+						<img src='<?= INCLUDE_PATH ?>/assets/images/resources/pricing-two-top-img-1.png' alt=''>
 					</div>
 				</div>
 			</div>
@@ -2364,11 +2418,11 @@
 					<div class='testimonial-two__single-inner'>
 						<div class='testimonial-two__single'>
 							<div class='testimonial-two__single-bg-shape'
-							     style='background-image: url(assets/images/shapes/testimonial-two-single-bg-shape.png);'>
+							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/testimonial-two-single-bg-shape.png);'>
 							</div>
 							<div class='testimonial-two__author-box'>
 								<div class='testimonial-two__author-img'>
-									<img src='assets/images/testimonial/testimonial-2-1.jpg' alt=''>
+									<img src='<?= INCLUDE_PATH ?>/assets/images/testimonial/testimonial-2-1.jpg' alt=''>
 								</div>
 								<div class='testimonial-two__author-content'>
 									<h3 class='testimonial-two__author-name'><a href='testimonials-v1.html'>Adão
@@ -2402,11 +2456,11 @@
 					<div class='testimonial-two__single-inner'>
 						<div class='testimonial-two__single'>
 							<div class='testimonial-two__single-bg-shape'
-							     style='background-image: url(assets/images/shapes/testimonial-two-single-bg-shape.png);'>
+							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/testimonial-two-single-bg-shape.png);'>
 							</div>
 							<div class='testimonial-two__author-box'>
 								<div class='testimonial-two__author-img'>
-									<img src='assets/images/testimonial/testimonial-2-2.jpg' alt=''>
+									<img src='<?= INCLUDE_PATH ?>/assets/images/testimonial/testimonial-2-2.jpg' alt=''>
 								</div>
 								<div class='testimonial-two__author-content'>
 									<h3 class='testimonial-two__author-name'><a href='testimonials-v1.html'>Jecika
@@ -2440,11 +2494,11 @@
 					<div class='testimonial-two__single-inner'>
 						<div class='testimonial-two__single'>
 							<div class='testimonial-two__single-bg-shape'
-							     style='background-image: url(assets/images/shapes/testimonial-two-single-bg-shape.png);'>
+							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/testimonial-two-single-bg-shape.png);'>
 							</div>
 							<div class='testimonial-two__author-box'>
 								<div class='testimonial-two__author-img'>
-									<img src='assets/images/testimonial/testimonial-2-3.jpg' alt=''>
+									<img src='<?= INCLUDE_PATH ?>/assets/images/testimonial/testimonial-2-3.jpg' alt=''>
 								</div>
 								<div class='testimonial-two__author-content'>
 									<h3 class='testimonial-two__author-name'><a href='testimonials-v1.html'>Herberto
@@ -2483,14 +2537,14 @@
 <section class='appointment-two'>
 	<div class='appointment-two__bg-color'>
 		<div class='appointment-two__bg'
-		     style='background-image: url(assets/images/backgrounds/appointment-two-bg.jpg);'></div>
+		     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/appointment-two-bg.jpg);'></div>
 	</div>
 	<div class='container'>
 		<div class='row'>
 			<div class='col-xl-7'>
 				<div class='appointment-two__left'>
 					<div class='appointment-two__bg-shape'
-					     style='background-image: url(assets/images/shapes/appointment-two-bg-shape.png);'></div>
+					     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/appointment-two-bg-shape.png);'></div>
 					<div class='section-title text-left sec-title-animation animation-style2'>
 						<div class='section-title__tagline-box'>
 							<div class='section-title__tagline-border'>
@@ -2508,7 +2562,8 @@
 						<h3 class='section-title__title title-animation'>Marque agora uma consulta
 						</h3>
 					</div>
-					<form class='contact-form-validated appointment-two__form' action='assets/inc/sendemail.php'
+					<form class='contact-form-validated appointment-two__form'
+					      action='<?= INCLUDE_PATH ?>/assets/inc/sendemail.php'
 					      method='post' novalidate='novalidate'>
 						<div class='row'>
 							<div class='col-xl-6 col-lg-6 col-md-6'>
@@ -2562,14 +2617,14 @@
 			<div class='col-xl-5'>
 				<div class='appointment-two__right'>
 					<div class='appointment-two__img-1'>
-						<img src='assets/images/resources/appointment-two-img-1.png' alt=''>
+						<img src='<?= INCLUDE_PATH ?>/assets/images/resources/appointment-two-img-1.png' alt=''>
 					</div>
 					<div class='appointment-two__shape-1'>
-						<img src='assets/images/shapes/appointment-two-shape-1.png' alt=''>
+						<img src='<?= INCLUDE_PATH ?>/assets/images/shapes/appointment-two-shape-1.png' alt=''>
 					</div>
 					<div class='appointment-two__contact-info'>
 						<div class='appointment-two__contact-info-bg-shape'
-						     style='background-image: url(assets/images/shapes/appointment-two-contact-info-bg-shape.png);'>
+						     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/appointment-two-contact-info-bg-shape.png);'>
 						</div>
 						<h3 class='appointment-two__contact-info-title'>Informações de contato</h3>
 						<p class='appointment-two__contact-info-text'>É um facto há muito estabelecido que um
@@ -2644,7 +2699,7 @@
 					<div class='blog-two__single-inner'>
 						<div class='blog-two__img-box'>
 							<div class='blog-two__img'>
-								<img src='assets/images/blog/blog-2-1.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/blog/blog-2-1.jpg' alt=''>
 								<div class='blog-two__plus'>
 									<a href='blog-details.html'><i class='fas fa-plus'></i></a>
 								</div>
@@ -2677,7 +2732,7 @@
 					<div class='blog-two__author-info'>
 						<div class='blog-two__author-img-box'>
 							<div class='blog-two__author-img'>
-								<img src='assets/images/blog/blog-two-author-img-1.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/blog/blog-two-author-img-1.jpg' alt=''>
 							</div>
 						</div>
 						<div class='blog-two__author-content'>
@@ -2697,7 +2752,7 @@
 					<div class='blog-two__single-inner'>
 						<div class='blog-two__img-box'>
 							<div class='blog-two__img'>
-								<img src='assets/images/blog/blog-2-2.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/blog/blog-2-2.jpg' alt=''>
 								<div class='blog-two__plus'>
 									<a href='blog-details.html'><i class='fas fa-plus'></i></a>
 								</div>
@@ -2729,7 +2784,7 @@
 					<div class='blog-two__author-info'>
 						<div class='blog-two__author-img-box'>
 							<div class='blog-two__author-img'>
-								<img src='assets/images/blog/blog-two-author-img-2.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/blog/blog-two-author-img-2.jpg' alt=''>
 							</div>
 						</div>
 						<div class='blog-two__author-content'>
@@ -2749,7 +2804,7 @@
 					<div class='blog-two__single-inner'>
 						<div class='blog-two__img-box'>
 							<div class='blog-two__img'>
-								<img src='assets/images/blog/blog-2-3.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/blog/blog-2-3.jpg' alt=''>
 								<div class='blog-two__plus'>
 									<a href='blog-details.html'><i class='fas fa-plus'></i></a>
 								</div>
@@ -2782,7 +2837,7 @@
 					<div class='blog-two__author-info'>
 						<div class='blog-two__author-img-box'>
 							<div class='blog-two__author-img'>
-								<img src='assets/images/blog/blog-two-author-img-3.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/blog/blog-two-author-img-3.jpg' alt=''>
 							</div>
 						</div>
 						<div class='blog-two__author-content'>

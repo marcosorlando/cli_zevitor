@@ -29,7 +29,7 @@
 					<div class='team-one__single'>
 						<div class='team-one__img-box'>
 							<div class='team-one__img'>
-								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-1-1.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-ze-vitor-01.png' alt=''>
 							</div>
 							<div class='team-one__social-box'>
 								<div class='team-one__plus'>
@@ -44,8 +44,8 @@
 							</div>
 						</div>
 						<div class='team-one__content'>
-							<h3 class='team-one__title'><a href='team-details.html'>Adam Smith</a></h3>
-							<p class='team-one__sub-title'>Técnico de pneus</p>
+							<h3 class='team-one__title'><a href='team-details.html'>Zé Vitor</a></h3>
+							<p class='team-one__sub-title'>Especialista em veículos classicos</p>
 						</div>
 					</div>
 				</div>
@@ -55,7 +55,7 @@
 					<div class='team-one__single'>
 						<div class='team-one__img-box'>
 							<div class='team-one__img'>
-								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-1-2.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-ramiro-01.png' alt=''>
 							</div>
 							<div class='team-one__social-box'>
 								<div class='team-one__plus'>
@@ -70,7 +70,7 @@
 							</div>
 						</div>
 						<div class='team-one__content'>
-							<h3 class='team-one__title'><a href='team-details.html'>Alisha Martin</a></h3>
+							<h3 class='team-one__title'><a href='team-details.html'>Ramiro Tisott</a></h3>
 							<p class='team-one__sub-title'>Especialista em Transmissão</p>
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 					<div class='team-one__single'>
 						<div class='team-one__img-box'>
 							<div class='team-one__img'>
-								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-1-3.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-func_01-01.png' alt=''>
 							</div>
 							<div class='team-one__social-box'>
 								<div class='team-one__plus'>
@@ -96,8 +96,8 @@
 							</div>
 						</div>
 						<div class='team-one__content'>
-							<h3 class='team-one__title'><a href='team-details.html'>Herbert Spin</a></h3>
-							<p class='team-one__sub-title'>Especialista em freios</p>
+							<h3 class='team-one__title'><a href='team-details.html'>Anderson Castilhos</a></h3>
+							<p class='team-one__sub-title'>Atendimento ao Cliente</p>
 						</div>
 					</div>
 				</div>
@@ -107,7 +107,7 @@
 					<div class='team-one__single'>
 						<div class='team-one__img-box'>
 							<div class='team-one__img'>
-								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-1-4.jpg' alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/team/team-func_02-01.png' alt=''>
 							</div>
 							<div class='team-one__social-box'>
 								<div class='team-one__plus'>
@@ -122,8 +122,8 @@
 							</div>
 						</div>
 						<div class='team-one__content'>
-							<h3 class='team-one__title'><a href='team-details.html'>Aiyana Ansu</a></h3>
-							<p class='team-one__sub-title'>Especialista em motores</p>
+							<h3 class='team-one__title'><a href='team-details.html'>Cris</a></h3>
+							<p class='team-one__sub-title'>Financeiro</p>
 						</div>
 					</div>
 				</div>

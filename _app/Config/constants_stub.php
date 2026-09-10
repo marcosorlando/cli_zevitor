@@ -110,7 +110,7 @@ if (!defined('APP_DEBUG')) {
 }
 
 if (!defined('APP_DEPOSITIONS')) {
-    define('APP_DEPOSITIONS', 0);
+    define('APP_DEPOSITIONS', 1);
 }
 
 if (!defined('APP_HELLO')) {
@@ -146,7 +146,7 @@ if (!defined('APP_LINK_PROPERTIES')) {
 }
 
 if (!defined('APP_MATERIALS')) {
-    define('APP_MATERIALS', 0);
+    define('APP_MATERIALS', 1);
 }
 
 if (!defined('APP_OUVIDORIA')) {
@@ -169,10 +169,6 @@ if (!defined('APP_POSTS')) {
     define('APP_POSTS', 1);
 }
 
-if (!defined('APP_PROJECTS')) {
-    define('APP_PROJECTS', 1);
-}
-
 if (!defined('APP_POSTS_AMP')) {
     define('APP_POSTS_AMP', 0);
 }
@@ -183,6 +179,10 @@ if (!defined('APP_POSTS_INSTANT_ARTICLE')) {
 
 if (!defined('APP_PRODUCTS_DORIPEL')) {
     define('APP_PRODUCTS_DORIPEL', 0);
+}
+
+if (!defined('APP_PROJECTS')) {
+    define('APP_PROJECTS', 1);
 }
 
 if (!defined('APP_REPRESENTATIVES')) {
@@ -222,7 +222,7 @@ if (!defined('AVATAR_W')) {
 }
 
 if (!defined('BASE')) {
-    define('BASE', 'https://localhost/cli_zevitor');
+    define('BASE', 'https://mecanicazevitor.com.br');
 }
 
 if (!defined('COMMENT_MODERATE')) {
@@ -502,7 +502,7 @@ if (!defined('IMAGE_W')) {
 }
 
 if (!defined('INCLUDE_PATH')) {
-    define('INCLUDE_PATH', 'https://localhost/cli_zevitor/themes/zevitor');
+    define('INCLUDE_PATH', 'https://mecanicazevitor.com.br/themes/zevitor');
 }
 
 if (!defined('LEVEL_WC_ALBUMS')) {
@@ -630,7 +630,7 @@ if (!defined('MAIL_MODE')) {
 }
 
 if (!defined('MAIL_PASS')) {
-    define('MAIL_PASS', 'senha-do-email');
+    define('MAIL_PASS', 'M3c4n!c4Z3V!t0r@noreply');
 }
 
 if (!defined('MAIL_PORT')) {
@@ -642,7 +642,7 @@ if (!defined('MAIL_SENDER')) {
 }
 
 if (!defined('MAIL_SMTP')) {
-    define('MAIL_SMTP', 'contato@mecanicazevitor.com.br');
+    define('MAIL_SMTP', 'noreply@mecanicazevitor.com.br');
 }
 
 if (!defined('MAIL_TESTER')) {
@@ -650,7 +650,7 @@ if (!defined('MAIL_TESTER')) {
 }
 
 if (!defined('MAIL_USER')) {
-    define('MAIL_USER', 'contato@mecanicazevitor.com.br');
+    define('MAIL_USER', 'noreply@mecanicazevitor.com.br');
 }
 
 if (!defined('REQUIRE_PATH')) {
@@ -702,23 +702,23 @@ if (!defined('SIS_DB_HOST')) {
 }
 
 if (!defined('SIS_DB_NAME')) {
-    define('SIS_DB_NAME', '');
+    define('SIS_DB_NAME', 'mecanicazevitor_db');
 }
 
 if (!defined('SIS_DB_PASS')) {
-    define('SIS_DB_PASS', '');
+    define('SIS_DB_PASS', 'KXLl]!,40#IGAWhx');
 }
 
 if (!defined('SIS_DB_USER')) {
-    define('SIS_DB_USER', '');
+    define('SIS_DB_USER', 'mecanicazevitor_root');
 }
 
 if (!defined('SITE_ADDR_ADDR')) {
-    define('SITE_ADDR_ADDR', 'Rua João Paternoster, 476');
+    define('SITE_ADDR_ADDR', 'João Paternoster, 476');
 }
 
 if (!defined('SITE_ADDR_CITY')) {
-    define('SITE_ADDR_CITY', 'Caxias do Sul - RS');
+    define('SITE_ADDR_CITY', 'Caxias do Sul');
 }
 
 if (!defined('SITE_ADDR_CNPJ')) {
@@ -834,7 +834,7 @@ if (!defined('SITE_SUBNAME')) {
 }
 
 if (!defined('SLIDE_H')) {
-    define('SLIDE_H', 1080);
+    define('SLIDE_H', 930);
 }
 
 if (!defined('SLIDE_W')) {

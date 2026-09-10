@@ -24,6 +24,20 @@
     --wc-shadow-sm: 0 6px 18px rgba(28, 43, 58, 0.08);
     --wc-shadow-strong: 0 24px 70px rgba(8, 22, 36, 0.24);
     --wc-font: "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
+
+    --servixa-gray: #585b6b;
+    --servixa-gray-rgb: 88, 91, 107;
+    --servixa-base: #dd1629;
+    --servixa-base-rgb: 221, 22, 41;
+    --servixa-primary: #ebebeb;
+    --servixa-primary-rgb: 235, 235, 235;
+    --servixa-black: #052838;
+    --servixa-black-rgb: 5, 40, 56;
+    --servixa-white: #ffffff;
+    --servixa-white-rgb: 255, 255, 255;
+    --servixa-bdr-color: #dedede;
+    --servixa-bdr-color-rgb: 222, 222, 222;
+    --servixa-bdr-radius: 10px;
 }
 
 html,
