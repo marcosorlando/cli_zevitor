@@ -47,189 +47,8 @@
 <!--Page Header End-->
 
 <!--About One Start -->
-<section class='about-one'>
-	<div class='about-one__shape-1 float-bob-x'>
-		<img src='<?= INCLUDE_PATH ?>/assets/images/shapes/about-one-shape-1.png' alt=''>
-	</div>
-	<div class='about-one__shape-2 float-bob-y'>
-		<img src='<?= INCLUDE_PATH ?>/assets/images/shapes/about-one-shape-2.png' alt=''>
-	</div>
-	<div class='container'>
-		<div class='row'>
-			<div class='col-xl-6'>
-				<div class='about-one__left wow slideInLeft' data-wow-delay='100ms' data-wow-duration='2500ms'>
-					<div class='about-one__img-box'>
-						<div class='about-one__img'>
-							<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-img-1.jpg' alt=''>
-							<div class='about-one__video-link'>
-								<a href='https://www.youtube.com/watch?v=Get7rqXYrbQ' class='video-popup'>
-									<div class='about-one__video-icon'>
-										<span class='fa fa-play'></span>
-										<i class='ripple'></i>
-									</div>
-								</a>
-							</div>
-						</div>
-						<div class='about-one__img-two'>
-							<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-img-2.jpg' alt=''>
-						</div>
-						<div class='about-one__experience-box'>
-							<div class='about-one__experience-count'>
-								<h3 class='odometer' data-count='35'>00</h3>
-								<span>+</span>
-							</div>
-							<p class='about-one__experience-count-text'>Anos de <br> Experiência</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class='col-xl-6'>
-				<div class='about-one__right'>
-					<div class='section-title text-left sec-title-animation animation-style2'>
-						<div class='section-title__tagline-box'>
-							<div class='section-title__tagline-border'>
-								<div class='section-title__shape-1'>
-									<i class='section-title__circle'></i>
-								</div>
-							</div>
-							<h6 class='section-title__tagline'>Sobre nós</h6>
-							<div class='section-title__tagline-border'>
-								<div class='section-title__shape-2'>
-									<i class='section-title__circle'></i>
-								</div>
-							</div>
-						</div>
-						<h3 class='section-title__title title-animation'>Nossa experiência está em <span>Carro
-                                        Reparos e serviços</span>
-						</h3>
-					</div>
-					<p class='about-one__text'>Entregue belos e-mails que são sempre abertos e clicados.
-						Conteúdo personalizado para cada assinante. Modelos totalmente personalizáveis. Construir
-						relacionamentos que levam a conversões.</p>
-					<div class='about-one__point-box'>
-						<ul class='about-one__point'>
-							<li>
-								<div class='about-one__point-icon'>
-									<span class='icon-affordable'></span>
-								</div>
-								<div class='about-one__point-content'>
-									<h4>Serviço rápido e preço justo</h4>
-									<p>É um fato há muito estabelecido que o leitor será distraído pelo
-										legível</p>
-								</div>
-							</li>
-							<li>
-								<div class='about-one__point-icon'>
-									<span class='icon-24-hours'></span>
-								</div>
-								<div class='about-one__point-content'>
-									<h4>Suporte online 24 horas por dia, 7 dias por semana</h4>
-									<p>É um fato há muito estabelecido que o leitor será distraído pelo
-										legível</p>
-								</div>
-							</li>
-						</ul>
-					</div>
-					<div class='about-one__point-two-and-review-box'>
-						<ul class='about-one__point-two'>
-							<li>
-								<div class='icon'>
-									<span class='fas fa-check'></span>
-								</div>
-								<div class='text'>
-									<p>Sistema de controle de qualidade</p>
-								</div>
-							</li>
-							<li>
-								<div class='icon'>
-									<span class='fas fa-check'></span>
-								</div>
-								<div class='text'>
-									<p>Custo acessível</p>
-								</div>
-							</li>
-							<li>
-								<div class='icon'>
-									<span class='fas fa-check'></span>
-								</div>
-								<div class='text'>
-									<p>Garantia de 100% de satisfação</p>
-								</div>
-							</li>
-							<li>
-								<div class='icon'>
-									<span class='fas fa-check'></span>
-								</div>
-								<div class='text'>
-									<p>Troca expressa de óleo</p>
-								</div>
-							</li>
-						</ul>
-						<div class='about-one__review-box'>
-							<ul class='list-unstyled about-one__review-list'>
-								<li>
-									<div class='about-one__review-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-1.jpg'
-										     alt=''>
-									</div>
-								</li>
-								<li>
-									<div class='about-one__review-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-2.jpg'
-										     alt=''>
-									</div>
-								</li>
-								<li>
-									<div class='about-one__review-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-3.jpg'
-										     alt=''>
-									</div>
-								</li>
-								<li>
-									<div class='about-one__review-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-4.jpg'
-										     alt=''>
-									</div>
-								</li>
-							</ul>
-							<div class='about-one__review-star'>
-								<span class='fas fa-star'></span>
-								<span class='fas fa-star'></span>
-								<span class='fas fa-star'></span>
-								<span class='fas fa-star'></span>
-								<span class='fas fa-star'></span>
-							</div>
-							<p class='about-one__review-text'>Clientes 4,8 (3.567 avaliações)</p>
-						</div>
-					</div>
-					<div class='about-one__btn-and-author-box'>
-						<div class='about-one__btn-box'>
-							<a href='about.html' class='thm-btn'>Leia mais<span class='icon-next'></span>
-							</a>
-						</div>
-						<div class='about-one__author-box'>
-							<div class='about-one__author-details'>
-								<div class='about-one__author-img-box'>
-									<div class='about-one__author-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-author-img-1.jpg'
-										     alt=''>
-									</div>
-								</div>
-								<div class='about-one__author-content'>
-									<h4>Cérebro Dainel</h4>
-									<p>Cofundador</p>
-								</div>
-							</div>
-							<div class='about-one__author-sign'>
-								<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-author-sign.png' alt=''>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+<?php
+    include_once REQUIRE_PATH . '/inc/about-one.php'; ?>
 <!--About One End -->
 
 <!-- Service Three Start -->
@@ -264,11 +83,30 @@
 				<div class='col-xl-3 col-lg-4'>
 					<div class='service-three__tab-buttons-box'>
 						<ul class='service-three-tab-buttons service-three-tab-btns clearfix list-unstyled'>
-							<li data-tab='#service-1' class='p-tab-btn active-btn'>
-								<span>Reparo do motor</span>
-								<i class='fas fa-arrow-right'></i>
-							</li>
-							<li data-tab='#service-2' class='p-tab-btn'>
+
+                            <?php
+                                $Read ??= new Read();
+
+                                $Read->exeRead(DB_SERVICES_CATEGORIES);
+                                if ($Read->getResult()):
+                                    $active = 0;
+                                    foreach ($Read->getResult() as $category):
+                                        $active++;
+                                        $cats[] = $category['category_id'];
+                                        ?>
+										<li data-tab='#service-<?= $category['category_id'] ?>'
+										    class=' p-tab-btn <?= $active === 1 ? 'active-btn' : '' ?>'>
+											<span><?= $category['category_title'] ?></span><i
+													class='fas fa-arrow-right'></i></li>
+
+                                    <?php
+                                    endforeach;
+                                    unset($active);
+
+                                endif;
+                            ?>
+
+							<!--<li data-tab='#service-2' class='p-tab-btn'>
 								<span>Troca de óleo e filtros</span>
 								<i class='fas fa-arrow-right'></i>
 							</li>
@@ -287,236 +125,292 @@
 							<li data-tab='#service-6' class='p-tab-btn'>
 								<span>Bateria e elétrica</span>
 								<i class='fas fa-arrow-right'></i>
-							</li>
+							</li>-->
 						</ul>
 					</div>
 				</div>
 				<div class='col-xl-9 col-lg-8'>
 					<div class='service-three__tab-content-box'>
 						<div class='p-tabs-content'>
-							<!--tab-->
-							<div class='p-tab active-tab' id='service-1'>
-								<div class='service-three__inner'>
-									<div class='service-three__carousel owl-carousel owl-theme'>
-										<!-- Service Three Single Start -->
-										<div class='item'>
-											<div class='service-three__single'>
-												<div class='service-three__img-box'>
-													<div class='service-three__img'>
-														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-1.jpg'
-														     alt=''>
+
+                            <?php
+                                if ($cats):
+
+                                    foreach ($cats as $cat):
+
+                                        ?>
+
+										<!--tab-->
+										<div class='p-tab active-tab' id='service-<?= $cat ?>'>
+											<div class='service-three__inner'>
+												<div class='service-three__carousel owl-carousel owl-theme'>
+
+                                                    <?php
+                                                        $Read->exeRead(
+                                                            DB_SERVICES,
+                                                            " WHERE svc_category = :cat",
+                                                            "cat={$cat}"
+                                                        );
+
+
+                                                        if ($Read->getResult()):
+
+
+                                                            foreach ($Read->getResult() as $service):
+
+
+                                                                ?>
+
+
+																<!-- Service Three Single Start -->
+																<div class='item'>
+																	<div class='service-three__single'>
+																		<div class='service-three__img-box'>
+																			<div class='service-three__img'>
+																				<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-1.jpg'
+																				     alt=''>
+																			</div>
+																			<div class='service-three__icon'>
+																				<span class='icon-diagnostic'></span>
+																			</div>
+																		</div>
+																		<div class='service-three__content'>
+																			<div class='service-three__content-inner'>
+																				<h3 class='service-three__title'>
+																					<a href='engine-repair
+																					.html'><?= $service['svc_title']
+                                                                                        ?></a>
+																				</h3>
+																				<p class='service-three__text'><?=
+                                                                                        $service['svc_subtitle']
+                                                                                    ?></p>
+																			</div>
+																			<div class='service-three__btn-box-two'>
+																				<a href='engine-repair.html'>Leia
+																					mais<span
+																							class='icon-next'></span></a>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+                                                            <?php
+                                                            endforeach;
+                                                        endif;
+                                                    ?>
+													<!-- Service Three Single End
+													<!-- Service Three Single Start
+													<div class='item'>
+														<div class='service-three__single'>
+															<div class='service-three__img-box'>
+																<div class='service-three__img'>
+																	<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-2.jpg'
+																	     alt=''>
+																</div>
+																<div class='service-three__icon'>
+																	<span class='icon-car-parts'></span>
+																</div>
+															</div>
+															<div class='service-three__content'>
+																<div class='service-three__content-inner'>
+																	<h3 class='service-three__title'>
+																		<a href='engine-repair.html'>Correia dentada
+																			Substituição</a>
+																	</h3>
+																	<p class='service-three__text'>É um há muito
+																		estabelecido
+																		fato
+																		que um leitor será
+																		distraído pelo conteúdo legível de uma
+																		página.</p>
+																</div>
+																<div class='service-three__btn-box-two'>
+																	<a href='engine-repair.html'>Leia mais<span
+																				class='icon-next'></span></a>
+																</div>
+															</div>
+														</div>
 													</div>
-													<div class='service-three__icon'>
-														<span class='icon-diagnostic'></span>
+													<!-- Service Three Single End
+													<!-- Service Three Single Start
+													<div class='item'>
+														<div class='service-three__single'>
+															<div class='service-three__img-box'>
+																<div class='service-three__img'>
+																	<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-3.jpg'
+																	     alt=''>
+																</div>
+																<div class='service-three__icon'>
+																	<span class='icon-tools'></span>
+																</div>
+															</div>
+															<div class='service-three__content'>
+																<div class='service-three__content-inner'>
+																	<h3 class='service-three__title'>
+																		<a href='engine-repair.html'>Injeção de
+																			Combustível
+																			Limpeza</a>
+																	</h3>
+																	<p class='service-three__text'>É um há muito
+																		estabelecido
+																		fato
+																		que um leitor será
+																		distraído pelo conteúdo legível de uma
+																		página.</p>
+																</div>
+																<div class='service-three__btn-box-two'>
+																	<a href='engine-repair.html'>Leia mais<span
+																				class='icon-next'></span></a>
+																</div>
+															</div>
+														</div>
 													</div>
-												</div>
-												<div class='service-three__content'>
-													<div class='service-three__content-inner'>
-														<h3 class='service-three__title'>
-															<a href='engine-repair.html'>Diagnóstico do motor</a>
-														</h3>
-														<p class='service-three__text'>É um há muito estabelecido
-															fato
-															que um leitor será
-															distraído pelo conteúdo legível de uma página.</p>
+													<!-- Service Three Single End
+													<!-- Service Three Single Start
+													<div class='item'>
+														<div class='service-three__single'>
+															<div class='service-three__img-box'>
+																<div class='service-three__img'>
+																	<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-4.jpg'
+																	     alt=''>
+																</div>
+																<div class='service-three__icon'>
+																	<span class='icon-fan'></span>
+																</div>
+															</div>
+															<div class='service-three__content'>
+																<div class='service-three__content-inner'>
+																	<h3 class='service-three__title'>
+																		<a href='engine-repair.html'>Sistema de
+																			resfriamento
+																			Reparar</a>
+																	</h3>
+																	<p class='service-three__text'>É um há muito
+																		estabelecido
+																		fato
+																		que um leitor será
+																		distraído pelo conteúdo legível de uma
+																		página.</p>
+																</div>
+																<div class='service-three__btn-box-two'>
+																	<a href='engine-repair.html'>Leia mais<span
+																				class='icon-next'></span></a>
+																</div>
+															</div>
+														</div>
 													</div>
-													<div class='service-three__btn-box-two'>
-														<a href='engine-repair.html'>Leia mais<span
-																	class='icon-next'></span></a>
+													<!-- Service Three Single End
+													<!-- Service Three Single Start
+													<div class='item'>
+														<div class='service-three__single'>
+															<div class='service-three__img-box'>
+																<div class='service-three__img'>
+																	<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-5.jpg'
+																	     alt=''>
+																</div>
+																<div class='service-three__icon'>
+																	<span class='icon-mechanical'></span>
+																</div>
+															</div>
+															<div class='service-three__content'>
+																<div class='service-three__content-inner'>
+																	<h3 class='service-three__title'>
+																		<a href='engine-repair.html'>Montagem do motor
+																			Substituição</a>
+																	</h3>
+																	<p class='service-three__text'>É um há muito
+																		estabelecido
+																		fato
+																		que um leitor será
+																		distraído pelo conteúdo legível de uma
+																		página.</p>
+																</div>
+																<div class='service-three__btn-box-two'>
+																	<a href='engine-repair.html'>Leia mais<span
+																				class='icon-next'></span></a>
+																</div>
+															</div>
+														</div>
 													</div>
+													<!-- Service Three Single End
+													<!-- Service Three Single Start
+													<div class='item'>
+														<div class='service-three__single'>
+															<div class='service-three__img-box'>
+																<div class='service-three__img'>
+																	<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-6.jpg'
+																	     alt=''>
+																</div>
+																<div class='service-three__icon'>
+																	<span class='icon-spare-parts'></span>
+																</div>
+															</div>
+															<div class='service-three__content'>
+																<div class='service-three__content-inner'>
+																	<h3 class='service-three__title'>
+																		<a href='engine-repair.html'>Revisão do
+																			motor</a>
+																	</h3>
+																	<p class='service-three__text'>É um há muito
+																		estabelecido
+																		fato
+																		que um leitor será
+																		distraído pelo conteúdo legível de uma
+																		página.</p>
+																</div>
+																<div class='service-three__btn-box-two'>
+																	<a href='engine-repair.html'>Leia mais<span
+																				class='icon-next'></span></a>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!-- Service Three Single End
+													<!-- Service Three Single Start
+													<div class='item'>
+														<div class='service-three__single'>
+															<div class='service-three__img-box'>
+																<div class='service-three__img'>
+																	<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-2.jpg'
+																	     alt=''>
+																</div>
+																<div class='service-three__icon'>
+																	<span class='icon-car-parts'></span>
+																</div>
+															</div>
+															<div class='service-three__content'>
+																<div class='service-three__content-inner'>
+																	<h3 class='service-three__title'>
+																		<a href='engine-repair.html'>Correia dentada
+																			Substituição</a>
+																	</h3>
+																	<p class='service-three__text'>É um há muito
+																		estabelecido
+																		fato
+																		que um leitor será
+																		distraído pelo conteúdo legível de uma
+																		página.</p>
+																</div>
+																<div class='service-three__btn-box-two'>
+																	<a href='engine-repair.html'>Leia mais<span
+																				class='icon-next'></span></a>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!-- Service Three Single End -->
 												</div>
 											</div>
 										</div>
-										<!-- Service Three Single End -->
-										<!-- Service Three Single Start -->
-										<div class='item'>
-											<div class='service-three__single'>
-												<div class='service-three__img-box'>
-													<div class='service-three__img'>
-														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-2.jpg'
-														     alt=''>
-													</div>
-													<div class='service-three__icon'>
-														<span class='icon-car-parts'></span>
-													</div>
-												</div>
-												<div class='service-three__content'>
-													<div class='service-three__content-inner'>
-														<h3 class='service-three__title'>
-															<a href='engine-repair.html'>Correia dentada
-																Substituição</a>
-														</h3>
-														<p class='service-three__text'>É um há muito estabelecido
-															fato
-															que um leitor será
-															distraído pelo conteúdo legível de uma página.</p>
-													</div>
-													<div class='service-three__btn-box-two'>
-														<a href='engine-repair.html'>Leia mais<span
-																	class='icon-next'></span></a>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- Service Three Single End -->
-										<!-- Service Three Single Start -->
-										<div class='item'>
-											<div class='service-three__single'>
-												<div class='service-three__img-box'>
-													<div class='service-three__img'>
-														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-3.jpg'
-														     alt=''>
-													</div>
-													<div class='service-three__icon'>
-														<span class='icon-tools'></span>
-													</div>
-												</div>
-												<div class='service-three__content'>
-													<div class='service-three__content-inner'>
-														<h3 class='service-three__title'>
-															<a href='engine-repair.html'>Injeção de Combustível
-																Limpeza</a>
-														</h3>
-														<p class='service-three__text'>É um há muito estabelecido
-															fato
-															que um leitor será
-															distraído pelo conteúdo legível de uma página.</p>
-													</div>
-													<div class='service-three__btn-box-two'>
-														<a href='engine-repair.html'>Leia mais<span
-																	class='icon-next'></span></a>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- Service Three Single End -->
-										<!-- Service Three Single Start -->
-										<div class='item'>
-											<div class='service-three__single'>
-												<div class='service-three__img-box'>
-													<div class='service-three__img'>
-														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-4.jpg'
-														     alt=''>
-													</div>
-													<div class='service-three__icon'>
-														<span class='icon-fan'></span>
-													</div>
-												</div>
-												<div class='service-three__content'>
-													<div class='service-three__content-inner'>
-														<h3 class='service-three__title'>
-															<a href='engine-repair.html'>Sistema de resfriamento
-																Reparar</a>
-														</h3>
-														<p class='service-three__text'>É um há muito estabelecido
-															fato
-															que um leitor será
-															distraído pelo conteúdo legível de uma página.</p>
-													</div>
-													<div class='service-three__btn-box-two'>
-														<a href='engine-repair.html'>Leia mais<span
-																	class='icon-next'></span></a>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- Service Three Single End -->
-										<!-- Service Three Single Start -->
-										<div class='item'>
-											<div class='service-three__single'>
-												<div class='service-three__img-box'>
-													<div class='service-three__img'>
-														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-5.jpg'
-														     alt=''>
-													</div>
-													<div class='service-three__icon'>
-														<span class='icon-mechanical'></span>
-													</div>
-												</div>
-												<div class='service-three__content'>
-													<div class='service-three__content-inner'>
-														<h3 class='service-three__title'>
-															<a href='engine-repair.html'>Montagem do motor
-																Substituição</a>
-														</h3>
-														<p class='service-three__text'>É um há muito estabelecido
-															fato
-															que um leitor será
-															distraído pelo conteúdo legível de uma página.</p>
-													</div>
-													<div class='service-three__btn-box-two'>
-														<a href='engine-repair.html'>Leia mais<span
-																	class='icon-next'></span></a>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- Service Three Single End -->
-										<!-- Service Three Single Start -->
-										<div class='item'>
-											<div class='service-three__single'>
-												<div class='service-three__img-box'>
-													<div class='service-three__img'>
-														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-6.jpg'
-														     alt=''>
-													</div>
-													<div class='service-three__icon'>
-														<span class='icon-spare-parts'></span>
-													</div>
-												</div>
-												<div class='service-three__content'>
-													<div class='service-three__content-inner'>
-														<h3 class='service-three__title'>
-															<a href='engine-repair.html'>Revisão do motor</a>
-														</h3>
-														<p class='service-three__text'>É um há muito estabelecido
-															fato
-															que um leitor será
-															distraído pelo conteúdo legível de uma página.</p>
-													</div>
-													<div class='service-three__btn-box-two'>
-														<a href='engine-repair.html'>Leia mais<span
-																	class='icon-next'></span></a>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- Service Three Single End -->
-										<!-- Service Three Single Start -->
-										<div class='item'>
-											<div class='service-three__single'>
-												<div class='service-three__img-box'>
-													<div class='service-three__img'>
-														<img src='<?= INCLUDE_PATH ?>/assets/images/services/services-3-2.jpg'
-														     alt=''>
-													</div>
-													<div class='service-three__icon'>
-														<span class='icon-car-parts'></span>
-													</div>
-												</div>
-												<div class='service-three__content'>
-													<div class='service-three__content-inner'>
-														<h3 class='service-three__title'>
-															<a href='engine-repair.html'>Correia dentada
-																Substituição</a>
-														</h3>
-														<p class='service-three__text'>É um há muito estabelecido
-															fato
-															que um leitor será
-															distraído pelo conteúdo legível de uma página.</p>
-													</div>
-													<div class='service-three__btn-box-two'>
-														<a href='engine-repair.html'>Leia mais<span
-																	class='icon-next'></span></a>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- Service Three Single End -->
-									</div>
-								</div>
-							</div>
-							<!--Tab-->
+										<!--Tab-->
+
+                                    <?php
+
+
+                                    endforeach;
+                                endif;
+                            ?>
+
 							<!--tab-->
 							<div class='p-tab' id='service-2'>
 								<div class='service-three__inner'>

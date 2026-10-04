@@ -66,7 +66,10 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                 $Service = $Read->getResult()[0];
 
                 // var_dump($PostData);
-                unset($PostData['svc_id'], $PostData['svc_cover'], $PostData['image'], $PostData['svc_icon']);
+                unset($PostData['svc_id'], $PostData['svc_cover'], $PostData['image']);
+
+                // Ícone é uma classe do flaticon.css do tema (ex.: icon-mechanical)
+                $PostData['svc_icon'] = preg_match('/^icon-[\w-]+$/', (string) ($PostData['svc_icon'] ?? '')) ? $PostData['svc_icon'] : '';
 
                 $PostData['svc_name'] = Check::name($PostData['svc_title']);
 
@@ -84,34 +87,6 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                     $Upload->image($File, sprintf('%s-%s-', $SvcId, $PostData['svc_name']) . time(), 1200);
                     if ($Upload->getResult()) {
                         $PostData['svc_cover'] = $Upload->getResult();
-                    } else {
-                        $jSON['trigger'] = Check::ajaxErro(
-                            sprintf(
-                                "<b class='icon-image'>ERRO AO ENVIAR CAPA:</b> Olá %s, selecione uma imagem JPG de 1200X628px para a capa!",
-                                $_SESSION['userLogin']['user_name']
-                            ),
-                            E_USER_WARNING
-                        );
-                        echo json_encode($jSON);
-
-                        return;
-                    }
-                }
-
-                if (isset($_FILES['svc_icon']) && (int)($_FILES['svc_icon']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
-                    $File = $_FILES['svc_icon'];
-
-                    if (
-                        $Service['svc_icon'] && file_exists('../../uploads/' . $Service['svc_icon']) && !is_dir(
-                            '../../uploads/' . $Service['svc_icon']
-                        )
-                    ) {
-                        unlink('../../uploads/' . $Service['svc_icon']);
-                    }
-
-                    $Upload->image($File, sprintf('%s-%s-', $SvcId, $PostData['svc_name']) . time(), 1200);
-                    if ($Upload->getResult()) {
-                        $PostData['svc_icon'] = $Upload->getResult();
                     } else {
                         $jSON['trigger'] = Check::ajaxErro(
                             sprintf(

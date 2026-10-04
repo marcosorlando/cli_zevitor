@@ -135,27 +135,28 @@
 	<!--STYLES THEME CSS-->
 	<link rel='preconnect' href='https://fonts.googleapis.com'>
 	<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
-	<link href='https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap'
+	      rel='stylesheet'>
 
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/bootstrap.min.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/animate.min.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/custom-animate.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/swiper.min.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/font-awesome-all.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/jarallax.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/jquery.magnific-popup.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/flaticon.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/owl.carousel.min.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/owl.theme.default.min.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/nice-select.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/jquery-ui.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/aos.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/odometer.min.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/twentytwenty.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/bootstrap.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/animate.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/custom-animate.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/swiper.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/font-awesome-all.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/jarallax.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/jquery.magnific-popup.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/flaticon.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/owl.carousel.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/owl.theme.default.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/nice-select.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/jquery-ui.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/aos.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/odometer.min.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/twentytwenty.css'>
 
 	<!-- template styles -->
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/style.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH  ?>/assets/css/responsive.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/style.css'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/responsive.css'>
 
 	<!--ZEN THEME JS-->
 	<!-- JS BASE ASSETS PROJECT -->
@@ -217,7 +218,6 @@
         }
     ?>
 </head>
-
 
 
 <body class='custom-cursor'>
@@ -610,33 +610,33 @@
 </div>
 
 <!--THEME JS-->
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery-latest.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/bootstrap.bundle.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jarallax.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.ajaxchimp.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.appear.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/swiper.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.magnific-popup.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.validate.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/wNumb.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/wow.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/isotope.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/owl.carousel.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery-ui.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.nice-select.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/marquee.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/countdown.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery-sidebar-content.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/aos.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/odometer.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/twentytwenty.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.event.move.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/jquery.circle-progress.min.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/gsap/gsap.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/gsap/ScrollTrigger.js'></script>
-<script src='<?= INCLUDE_PATH  ?>/assets/js/gsap/SplitText.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery-latest.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/bootstrap.bundle.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jarallax.min.js'></script>
+<!--<script src='<= INCLUDE_PATH  ?>/assets/js/jquery.ajaxchimp.min.js'></script>-->
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery.appear.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/swiper.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery.magnific-popup.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery.validate.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/wNumb.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/wow.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/isotope.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/owl.carousel.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery-ui.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery.nice-select.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/marquee.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/countdown.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery-sidebar-content.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/aos.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/odometer.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/twentytwenty.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery.event.move.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/jquery.circle-progress.min.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/gsap/gsap.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/gsap/ScrollTrigger.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/gsap/SplitText.js'></script>
 <!-- template js -->
-<script src='<?= INCLUDE_PATH  ?>/assets/js/script.js'></script>
+<script src='<?= INCLUDE_PATH ?>/assets/js/script.js'></script>
 <!--END THEME JS-->
 <?php
     // MAIN SCRIPT THEME

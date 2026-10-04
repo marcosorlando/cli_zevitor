@@ -19,7 +19,7 @@
         'SITE_ADDR_IE' => 'ISENTO',
         'SITE_ADDR_PHONE_A' => '(54) 3226-2082',
         'SITE_ADDR_WHATS' => '(54) 99174-7279',
-        'SITE_ADDR_ADDR' => 'João Paternoster, 476',
+        'SITE_ADDR_ADDR' => 'Rua João Paternoster, 476',
         'SITE_ADDR_CITY' => 'Caxias do Sul',
         'SITE_ADDR_DISTRICT' => 'Rio Branco',
         'SITE_ADDR_UF' => 'RS',

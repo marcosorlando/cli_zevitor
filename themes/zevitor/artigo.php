@@ -3,12 +3,7 @@
     use App\Conn\Read;
     use App\Conn\Update;
 
-    setlocale(LC_ALL, "pt_BR", "pt_BR.iso-8859-1", "pt_BR.utf-8", "portuguese");
-    date_default_timezone_set('America/Sao_Paulo');
-
-
     $Read ??= new Read;
-
 
     if (empty($URL[1])) {
         require REQUIRE_PATH . '/404.php';
@@ -242,7 +237,8 @@
 				</div>
 			</div>
             <?php
-                include_once INCLUDE_PATH . '/inc/blog-rigth-sidebar.php' ?>
+                require_once REQUIRE_PATH . '/inc/sidebar-blog.php'
+            ?>
 		</div>
 	</div>
 </section>

@@ -1,9 +1,8 @@
 <?php
 
-use App\Helpers\Check;
-
     use App\Conn\Create;
     use App\Conn\Read;
+    use App\Helpers\Check;
 
     $AdminLevel = LEVEL_WC_SERVICES;
     if (!APP_SERVICES || empty($DashboardLogin) || empty($Admin) || $Admin['user_level'] < $AdminLevel) {
@@ -193,9 +192,7 @@ use App\Helpers\Check;
 			<div class="panel_header default">
 				<h2 class="icon-file-picture">Imagem Principal do Serviço:</h2>
 				<label class='label'>
-					<span class='legend'>Tamanho (JPG <?php
-                            echo IMAGE_W; ?>x<?php
-                            echo IMAGE_H; ?>px):</span>
+					<span class='legend'>Tamanho (WEBP <?= '410X300' ?>px):</span>
 					<input type="file" class="wc_loadimage" name="svc_cover"/>
 				</label>
                 <?php
@@ -205,19 +202,17 @@ use App\Helpers\Check;
                 ?>
 				<img class="svc_cover" alt="Capa do Serviço" title="Capa do Serviço"
 				     src="../tim.php?src=<?php
-                         echo $Image; ?>&w=<?php
-                         echo IMAGE_W; ?>&h=<?php
-                         echo IMAGE_H; ?>"
+                         echo $Image; ?>&w=410&h=300"
 				     default="../tim.php?src=<?php
-                         echo $Image; ?>&w=<?php
-                         echo IMAGE_W; ?>&h=<?php
-                         echo IMAGE_H; ?>">
+                         echo $Image; ?>&w=410&h=300">
                 <?php
                     $Read->exeRead(DB_SERVICES_GALLERY, 'WHERE svc_id = :id', 'id=' . $svc_id);
                     if ($Read->getResult()) {
                         echo '<div class="pdt_images gallery pdt_single_image">';
                         foreach ($Read->getResult() as $Image) {
-                            $ImageUrl = ($Image['image'] && file_exists('../uploads/' . $Image['image']) && !is_dir(
+                            $ImageUrl = ($Image['image'] && file_exists(
+                                '../uploads/' . $Image['image']
+                            ) && !is_dir(
                                 '../uploads/' . $Image['image']
                             ) ? '../uploads/' . $Image['image'] : '_img/no_image.jpg');
                             echo sprintf(
@@ -235,7 +230,7 @@ use App\Helpers\Check;
                 ?>
 			</div>
 
-			<div class="box_content">
+			<div class=" box_content">
 				<label class="label">
 					<span class="legend">Fotos Adicionais (JPG <?php
                             echo IMAGE_W; ?>x<?php
@@ -243,28 +238,378 @@ use App\Helpers\Check;
 					<input type="file" name="image[]" multiple/>
 				</label>
 
+                <?php
+                    // Lista de ícones extraída do flaticon.css do tema (classe => código do glyph)
+                    $IconList = [];
+                    $IconCss = __DIR__ . '/../../../themes/' . THEME . '/assets/css/flaticon.css';
+                    if (is_file($IconCss) && preg_match_all(
+                        '/\.(icon-[\w-]+):before\s*\{\s*content:\s*"\\\\([0-9a-f]+)"/i',
+                        (string) file_get_contents($IconCss),
+                        $IconMatches,
+                        PREG_SET_ORDER
+                    )) {
+                        foreach ($IconMatches as $IconMatch) {
+                            $IconList[$IconMatch[1]] = $IconMatch[2];
+                        }
+                        ksort($IconList);
+                    }
+                    $IconFonts = BASE . '/themes/' . THEME . '/assets/fonts/icomoon';
+                ?>
+				<style>
+					@font-face {
+						font-family: 'wc-theme-icons';
+						src: url('<?= $IconFonts; ?>.woff') format('woff'), url('<?= $IconFonts; ?>.ttf') format('truetype');
+						font-display: block;
+					}
+
+					.svc_icon_select,
+					.svc_icon_select::picker(select) {
+						appearance: base-select;
+					}
+
+					.svc_icon_select {
+						width: 100%;
+						padding: 8px 12px;
+						border: 1px solid #ccc;
+						border-radius: 4px;
+						background: #fff;
+						font: inherit;
+						color: #333;
+						cursor: pointer;
+					}
+
+					.svc_icon_select:focus-visible {
+						outline: 2px solid #00b494;
+						outline-offset: 1px;
+					}
+
+					.svc_icon_select::picker(select) {
+						max-height: 320px;
+						padding: 4px;
+						border: 1px solid #ccc;
+						border-radius: 4px;
+						box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+					}
+
+					.svc_icon_select::picker-icon {
+						color: #888;
+						transition: rotate .15s;
+					}
+
+					.svc_icon_select:open::picker-icon {
+						rotate: 180deg;
+					}
+
+					.svc_icon_select option,
+					.svc_icon_select selectedcontent {
+						display: flex;
+						align-items: center;
+						gap: 10px;
+						font-family: monospace;
+					}
+
+					.svc_icon_select option {
+						padding: 6px 8px;
+						border-radius: 3px;
+					}
+
+					.svc_icon_select option:hover,
+					.svc_icon_select option:focus-visible {
+						background: #f0f0f0;
+					}
+
+					.svc_icon_select option:checked {
+						background: #e8f8f4;
+						font-weight: bold;
+					}
+
+					.svc_icon_select option::checkmark {
+						display: none;
+					}
+
+					.svc_icon_select .glyph {
+						display: inline-flex;
+						justify-content: center;
+						width: 32px;
+						font-family: 'wc-theme-icons';
+						font-style: normal;
+						font-weight: normal;
+						font-size: 24px;
+						line-height: 1;
+						flex-shrink: 0;
+					}
+
+					.svc_icon_select .glyph::before {
+						content: attr(data-glyph);
+					}
+
+					/* Fallback (Firefox/Safari sem appearance: base-select) */
+					.svc_icon_fb {
+						position: relative;
+						width: 100%;
+					}
+
+					.svc_icon_fb .glyph {
+						display: inline-flex;
+						justify-content: center;
+						width: 32px;
+						font-family: 'wc-theme-icons';
+						font-style: normal;
+						font-weight: normal;
+						font-size: 24px;
+						line-height: 1;
+						color: #333;
+						flex-shrink: 0;
+					}
+
+					.svc_icon_fb_toggle {
+						display: flex;
+						align-items: center;
+						gap: 10px;
+						width: 100%;
+						padding: 8px 12px;
+						border: 1px solid #ccc;
+						border-radius: 4px;
+						background: #fff;
+						font: inherit;
+						color: #333;
+						text-align: left;
+						cursor: pointer;
+					}
+
+					.svc_icon_fb_toggle:focus-visible {
+						outline: 2px solid #00b494;
+						outline-offset: 1px;
+					}
+
+					.svc_icon_fb_toggle .name {
+						flex: 1;
+						font-family: monospace;
+					}
+
+					.svc_icon_fb_toggle .caret {
+						font-size: 0.8em;
+						color: #888;
+						transition: transform .15s;
+					}
+
+					.svc_icon_fb.open .caret {
+						transform: rotate(180deg);
+					}
+
+					.svc_icon_fb_list {
+						position: absolute;
+						top: calc(100% + 4px);
+						left: 0;
+						right: 0;
+						z-index: 50;
+						max-height: 320px;
+						overflow-y: auto;
+						margin: 0;
+						padding: 4px;
+						list-style: none;
+						border: 1px solid #ccc;
+						border-radius: 4px;
+						background: #fff;
+						box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+					}
+
+					.svc_icon_fb_list[hidden] {
+						display: none;
+					}
+
+					.svc_icon_fb_list li {
+						display: flex;
+						align-items: center;
+						gap: 10px;
+						padding: 6px 8px;
+						border-radius: 3px;
+						font-family: monospace;
+						color: #444;
+						cursor: pointer;
+					}
+
+					.svc_icon_fb_list li:hover,
+					.svc_icon_fb_list li.active {
+						background: #f0f0f0;
+					}
+
+					.svc_icon_fb_list li[aria-selected="true"] {
+						background: #e8f8f4;
+						color: #000;
+						font-weight: bold;
+					}
+				</style>
+                <?php
+                    $IconCurrent = isset($IconList[$svc_icon]) ? $svc_icon : '';
+                ?>
 				<div class='label'>
-					<label class='label'>
-						<span class='legend'>ÍCONE (PNG <?php
-                                echo AVATAR_W; ?>x<?php
-                                echo AVATAR_H; ?>px):</span>
-						<input type="file" class="wc_loadimage" name="svc_icon"/>
+					<label class='label' for="svc_icon">
+						<span class='legend'>ÍCONE</span>
+						<select name="svc_icon" id="svc_icon" class="svc_icon_select">
+							<button>
+								<selectedcontent></selectedcontent>
+							</button>
+							<option value=""<?= $IconCurrent ? '' : ' selected'; ?>>
+								<i class="glyph" aria-hidden="true"></i>
+								<span>Selecione um ícone</span>
+							</option>
+                            <?php
+                                foreach ($IconList as $IconClass => $IconCode) {
+                                    printf(
+                                        '<option value="%1$s" data-glyph="&#x%2$s;"%3$s><i class="glyph" data-glyph="&#x%2$s;" aria-hidden="true"></i><span>%1$s</span></option>',
+                                        $IconClass,
+                                        $IconCode,
+                                        $IconClass === $IconCurrent ? ' selected' : ''
+                                    );
+                                }
+                            ?>
+						</select>
 					</label>
 				</div>
-                <?php
-                    $icone = (file_exists('../uploads/' . $svc_icon) && !is_dir(
-                        '../uploads/' . $svc_icon
-                    ) ? 'uploads/' . $svc_icon : 'admin/_img/no_image.jpg');
-                ?>
-				<img class="svc_icon" alt="Ícone do Segmento" title="Ícone do Segmento"
-				     src="../tim.php?src=<?php
-                         echo $icone; ?>&w=<?php
-                         echo AVATAR_W; ?>&h=<?php
-                         echo AVATAR_H; ?>"
-				     default="../tim.php?src=<?php
-                         echo $icone; ?>&w=<?php
-                         echo AVATAR_W; ?>&h=<?php
-                         echo AVATAR_H; ?>">
+				<script>
+					(function () {
+						if (window.CSS && CSS.supports('appearance', 'base-select')) {
+							return;
+						}
+
+						const select = document.getElementById('svc_icon');
+						const label = select.closest('label');
+						const root = document.createElement('div');
+						const toggle = document.createElement('button');
+						const list = document.createElement('ul');
+						let active = null;
+						let typed = '';
+						let typedTimer = null;
+
+						root.className = 'svc_icon_fb';
+						toggle.type = 'button';
+						toggle.className = 'svc_icon_fb_toggle';
+						toggle.setAttribute('aria-haspopup', 'listbox');
+						toggle.setAttribute('aria-expanded', 'false');
+						toggle.innerHTML = '<i class="glyph" aria-hidden="true"></i><span class="name"></span><span class="caret">&#9660;</span>';
+						list.className = 'svc_icon_fb_list';
+						list.setAttribute('role', 'listbox');
+						list.setAttribute('aria-label', 'Ícone do serviço');
+						list.tabIndex = -1;
+						list.hidden = true;
+
+						const items = Array.from(select.options).map((option) => {
+							const li = document.createElement('li');
+							const glyph = document.createElement('i');
+							const name = document.createElement('span');
+							li.setAttribute('role', 'option');
+							li.dataset.value = option.value;
+							glyph.className = 'glyph';
+							glyph.setAttribute('aria-hidden', 'true');
+							glyph.textContent = option.dataset.glyph || '';
+							name.textContent = option.value || 'Selecione um ícone';
+							li.append(glyph, name);
+							list.appendChild(li);
+							return li;
+						});
+
+						function render() {
+							const option = select.options[select.selectedIndex];
+							toggle.querySelector('.glyph').textContent = option.dataset.glyph || '';
+							toggle.querySelector('.name').textContent = option.value || 'Selecione um ícone';
+							items.forEach((li, i) => li.setAttribute('aria-selected', i === select.selectedIndex ? 'true' : 'false'));
+						}
+
+						function setActive(li) {
+							items.forEach((o) => o.classList.remove('active'));
+							active = li;
+							if (li) {
+								li.classList.add('active');
+								const top = li.offsetTop;
+								if (top < list.scrollTop || top + li.offsetHeight > list.scrollTop + list.clientHeight) {
+									list.scrollTop = top - list.clientHeight / 2;
+								}
+							}
+						}
+
+						function open() {
+							list.hidden = false;
+							root.classList.add('open');
+							toggle.setAttribute('aria-expanded', 'true');
+							setActive(items[select.selectedIndex]);
+							list.focus();
+						}
+
+						function close(focusToggle) {
+							list.hidden = true;
+							root.classList.remove('open');
+							toggle.setAttribute('aria-expanded', 'false');
+							if (focusToggle) {
+								toggle.focus();
+							}
+						}
+
+						function choose(li) {
+							select.value = li.dataset.value;
+							select.dispatchEvent(new Event('change', {bubbles: true}));
+							render();
+							close(true);
+						}
+
+						toggle.addEventListener('click', () => list.hidden ? open() : close(false));
+
+						toggle.addEventListener('keydown', (e) => {
+							if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(e.key)) {
+								e.preventDefault();
+								open();
+							}
+						});
+
+						list.addEventListener('click', (e) => {
+							const li = e.target.closest('li');
+							if (li) {
+								choose(li);
+							}
+						});
+
+						list.addEventListener('keydown', (e) => {
+							const index = items.indexOf(active);
+							if (e.key === 'ArrowDown') {
+								e.preventDefault();
+								setActive(items[Math.min(index + 1, items.length - 1)]);
+							} else if (e.key === 'ArrowUp') {
+								e.preventDefault();
+								setActive(items[Math.max(index - 1, 0)]);
+							} else if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault();
+								if (active) {
+									choose(active);
+								}
+							} else if (e.key === 'Escape' || e.key === 'Tab') {
+								close(e.key === 'Escape');
+							} else if (e.key.length === 1) {
+								// Busca por digitação, como no select nativo
+								clearTimeout(typedTimer);
+								typed += e.key.toLowerCase();
+								typedTimer = setTimeout(() => typed = '', 600);
+								const match = items.find((li) => li.dataset.value.replace(/^icon-/, '').startsWith(typed));
+								if (match) {
+									setActive(match);
+								}
+							}
+						});
+
+						document.addEventListener('click', (e) => {
+							if (!root.contains(e.target)) {
+								close(false);
+							}
+						});
+
+						select.addEventListener('change', render);
+						select.style.display = 'none';
+						select.tabIndex = -1;
+						label.removeAttribute('for');
+						root.append(toggle, list);
+						label.after(root);
+						render();
+					})();
+				</script>
 
 				<div class="m_top">&nbsp;</div>
 

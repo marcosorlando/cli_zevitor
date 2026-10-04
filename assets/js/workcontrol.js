@@ -36,7 +36,7 @@ $(function () {
     });
     
     //############## IMAGE ERROR
-    $('img').error(function () {
+    $('img').one('error', function () {
         var s, w, h, b;
         s = $(this).attr('src');
         w = 500;
@@ -63,21 +63,24 @@ $(function () {
     
     //############## MASK INPUT
     if ($('.formDate').length || $('.formTime').length || $('.formCep').length || $('.formCpf').length || $('.formPhone').length) {
-        $.getScript(BASE + '/assets/maskinput.js', function () {
+        $.getScript(BASE + '/assets/js/maskinput.min.js', function () {
             $(".formDate").mask("99/99/9999");
             $(".formTime").mask("99/99/9999 99:99");
             $(".formCep").mask("99999-999");
             $(".formCpf").mask("999.999.999-99");
             
-            var SPMaskBehavior = function (val) {
-                    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-                },
-                spOptions = {
-                    onKeyPress: function (val, e, field, options) {
-                        field.mask(SPMaskBehavior.apply({}, arguments), options);
-                    }
-                };
-            $('.formPhone').mask(SPMaskBehavior, spOptions);
+            $('.formPhone').focusout(function () {
+                var phone, element;
+                element = $(this);
+                element.unmask();
+                phone = element.val().replace(/\D/g, '');
+                if (phone.length > 10) {
+                    element.mask('(99) 99999-999?9');
+                } else {
+                    element.mask('(99) 9999-9999?9');
+                }
+            }).trigger('focusout');
+        
         });
     }
     

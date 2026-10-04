@@ -3639,6 +3639,7 @@ xs sidebar
 }
 
 .main-slider__content {
+    max-width: 80%;
     position: relative;
     display: block;
     padding-top: 318px;
@@ -3686,7 +3687,6 @@ xs sidebar
     color: var(--servixa-white);
     font-weight: 700;
     line-height: 1.2em;
-    text-transform: capitalize;
     margin-top: 24px;
     opacity: 0;
     -webkit-transform: perspective(400px) rotateY(0deg) translateY(-80px);
@@ -3719,6 +3719,7 @@ xs sidebar
 }
 
 .main-slider__text {
+    max-width: 60%;
     position: relative;
     display: block;
     font-size: 18px;
@@ -7132,6 +7133,7 @@ xs sidebar
     margin-bottom: 20px;
 }
 
+.contact-page__input-box .nice-select,
 .contact-page__input-box input[type="text"],
 .contact-page__input-box input[type="email"] {
     height: 60px;
@@ -7144,6 +7146,13 @@ xs sidebar
     color: var(--servixa-gray);
     display: block;
     border-radius: var(--servixa-bdr-radius);
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1em;
+}
+
+.contact-page__input-box .nice-select > .current {
+    top: 10px;
 }
 
 .contact-page__input-box textarea {

@@ -58,7 +58,7 @@
 					</div>
 					<p class='about-one__text'>Desde 1973, a Mecânica Zé Vitor é referência em Caxias do Sul.
 						Atendemos nacionais e importados com mecânica geral, elétrica, eletrônica embarcada e
-						revisões completas — sempre com diagnóstico honesto e serviço bem feito.</p>
+						revisões completas. Sempre com diagnóstico honesto e serviço bem feito.</p>
 					<div class='about-one__point-box'>
 						<ul class='about-one__point'>
 							<li>
@@ -122,22 +122,26 @@
 							<ul class='list-unstyled about-one__review-list'>
 								<li>
 									<div class='about-one__review-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-1.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-1.jpg'
+										     alt=''>
 									</div>
 								</li>
 								<li>
 									<div class='about-one__review-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-2.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-2.jpg'
+										     alt=''>
 									</div>
 								</li>
 								<li>
 									<div class='about-one__review-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-3.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-3.jpg'
+										     alt=''>
 									</div>
 								</li>
 								<li>
 									<div class='about-one__review-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-4.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-review-img-1-4.jpg'
+										     alt=''>
 									</div>
 								</li>
 							</ul>
@@ -160,7 +164,8 @@
 							<div class='about-one__author-details'>
 								<div class='about-one__author-img-box'>
 									<div class='about-one__author-img'>
-										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-author-img-1.jpg' alt=''>
+										<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-author-img-1.jpg'
+										     alt=''>
 									</div>
 								</div>
 								<div class='about-one__author-content'>

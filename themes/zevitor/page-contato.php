@@ -3,6 +3,7 @@
     use App\Conn\Read;
     use App\Helpers\Check;
     use App\Models\Email;
+    use App\View\Template;
 
     /**
      * Página "Contato" — tema Zevitor.
@@ -21,42 +22,143 @@
 
     $contatoEmail = defined('SITE_ADDR_EMAIL') ? SITE_ADDR_EMAIL : 'contato@zevitor.com.br';
     $contatoNome = defined('SITE_ADDR_NAME') ? SITE_ADDR_NAME : SITE_NAME;
+    $mapsUrl = 'https://maps.app.goo.gl/AiMXbGrVdaji2qLV9';
+    $whatsappUrl = Check::whatsMessage(
+        SITE_ADDR_WHATS,
+        'Olá, Mecânica Zé Vitor! Vim pelo site e gostaria de atendimento.'
+    );
+    $facebookUrl = defined('SITE_SOCIAL_FB_PAGE') && SITE_SOCIAL_FB_PAGE !== ''
+        ? 'https://www.facebook.com/' . SITE_SOCIAL_FB_PAGE
+        : BASE;
+    $instagramUrl = defined('SITE_SOCIAL_INSTAGRAM') && SITE_SOCIAL_INSTAGRAM !== ''
+        ? 'https://www.instagram.com/' . SITE_SOCIAL_INSTAGRAM . '/'
+        : BASE;
 
-    $Contato = filter_input_array(INPUT_POST, FILTER_DEFAULT) ?: [];
+    $Contato = filter_input_array(INPUT_POST) ?: [];
+
     if ($Contato && isset($Contato['action']) && $Contato['action'] === 'contact') {
+        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+            && strtolower((string)$_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
         unset($Contato['action']);
+        $Contato = array_map(static fn(mixed $value): string => is_string($value) ? trim($value) : '', $Contato);
 
-        if (empty($Contato['nome']) || empty($Contato['email']) || empty($Contato['mensagem'])) {
-            echo Check::erro('Para enviar seu contato, preencha nome, e-mail e mensagem!', E_USER_WARNING);
-        } elseif (!filter_var($Contato['email'], FILTER_VALIDATE_EMAIL)) {
-            echo Check::erro('O e-mail informado não tem um formato válido!', E_USER_WARNING);
-        } else {
-            $Contato = array_map('strip_tags', $Contato);
-            $MailContent = '<p>Novo contato de <b>' . $Contato['nome'] . '</b> pelo site.</p>'
-                . '<p>E-mail: ' . $Contato['email'] . '</p>'
-                . '<p>Telefone: ' . ($Contato['telefone'] ?? '') . '</p>'
-                . '<p>Mensagem:<br>' . nl2br($Contato['mensagem']) . '</p>';
+        $Contato['nome'] = $Contato['nome'] ?? $Contato['name'] ?? '';
+        $Contato['telefone'] = $Contato['telefone'] ?? $Contato['phone'] ?? '';
+        $Contato['assunto'] = $Contato['assunto'] ?? $Contato['subject'] ?? '';
+        $Contato['servico'] = $Contato['servico'] ?? $Contato['service'] ?? '';
+        $Contato['veiculo'] = $Contato['veiculo'] ?? $Contato['brand_model_year'] ?? '';
+        $Contato['mensagem'] = $Contato['mensagem'] ?? $Contato['message'] ?? '';
 
-            $Email = new Email();
-            $Email->EnviarMontando(
-                'Contato pelo site — ' . SITE_NAME,
-                $MailContent,
-                $Contato['nome'],
-                $Contato['email'],
-                $contatoNome,
-                $contatoEmail
-            );
+        $camposObrigatorios = ['nome', 'email', 'telefone', 'assunto', 'servico', 'veiculo', 'mensagem'];
+        $camposPendentes = array_filter(
+            $camposObrigatorios,
+            static fn(string $campo): bool => ($Contato[$campo] ?? '') === ''
+        );
 
-            if (!$Email->getError()) {
-                $_SESSION['sucesso'] = "Obrigado, {$Contato['nome']}! Sua mensagem foi enviada.";
-                header('Location: ' . BASE . '/contato#form');
-
+        if ($camposPendentes) {
+            echo Check::erro('Preencha todos os campos obrigatórios para enviar seu contato!', E_USER_WARNING);
+            if ($isAjax) {
                 return;
             }
-            echo Check::erro(
-                'Não foi possível enviar agora. Tente novamente ou escreva para ' . $contatoEmail . '.',
-                E_USER_WARNING
-            );
+        } elseif (!filter_var($Contato['email'], FILTER_VALIDATE_EMAIL)) {
+            echo Check::erro('O e-mail informado não tem um formato válido!', E_USER_WARNING);
+            if ($isAjax) {
+                return;
+            }
+        } else {
+            $templatesFolder = REQUIRE_PATH . '/assets/html/';
+            $clienteTemplate = Template::getTemplate('contato-cliente.html', $templatesFolder);
+            $adminTemplate = Template::getTemplate('contato-admin.html', $templatesFolder);
+
+            if ($clienteTemplate === '' || $adminTemplate === '') {
+                echo Check::erro('Templates de e-mail não encontrados. Verifique a pasta assets/html.', E_USER_WARNING);
+                if ($isAjax) {
+                    return;
+                }
+            } else {
+                $assuntoContato = $Contato['assunto'] !== '' ? $Contato['assunto'] : 'Contato pelo site';
+                $clienteWhatsappUrl = $Contato['telefone'] !== ''
+                    ? Check::whatsMessage(
+                        $Contato['telefone'],
+                        'Olá, ' . $Contato['nome'] . '! Recebemos sua mensagem pelo site da Mecânica Zé Vitor.'
+                    )
+                    : 'mailto:' . $Contato['email'];
+                $templateData = [
+                    'site_name' => Check::safeHtmlChars(SITE_NAME),
+                    'cliente_nome' => Check::safeHtmlChars($Contato['nome']),
+                    'cliente_email' => Check::safeHtmlChars($Contato['email']),
+                    'cliente_telefone' => Check::safeHtmlChars($Contato['telefone'] ?: 'Não informado'),
+                    'assunto' => Check::safeHtmlChars($assuntoContato),
+                    'servico' => Check::safeHtmlChars($Contato['servico'] ?: 'Não informado'),
+                    'veiculo' => Check::safeHtmlChars($Contato['veiculo'] ?: 'Não informado'),
+                    'mensagem' => nl2br(Check::safeHtmlChars($Contato['mensagem'])),
+                    'data_envio' => date('d/m/Y H:i'),
+                    'empresa_nome' => Check::safeHtmlChars($contatoNome),
+                    'empresa_razao' => Check::safeHtmlChars(SITE_ADDR_RS),
+                    'empresa_cnpj' => Check::safeHtmlChars(SITE_ADDR_CNPJ),
+                    'empresa_email' => Check::safeHtmlChars($contatoEmail),
+                    'empresa_site' => Check::safeHtmlChars(SITE_ADDR_SITE),
+                    'empresa_telefone' => Check::safeHtmlChars(SITE_ADDR_PHONE_A),
+                    'empresa_telefone_url' => Check::safeHtmlChars(Check::clearNumber(SITE_ADDR_PHONE_A)),
+                    'empresa_whatsapp' => Check::safeHtmlChars(SITE_ADDR_WHATS),
+                    'empresa_endereco' => Check::safeHtmlChars(
+                        SITE_ADDR_ADDR . ' - ' . SITE_ADDR_DISTRICT . ', ' . SITE_ADDR_CITY . '/' . SITE_ADDR_UF
+                    ),
+                    'logo_url' => Check::safeHtmlChars(INCLUDE_PATH . '/assets/images/resources/logo-white-red.svg'),
+                    'site_url' => Check::safeHtmlChars(BASE),
+                    'whatsapp_url' => Check::safeHtmlChars($whatsappUrl),
+                    'cliente_whatsapp_url' => Check::safeHtmlChars($clienteWhatsappUrl),
+                    'facebook_url' => Check::safeHtmlChars($facebookUrl),
+                    'instagram_url' => Check::safeHtmlChars($instagramUrl),
+                    'maps_url' => Check::safeHtmlChars($mapsUrl),
+                ];
+
+                $MailContentAdmin = Template::setTemplate($adminTemplate, $templateData);
+                $MailContentCliente = Template::setTemplate($clienteTemplate, $templateData);
+
+                $EmailAdmin = new Email();
+                $EmailAdmin->enviarMontando(
+                    'Novo contato pelo site — ' . SITE_NAME,
+                    $MailContentAdmin,
+                    $Contato['nome'],
+                    $Contato['email'],
+                    $contatoNome,
+                    $contatoEmail
+                );
+
+                $EmailCliente = new Email();
+                $EmailCliente->enviarMontando(
+                    'Recebemos sua mensagem — ' . SITE_NAME,
+                    $MailContentCliente,
+                    $contatoNome,
+                    $contatoEmail,
+                    $Contato['nome'],
+                    $Contato['email']
+                );
+
+                if (!$EmailAdmin->getError() && !$EmailCliente->getError()) {
+                    $sucesso = "Obrigado, {$Contato['nome']}! Sua mensagem foi enviada.";
+                    if ($isAjax) {
+                        echo Check::erro($sucesso);
+
+                        return;
+                    }
+
+                    $_SESSION['sucesso'] = $sucesso;
+                    header('Location: ' . BASE . '/contato#form');
+
+                    return;
+                }
+
+                echo Check::erro(
+                    'Não foi possível enviar agora. Tente novamente ou escreva para ' . $contatoEmail . '.',
+                    E_USER_WARNING
+                );
+                if ($isAjax) {
+                    return;
+                }
+            }
         }
     }
 
@@ -96,19 +198,18 @@
 			<div class='row'>
 				<div class='col-xl-6 col-lg-6'>
 					<div class='contact-page__middle-left'>
-						<h3 class='contact-page__middle-title'>Entre em contato</h3>
-						<p class='contact-page__middle-text'>A grande maioria dos profissionais de marketing de
-							aplicativos concentra-se principalmente
-							pós-lançamento<br> técnicas e medidas de marketing de aplicativos, embora completamente
-							ausentes
-							<br>campanha de pré-lançamento. Isto impede o</p>
+						<h3 class='contact-page__middle-title'>Fale com quem entende</h3>
+						<p class='contact-page__middle-text'>Seu carro apresentou barulho, falha, luz no painel ou está
+							na hora da revisão? A Mecânica Zé Vitor une mais de 50 anos de experiência, diagnóstico
+							técnico e atendimento transparente para cuidar de nacionais e importados com a atenção que
+							você merece.</p>
 						<div class='contact-page__contact-info'>
 							<h3 class='contact-page__contact-info-title'>Informações de contato</h3>
 							<ul class='contact-page__contact-list list-unstyled'>
 								<li>
 									<h4 class='contact-page__contact-list-title'>Endereço</h4>
 									<p><a target='_blank' title='Ver rotas'
-									      href='https://maps.app.goo.gl/AiMXbGrVdaji2qLV9'><?=
+									      href='<?= $mapsUrl ?>'><?=
                                                 SITE_ADDR_ADDR . ' - ' . SITE_ADDR_DISTRICT ?></a></p>
 								</li>
 								<li>
@@ -133,7 +234,7 @@
 								</li>
 							</ul>
 						</div>
-						<a href='https://maps.app.goo.gl/AiMXbGrVdaji2qLV9' target="_blank"
+						<a href='<?= $mapsUrl ?>' target="_blank"
 						   class='contact-page__contact-link'>Como
 							chegar? Ver rotas.</a>
 					</div>
@@ -149,19 +250,20 @@
 				</div>
 			</div>
 		</div>
-		<div class='contact-page__bottom'>
+		<div class='contact-page__bottom' id='form'>
 			<div class='contact-page__form-box'>
-				<h3 class='comment-one__title'>Vamos entrar em contato</h3>
+				<h3 class='comment-one__title'>Conte para a gente o que está acontecendo</h3>
 				<p class='comment-one__text'>
-					Seu endereço de e-mail não será publicado. Os campos obrigatórios são
-					marcado *
+					Envie sua dúvida, solicite um orçamento ou agende uma avaliação. Nossa equipe retorna com
+					orientação clara e sem enrolação. Os campos obrigatórios estão marcados com *.
 				</p>
-				<form action='<?= INCLUDE_PATH ?>/assets/inc/sendemail.php' method='POST'
-				      class='contact-page__form contact-form-validated'>
+				<form action='<?= BASE ?>/contato' method='POST'
+				      class='contact-page__form contact-form-validated form_capitalize'>
+					<input type='hidden' name='action' value='contact'>
 					<div class='row'>
 						<div class='col-xl-6 col-lg-6'>
 							<div class='contact-page__input-box'>
-								<input type='text' placeholder='Seu nome*' name='name' required>
+								<input type='text' placeholder='Seu nome*' name='nome' required>
 							</div>
 						</div>
 						<div class='col-xl-6 col-lg-6'>
@@ -171,19 +273,53 @@
 						</div>
 						<div class='col-xl-6 col-lg-6'>
 							<div class='contact-page__input-box'>
-								<input type='text' placeholder='Telefone*' name='phone' required>
+								<input type='text' class="formPhone" placeholder='Whatsapp*' name='telefone' required>
 							</div>
 						</div>
 						<div class='col-xl-6 col-lg-6'>
 							<div class='contact-page__input-box'>
-								<input type='text' placeholder='Assunto*' name='subject' required>
+								<input type='text' placeholder='Assunto*' name='assunto' required>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class='col-xl-6 col-lg-6'>
+							<div class='contact-page__input-box'>
+								<select name="servico" id="service" required>
+									<option value="" selected disabled>Selecione um serviço*</option>
+                                    <?php
+                                        $Read ??= new Read();
+                                        $Read->exeRead(DB_SERVICES);
+                                        if ($Read->getResult()) {
+                                            foreach ($Read->getResult() as $opt) {
+                                                $serviceTitle = Check::safeHtmlChars($opt['svc_title'] ?? '');
+                                                ?>
+												<option value="<?= $serviceTitle ?>"><?= $serviceTitle ?></option>
+                                                <?php
+                                            }
+                                        } else {
+                                            ?>
+											<option value="">Não existem serviços cadastrados</option>
+                                            <?php
+                                        }
+                                    ?>
+									<option value='Outro'>Outro</option>
+
+								</select>
+							</div>
+						</div>
+						<div class='col-xl-6 col-lg-6'>
+							<div class='contact-page__input-box'>
+								<input type='text' placeholder='Marca / Modelo / Ano do carro*' name='veiculo'
+								       required>
 							</div>
 						</div>
 					</div>
 					<div class='row'>
 						<div class='col-xl-12 col-lg-12'>
 							<div class='contact-page__input-box text-message-box'>
-								<textarea required name='message' placeholder='Sua mensagem*'></textarea>
+								<textarea required name='mensagem'
+								          placeholder='Sua mensagem, descreva o que esta ocorrendo com seu veículo*'></textarea>
 							</div>
 							<div class='contact-page__btn-box'>
 								<button type='submit' class='thm-btn contact-page__btn'
@@ -201,3 +337,5 @@
 	</div>
 </section>
 <!--Contact Page End-->
+
+<script src="<?= BASE ?>/assets/js/text.control.min.js"></script>

@@ -1,7 +1,7 @@
 <?php
 
-    include_once REQUIRE_PATH . '/inc/main-slider.php';
-    include_once REQUIRE_PATH . '/inc/about-one.php';
+    include_once REQUIRE_PATH . '/inc/main-slider.php'; //SLIDE BANNERS
+    include_once REQUIRE_PATH . '/inc/about-one.php'; // SOBRE NOS
     include_once REQUIRE_PATH . '/inc/services-one.php';
     include_once REQUIRE_PATH . '/inc/why-choose-one.php';
     include_once REQUIRE_PATH . '/inc/brand-one.php';

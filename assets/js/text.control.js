@@ -23,8 +23,6 @@ $(function () {
  ##### FUNÇÕES #####
  ################*/
 //TEXT FUNCTIONS
-
-
 /**
  * @param {*} str
  * @param {boolean} force
