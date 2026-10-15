@@ -581,8 +581,9 @@
             $userLevel = [
                 1 => 'Cliente (user)',
                 2 => 'SAC (user)',
+                5 => 'Mecânico (adm)',
                 6 => 'Marketing - Blog (adm)',
-                7 => 'Suporte Geral (adm)',
+                7 => 'Administrativo (adm)',
                 8 => 'Gerente Geral (adm)',
                 9 => 'Administrador (adm)',
                 10 => 'Super Admin (adm)'

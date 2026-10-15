@@ -156,19 +156,23 @@
                 //var_dump(Check::getWcLevel($user_level));
 
                 echo "<article class='single_user box box25 al_center'>
-                    <div class='box_content wc_normalize_height'>
+					<div class='panel_header default'> <h2>{$user_name} {$user_lastname}</h2> </div>
+                    <div class='box_content wc_normalize_height'>                   
+                    
+                    
                         <img alt='Este é {$user_name}' title='Este é {$user_name}' src='../tim.php?src={$user_thumb}&w=400&h=400'/>
-                        <h1>{$user_name} {$user_lastname}</h1>
                         <p class='nivel icon-equalizer'>" . Check::getWcLevel($user_level) . "</p>
                         <p class='info icon-envelop'>{$user_email}</p> 
                         <p class='info icon-calendar'>Desde " . date(
                         'd/m/Y \a\s H\h\si',
                         strtotime((string)$user_registration)
                     ) . "</p>
-                    </div>
-                    <div class='single_user_actions'>
+                        
+                          <div class='single_user_actions'>
                         <a class='btn btn_green icon-user' href='dashboard.php?wc=users/create&id={$user_id}' title='Gerenciar Usuário!'>Gerenciar Usuário!</a>
                     </div>
+                    </div>
+                  
                 </article>";
             }
             $paginatorParams = '' !== $searchTerm ? http_build_query(['search' => '%' . $searchTerm . '%']) : null;

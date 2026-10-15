@@ -18939,6 +18939,14 @@ Product Description
     transition: all 500ms ease;
 }
 
+.sliding-text__list li > p a {
+    color: inherit;
+}
+
+.sliding-text__list li > p a:hover {
+    color: var(--servixa-base);
+}
+
 /*==============================================
     Sliding Text
 ===============================================*/

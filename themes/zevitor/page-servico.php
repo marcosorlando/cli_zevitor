@@ -1,27 +1,72 @@
 <?php
 
     use App\Conn\Read;
+    use App\Helpers\Check;
 
     /**
-     * Página genérica (DB-driven) — tema Zevitor.
-     * Encanamento: doripel/pagina.php (exeRead DB_PAGES + extract).
-     * Visual: banner .page-header do template Servixa.
+     * Serviço (single) — tema Zevitor. Rota: /servico/{svc_name}
+     * Dinâmico: DB_SERVICES + DB_SERVICES_GALLERY (carrossel do topo) + DB_FAQS (mesma categoria).
+     * Visual: service-details.html do template Servixa.
      */
     $Read ??= new Read();
 
-    $Read->exeRead(DB_PAGES, 'WHERE page_name = :nm AND page_status = 1', "nm={$URL[0]}");
+    if (empty($URL[1])) {
+        require REQUIRE_PATH . '/404.php';
+
+        return;
+    }
+
+    $Read->exeRead(DB_SERVICES, 'WHERE svc_name = :nm AND svc_status = 1', "nm={$URL[1]}");
     if (!$Read->getResult()) {
         require REQUIRE_PATH . '/404.php';
 
         return;
     }
     extract($Read->getResult()[0]);
-    /**
-     * Página "Sobre" — tema Zevitor (estática, como o doripel/page-sobre.php).
-     * Visual: about.html do template Servixa (page-header + about-one).
-     * Conteúdo é placeholder — substituir pelos textos reais do cliente.
-     */
 
+    $SvcTitle = Check::safeHtmlChars($svc_title);
+
+    // CATEGORIA
+    $SvcCategory = null;
+    if (!empty($svc_category)) {
+        $Read->fullRead(
+            'SELECT category_title FROM ' . DB_SERVICES_CATEGORIES . ' WHERE category_id = :id',
+            "id={$svc_category}"
+        );
+        $SvcCategory = $Read->getResult() ? $Read->getResult()[0]['category_title'] : null;
+    }
+
+    // GALERIA (carrossel do topo) — fallback: capa do serviço > imagem do template
+    $SvcImages = [];
+    $Read->fullRead('SELECT image FROM ' . DB_SERVICES_GALLERY . ' WHERE svc_id = :id ORDER BY id ASC', "id={$svc_id}");
+    foreach ($Read->getResult() ?: [] as $Gallery) {
+        if (!empty($Gallery['image']) && file_exists('uploads/' . $Gallery['image'])) {
+            $SvcImages[] = BASE . '/tim.php?src=uploads/' . $Gallery['image'] . '&w=850&h=400';
+        }
+    }
+    if (!$SvcImages) {
+        $SvcImages[] = !empty($svc_cover) && file_exists('uploads/' . $svc_cover)
+            ? BASE . '/tim.php?src=uploads/' . $svc_cover . '&w=850&h=400'
+            : INCLUDE_PATH . '/assets/images/services/service-details-img-3.jpg';
+    }
+
+    // SERVIÇOS (sidebar)
+    $Read->fullRead(
+        'SELECT svc_name, svc_title FROM ' . DB_SERVICES . ' WHERE svc_status = :st ORDER BY svc_id ASC',
+        'st=1'
+    );
+    $SvcList = $Read->getResult() ?: [];
+
+    // FAQ's da mesma categoria do serviço
+    $SvcFaqs = [];
+    if (!empty($svc_category)) {
+        $Read->fullRead(
+            'SELECT faq_question, faq_answer FROM ' . DB_FAQS . ' WHERE faq_status = :st AND faq_category = :cat '
+            . 'ORDER BY faq_order IS NULL, faq_order ASC, faq_question ASC',
+            "st=1&cat={$svc_category}"
+        );
+        $SvcFaqs = $Read->getResult() ?: [];
+    }
 ?>
 
 <!--Page Header Start-->
@@ -34,14 +79,20 @@
 			<div class='page-header__img-1'>
 				<img src='<?= INCLUDE_PATH ?>/assets/images/resources/page-header-img-1.png' alt=''>
 			</div>
-			<h3>Serviço de freios</h3>
+			<h3><?= $SvcTitle ?></h3>
 			<div class='thm-breadcrumb__inner'>
 				<ul class='thm-breadcrumb list-unstyled'>
-					<li><a href='index.html'>Início</a></li>
+					<li><a href='<?= BASE ?>' title='<?= SITE_NAME ?>'>Início</a></li>
 					<li><span class='fas fa-angle-right'></span></li>
-					<li>Serviços</li>
+					<li><a href='<?= BASE ?>/servicos' title='Serviços'>Serviços</a></li>
+                    <?php
+                        if ($SvcCategory && $SvcCategory !== $svc_title) { ?>
+							<li><span class='fas fa-angle-right'></span></li>
+							<li><?= Check::safeHtmlChars($SvcCategory) ?></li>
+                            <?php
+                        } ?>
 					<li><span class='fas fa-angle-right'></span></li>
-					<li>Serviço de freios</li>
+					<li><?= $SvcTitle ?></li>
 				</ul>
 			</div>
 		</div>
@@ -55,33 +106,25 @@
 		<div class='row'>
 			<div class='col-xl-4 col-lg-5'>
 				<div class='service-details__sidebar'>
-					<div class='service-details__services-box'>
-						<h3 class='service-details__services-title'>Nossos serviços</h3>
-						<ul class='service-details__services-list list-unstyled'>
-							<li>
-								<a href='international-transport.html'>Reparo do motor<span
-											class='icon-next'></span></a>
-							</li>
-							<li>
-								<a href='track-transport.html'>Troca de óleo e filtros<span
-											class='icon-next'></span></a>
-							</li>
-							<li class='active'>
-								<a href='personal-delivery.html'>Serviço de freios<span class='icon-next'></span></a>
-							</li>
-							<li>
-								<a href='ocean-transport.html'>Reparo de ar-condicionado e aquecimento<span
-											class='icon-next'></span></a>
-							</li>
-							<li>
-								<a href='warehouse-facility.html'>Serviços de pneus e rodas<span
-											class='icon-next'></span></a>
-							</li>
-							<li>
-								<a href='emergency-transport.html'>Bateria e elétrica<span class='icon-next'></span></a>
-							</li>
-						</ul>
-					</div>
+                    <?php
+                        if ($SvcList) { ?>
+							<div class='service-details__services-box'>
+								<h3 class='service-details__services-title'>Nossos serviços</h3>
+								<ul class='service-details__services-list list-unstyled'>
+                                    <?php
+                                        foreach ($SvcList as $Service) { ?>
+											<li<?= $Service['svc_name'] === $svc_name ? " class='active'" : '' ?>>
+												<a href='<?= BASE ?>/servico/<?= $Service['svc_name'] ?>'
+												   title='<?= Check::safeHtmlChars($Service['svc_title']) ?>'><?=
+                                                        Check::safeHtmlChars($Service['svc_title'])
+                                                    ?><span class='icon-next'></span></a>
+											</li>
+                                            <?php
+                                        } ?>
+								</ul>
+							</div>
+                            <?php
+                        } ?>
 					<div class='service-details__sidebar-contact'>
 						<div class='service-details__sidebar-contact-img'>
 							<div class='inner'>
@@ -94,113 +137,61 @@
 							<div class='icon'>
 								<span class='icon-phone-call'></span>
 							</div>
-							<h2><a href='tel:585858575084'>+58 585 857 5084</a></h2>
+							<h2><a href='<?= Check::whatsMessage(
+                                    SITE_ADDR_WHATS,
+                                    "Olá, estou no site e quero agendar o serviço: {$svc_title}."
+                                )
+                                ?>' target="_blank" title="Enviar mensagem no WhatsApp"><?=
+                                        SITE_ADDR_WHATS
+                                    ?></a></h2>
 							<p>Se precisar de ajuda<br>
 								Entre em contato conosco</p>
 						</div>
 					</div>
-					<div class='service-details__sidebar-download-box'>
-						<h3 class='service-details__services-title'>Baixar</h3>
-						<div class='service-details__sidebar-single-download'>
 
-							<ul class='clearfix list-unstyled'>
-								<li>
-									<div class='content-box'>
-										<div class='icon'>
-											<span class='far fa-file-pdf'></span>
-										</div>
-										<div class='text-box'>
-											<h2><a href='#'>Baixar PDF</a></h2>
-											<p><a href='#'>Baixar</a></p>
-										</div>
-									</div>
-
-									<div class='btn-box'>
-										<a href='#'><span class='far fa-cloud-download'></span></a>
-									</div>
-								</li>
-
-								<li>
-									<div class='content-box'>
-										<div class='icon'>
-											<span class='far fa-file-pdf'></span>
-										</div>
-										<div class='text-box'>
-											<h2><a href='#'>Baixar PDF</a></h2>
-											<p><a href='#'>Baixar</a></p>
-										</div>
-									</div>
-
-									<div class='btn-box'>
-										<a href='#'><span class='far fa-cloud-download'></span></a>
-									</div>
-								</li>
-
-								<li>
-									<div class='content-box'>
-										<div class='icon'>
-											<span class='far fa-file-pdf'></span>
-										</div>
-										<div class='text-box'>
-											<h2><a href='#'>Baixar PDF</a></h2>
-											<p><a href='#'>Baixar</a></p>
-										</div>
-									</div>
-
-									<div class='btn-box'>
-										<a href='#'><span class='far fa-cloud-download'></span></a>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
 				</div>
 			</div>
 			<div class='col-xl-8 col-lg-7'>
 				<div class='service-details__left'>
-					<div class='service-details__img'>
-						<img src='<?= INCLUDE_PATH ?>/assets/images/services/service-details-img-3.jpg' alt=''>
-					</div>
-					<h3 class='service-details__title-1'>Serviço de freios</h3>
-					<p class='service-details__text-1'>Ut enim ad minim veniam, quis nostrud exercitation
-						ullamco laboris nisi ut aliquip ex ea comodo consequat. Duis aute irure dolor em
-						reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Exceto
-						sint occaecat cupidatat non proident, sunt in culpa</p>
-					<p class='service-details__text-2'>Consectetur adipiscing elit, sed do eiusmod tempor
-						incidente com Laborer e Dolore Magna Aliqua. Fora enigma ad minim veniam, quis nostrud
-						exercitation ullamco laboris nisi ut aliquip ex ea comodo consequat. Duis aute inure
-						dor no reprehenderit in voluptate velit esse cillum dolore eu fugiat null
-						pariatur. Excepteur snit occaecat cupidatat non proident, sunt in culpa qui officia
-						deserunt mollit anim id est laborum.</p>
-					<ul class='service-details__points-list list-unstyled'>
-						<li>
-							<div class='icon'>
-								<span class='icon-next'></span>
+                    <?php
+                        if (count($SvcImages) > 1) { ?>
+							<div class='service-details__img swiper-container thm-swiper__slider'
+							     style='--swiper-theme-color: var(--servixa-base);'
+							     data-swiper-options='{"slidesPerView": 1, "loop": true, "speed": 800,
+						     "autoplay": {"delay": 5000, "disableOnInteraction": false},
+						     "pagination": {"el": ".service-details__img-pagination", "clickable": true}}'>
+								<div class='swiper-wrapper'>
+                                    <?php
+                                        foreach ($SvcImages as $Key => $Image) { ?>
+											<div class='swiper-slide'>
+												<img src='<?= $Image ?>' alt='<?= $SvcTitle ?> - Imagem <?= $Key + 1 ?>'
+												     title='<?= $SvcTitle ?>'>
+											</div>
+                                            <?php
+                                        } ?>
+								</div>
+								<div class='swiper-pagination service-details__img-pagination'></div>
 							</div>
-							<p>É um fato há muito estabelecido que um leitor ficará distraído bioiiy pela razão
-								dablea </p>
-						</li>
-						<li>
-							<div class='icon'>
-								<span class='icon-next'></span>
+                            <?php
+                        } else { ?>
+							<div class='service-details__img'>
+								<img src='<?= $SvcImages[0] ?>' alt='<?= $SvcTitle ?>' title='<?= $SvcTitle ?>'>
 							</div>
-							<p>Distribuir bioiiy o conteúdo legível de uma página ao observar seu layout
-							</p>
-						</li>
-						<li>
-							<div class='icon'>
-								<span class='icon-next'></span>
-							</div>
-							<p>Conteúdo de uma página ao observar seu ponto de layout</p>
-						</li>
-						<li>
-							<div class='icon'>
-								<span class='icon-next'></span>
-							</div>
-							<p>O leitor será distraído bioiiy pelo conteúdo legível de uma página ao olhar
-							</p>
-						</li>
-					</ul>
+                            <?php
+                        } ?>
+
+					<h1 class='service-details__title-1'><?= $SvcTitle ?></h1>
+                    <?php
+                        if (!empty($svc_subtitle)) { ?>
+							<p class='service-details__text-1'><?= Check::safeHtmlChars($svc_subtitle) ?></p>
+                            <?php
+                        } ?>
+                    <?php
+                        if (!empty($svc_description)) { ?>
+							<div class='service-details__text-2'><?= $svc_description ?></div>
+                            <?php
+                        } ?>
+
 					<div class='service-details__img-box'>
 						<div class='row'>
 							<div class='col-xl-6'>
@@ -214,14 +205,12 @@
 											<div class='service-details__img-box-content-icon'>
 												<span class='icon-guarantee'></span>
 											</div>
-											<h3 class='service-details__img-box-content-title'>Trabalho Completo de
-												Qualidade
-											</h3>
+											<p class='service-details__img-box-content-title'>Diagnóstico completo
+											</p>
 										</div>
-										<p class='service-details__img-box-content-text'>Duis arura dolor aguda
-											em
-											reprehenderit in voluptate velit esse cillum dolore Velit esse quam
-											nihil molestiae thos consequatur, Velia alivia chillum dolore</p>
+										<p class='service-details__img-box-content-text'>Diagnóstico honesto,
+											peças de qualidade e mão de obra especializada. Você sabe o que o carro
+											precisa antes de qualquer serviço.</p>
 									</div>
 								</div>
 							</div>
@@ -236,94 +225,43 @@
 											<div class='service-details__img-box-content-icon'>
 												<span class='icon-satisfaction'></span>
 											</div>
-											<h3 class='service-details__img-box-content-title'>100% Trabalho
-												Satisfação</h3>
+											<p class='service-details__img-box-content-title'>100% de
+												transparencia</p>
 										</div>
-										<p class='service-details__img-box-content-text'>Duis arura dolor aguda
-											em
-											reprehenderit in voluptate velit esse cillum dolore Velit esse quam
-											nihil molestiae thos consequatur, Velia alivia chillum dolore</p>
+										<p class='service-details__img-box-content-text'>Atendimento transparente
+											do orçamento à entrega, com garantia no serviço e o carro devolvido
+											do jeito certo.</p>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class='faq-page__single'>
-						<div class='faq-one__left'>
-							<div class='accrodion-grp' data-grp-name='faq-one-accrodion'>
-								<div class='accrodion wow fadeInLeft' data-wow-delay='0ms' data-wow-duration='1500ms'>
-									<div class='accrodion-title'>
-										<h4>O que está incluído em um serviço de carro completo?</h4>
-									</div>
-									<div class='accrodion-content'>
-										<div class='inner'>
-											<p>Um serviço completo inclui troca de óleo, substituição de filtro, freio
-												inspeção, verificação de pneus, teste de bateria e diagnóstico do motor.
-											</p>
-										</div><!-- /.inner -->
-									</div>
-								</div>
-								<div class='accrodion active wow fadeInRight' data-wow-delay='100ms'
-								     data-wow-duration='1500ms'>
-									<div class='accrodion-title'>
-										<h4>Vocês oferecem serviço de coleta e entrega?</h4>
-									</div>
-									<div class='accrodion-content'>
-										<div class='inner'>
-											<p>Recomendamos uma manutenção completa a cada 6 meses ou 5.000–10.000 km,
-												dependendo
-												no seu<br> hábitos de condução.
-											</p>
-										</div><!-- /.inner -->
-									</div>
-								</div>
-								<div class='accrodion wow fadeInLeft' data-wow-delay='200ms' data-wow-duration='1500ms'>
-									<div class='accrodion-title'>
-										<h4>Quanto tempo leva um serviço padrão?</h4>
-									</div>
-									<div class='accrodion-content'>
-										<div class='inner'>
-											<p>A maioria dos serviços padrão são concluídos em 2–3 horas.Com certeza!
-												Aproveite
-												nossa confortável sala de espera com Wi-Fi e bebidas.
-											</p>
-										</div><!-- /.inner -->
-									</div>
-								</div>
-								<div class='accrodion wow fadeInRight' data-wow-delay='300ms'
-								     data-wow-duration='1500ms'>
-									<div class='accrodion-title'>
-										<h4>O seu serviço está coberto pela garantia?</h4>
-									</div>
-									<div class='accrodion-content'>
-										<div class='inner'>
-											<p>Sim, oferecemos garantia de serviço de até 3 meses, dependendo do
-												tipo de
-												reparo. Fornecemos estimativas antecipadas para que você saiba
-												exatamente o que fazer
-												espere.
-											</p>
-										</div><!-- /.inner -->
-									</div>
-								</div>
-								<div class='accrodion wow fadeInLeft' data-wow-delay='400ms' data-wow-duration='1500ms'>
-									<div class='accrodion-title'>
-										<h4>Você fornece assistência rodoviária de emergência?</h4>
-									</div>
-									<div class='accrodion-content'>
-										<div class='inner'>
-											<p>Sim, reboque de emergência 24 horas por dia, 7 dias por semana e suporte
-												para reparos na estrada são
-												disponível.Nós
-												forneça estimativas iniciais para que você saiba exatamente o que
-												esperar.
-											</p>
-										</div><!-- /.inner -->
+                    <?php
+                        if ($SvcFaqs) { ?>
+							<div class='faq-page__single'>
+								<div class='faq-one__left'>
+									<div class='accrodion-grp' data-grp-name='faq-one-accrodion'>
+                                        <?php
+                                            foreach ($SvcFaqs as $Key => $Faq) { ?>
+												<div class='accrodion<?= 0 === $Key ? ' active' : '' ?> wow <?=
+                                                    0 === $Key % 2 ? 'fadeInLeft' : 'fadeInRight' ?>'
+												     data-wow-delay='<?= $Key * 100 ?>ms' data-wow-duration='1500ms'>
+													<div class='accrodion-title'>
+														<h4><?= Check::safeHtmlChars($Faq['faq_question']) ?></h4>
+													</div>
+													<div class='accrodion-content'>
+														<div class='inner'>
+                                                            <?= $Faq['faq_answer'] ?>
+														</div><!-- /.inner -->
+													</div>
+												</div>
+                                                <?php
+                                            } ?>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+                            <?php
+                        } ?>
 				</div>
 			</div>
 		</div>

@@ -1,3 +1,9 @@
+<?php
+
+    use App\Conn\Read;
+    use App\Helpers\Check;
+
+?>
 <!--Why Choose One Start -->
 <section class='why-choose-one'>
 	<ul class='why-choose-one__sliding-text-list list-unstyled marquee_mode-1'>
@@ -78,13 +84,43 @@
 						</ul>
 					</div>
 					<div class='why-choose-one__author-box'>
-						<div class='why-choose-one__author-img'>
-							<img src='<?= INCLUDE_PATH ?>/assets/images/resources/why-choose-one-author-img.jpg' alt=''>
-						</div><!--Foto do Anderson (careca) aqui-->
-						<div class='why-choose-one__author-content'>
-							<p>Precisa de ajuda? Entre em contato com <span>conosco.</span></p>
-							<p><a href='tel:885747546027'>(54) 99174-7279</a></p>
-						</div>
+                        <?php
+
+                            $Read ??= new Read();
+                            $Read->fullRead(
+                                'SELECT * FROM ' . DB_USERS . ' WHERE user_level = :lv ORDER BY user_id LIMIT :limit',
+                                'lv=8&limit=1'
+                            );
+
+                            if ($Read->getResult()) {
+                                $user = $Read->getResult()[0];
+                                $userThumb = (string)($user['user_thumb'] ?? '');
+                                $userCell = (string)($user['user_cell'] ?? '');
+                                $userAlt = trim(
+                                    ($user['user_name'] ?? '') . ' ' . ($user['user_lastname'] ?? '')
+                                    . (!empty($user['user_description']) ? ' - ' . $user['user_description'] : '')
+                                );
+
+                                ?>
+                                <?php if ('' !== $userThumb): ?>
+								<div class='why-choose-one__author-img'>
+									<img src='<?= BASE ?>/tim.php?src=uploads/<?= $userThumb ?>&w=70&h=70'
+									     alt='<?= Check::safeHtmlChars($userAlt) ?>'>
+								</div>
+                                <?php endif; ?>
+								<div class='why-choose-one__author-content'>
+									<p>Precisa de ajuda? Entre em contato com <span>conosco.</span></p>
+                                    <?php if ('' !== $userCell): ?>
+									<p><a href='<?= Check::whatsMessage(
+                                            $userCell,
+                                            'Olá! Estou no site agora e quero agendar uma visita.'
+                                        ) ?>' target='_blank' rel='noopener'><?= Check::safeHtmlChars($userCell) ?></a></p>
+                                    <?php endif; ?>
+								</div>
+
+                                <?php
+                            }
+                        ?>
 					</div>
 				</div>
 			</div>

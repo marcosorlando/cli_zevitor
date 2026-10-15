@@ -1,81 +1,129 @@
 <?php
+
+use App\Conn\Create;
+use App\Conn\Delete;
+use App\Conn\Read;
+use App\Conn\Update;
+use App\Helpers\Check;
+
 session_start();
-require '../../_app/Config.inc.php';
+
+require __DIR__ . '/../../vendor/autoload.php';
 $NivelAcess = LEVEL_WC_FAQS;
 
-if (!APP_FAQS || empty($_SESSION['userLogin']) || empty($_SESSION['userLogin']['user_level']) || $_SESSION['userLogin']['user_level'] < $NivelAcess):
-    $jSON['trigger'] = AjaxErro('<b>OPPSSS:</b> Você não tem permissão para essa ação ou não está logado como administrador!', E_USER_ERROR);
+if (!APP_FAQS || empty($_SESSION['userLogin']) || empty($_SESSION['userLogin']['user_level']) || $_SESSION['userLogin']['user_level'] < $NivelAcess) {
+    $jSON['trigger'] = Check::ajaxErro(
+        '<b>OPSS:</b> Você não tem permissão para essa ação ou não está logado como administrador!',
+        E_USER_ERROR
+    );
     echo json_encode($jSON);
-    die;
-endif;
+
+    exit;
+}
+
 usleep(50000);
 
-//DEFINE O CALLBACK E RECUPERA O POST
+// DEFINE O CALLBACK E RECUPERA O POST
 $jSON = null;
 $CallBack = 'Faqs';
-$PostData = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+$PostData = filter_input_array(INPUT_POST, FILTER_DEFAULT) ?? [];
 
-//VALIDA AÇÃO
-if ($PostData && $PostData['callback_action'] && $PostData['callback'] == $CallBack):
-    //PREPARA OS DADOS
+// VALIDA AÇÃO
+if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['callback'] === $CallBack) {
+    // PREPARA OS DADOS
     $Case = $PostData['callback_action'];
     unset($PostData['callback'], $PostData['callback_action']);
 
     // AUTO INSTANCE OBJECT READ
-    if (empty($Read)):
-        $Read = new Read;
-    endif;
+    $Read ??= new Read();
     // AUTO INSTANCE OBJECT CREATE
-    if (empty($Create)):
-        $Create = new Create;
-    endif;
+    $Create ??= new Create();
     // AUTO INSTANCE OBJECT UPDATE
-    if (empty($Update)):
-        $Update = new Update;
-    endif;
+    $Update ??= new Update();
     // AUTO INSTANCE OBJECT DELETE
-    if (empty($Delete)):
-        $Delete = new Delete;
-    endif;
+    $Delete ??= new Delete();
 
-    //SELECIONA AÇÃO
-    switch ($Case):
-        //GERENCIA
+    // SELECIONA AÇÃO
+    switch ($Case) {
         case 'manager':
-            $FaqId = $PostData['faq_id'];
+            $FaqId = (int)($PostData['faq_id'] ?? 0);
+            unset($PostData['faq_id'], $PostData['public']);
 
-            if (in_array('', $PostData)):
-                $jSON['trigger'] = AjaxErro('<b>ERRO AO CADASTRAR:</b> Para atualizar a pergunta, favor preencha todos os campos!', E_USER_ERROR);
+            $PostData['faq_status'] = (empty($PostData['faq_status']) ? 0 : 1);
+            $PostData['faq_category'] = (filter_var($PostData['faq_category'] ?? null, FILTER_VALIDATE_INT) ?: null);
+
+            if (empty(trim((string)($PostData['faq_question'] ?? ''))) || empty(trim(strip_tags((string)($PostData['faq_answer'] ?? ''))))) {
+                $jSON['trigger'] = Check::ajaxErro(
+                    '<b>ERRO AO CADASTRAR:</b> Para atualizar a pergunta, preencha a pergunta e a resposta!',
+                    E_USER_WARNING
+                );
                 $jSON['error'] = true;
-            else:
-                $PostData['faq_date'] = date('Y-m-d H:i:s');
-                $faq_status =  !empty($PostData['faq_status']) ? $PostData['faq_status'] : 0;
 
-           // var_dump($PostData);
+                break;
+            }
 
-                $Update->ExeUpdate(DB_FAQS, $PostData, "WHERE faq_id = :id", "id={$FaqId}");
+            $Read->exeRead(DB_FAQS, 'WHERE faq_id = :id', 'id=' . $FaqId);
+            if (!$Read->getResult()) {
+                $jSON['trigger'] = Check::ajaxErro(
+                    sprintf(
+                        '<b>Erro ao atualizar:</b> Desculpe %s, mas não foi possível consultar a pergunta. Experimente atualizar a página!',
+                        $_SESSION['userLogin']['user_name']
+                    ),
+                    E_USER_WARNING
+                );
 
-                $jSON['trigger'] = AjaxErro("<b>Tudo certo {$_SESSION['userLogin']['user_name']}</b>: A pergunta foi atualizada com sucesso.");
-            endif;
+                break;
+            }
+
+            $PostData['faq_date'] = date('Y-m-d H:i:s');
+            $Update->exeUpdate(DB_FAQS, $PostData, 'WHERE faq_id = :id', 'id=' . $FaqId);
+
+            $jSON['trigger'] = Check::ajaxErro(
+                sprintf(
+                    '<b class="icon-checkmark">Tudo certo %s</b>: A pergunta foi atualizada com sucesso.',
+                    $_SESSION['userLogin']['user_name']
+                )
+            );
+
             break;
 
-        //DELETA
+        case 'faq_order':
+            if (isset($PostData['Data']) && is_array($PostData['Data'])) {
+                foreach ($PostData['Data'] as $RE) {
+                    $Update->exeUpdate(
+                        DB_FAQS,
+                        ['faq_order' => (int)$RE[1]],
+                        'WHERE faq_id = :id',
+                        'id=' . (int)$RE[0]
+                    );
+                }
+
+                $jSON['success'] = true;
+            } else {
+                $jSON['error'] = true;
+            }
+
+            break;
+
         case 'delete':
-
-            $FaqId = $PostData['del_id'];
-            $Delete->ExeDelete(DB_FAQS, "WHERE faq_id = :id", "id={$FaqId}");
+            $FaqId = (int)($PostData['del_id'] ?? 0);
+            $Delete->exeDelete(DB_FAQS, 'WHERE faq_id = :id', 'id=' . $FaqId);
             $jSON['success'] = true;
-            break;
-    endswitch;
 
-    //RETORNA O CALLBACK
-    if ($jSON):
+            break;
+    }
+
+    // RETORNA O CALLBACK
+    if ($jSON) {
         echo json_encode($jSON);
-    else:
-        $jSON['trigger'] = AjaxErro('<b>OPSS:</b> Desculpe. Mas uma ação do sistema não respondeu corretamente. Ao persistir, contate o desenvolvedor!', E_USER_ERROR);
+    } else {
+        $jSON['trigger'] = Check::ajaxErro(
+            '<b>OPSS:</b> Desculpe. Mas uma ação do sistema não respondeu corretamente. Ao persistir, contate o desenvolvedor!',
+            E_USER_ERROR
+        );
         echo json_encode($jSON);
-    endif;
-else:
-    //ACESSO DIRETO
+    }
+} else {
+    // ACESSO DIRETO
     die('<br><br><br><center><h1>Acesso Restrito!</h1></center>');
-endif;
+}

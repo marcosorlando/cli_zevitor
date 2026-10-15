@@ -9,7 +9,7 @@
     include_once REQUIRE_PATH . '/inc/video-one.php';
     include_once REQUIRE_PATH . '/inc/projects-one.php';
     include_once REQUIRE_PATH . '/inc/work-proccess.php';
-    include_once REQUIRE_PATH . '/inc/before-after.php';
+    //include_once REQUIRE_PATH . '/inc/before-after.php';
     include_once REQUIRE_PATH . '/inc/carrossel-texts-services.php';
     include_once REQUIRE_PATH . '/inc/faq-one.php';
     include_once REQUIRE_PATH . '/inc/depoimentos.php';

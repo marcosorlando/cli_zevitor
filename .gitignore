@@ -50,6 +50,7 @@ var
 uploads/
 uploads/images/**/cache/*
 !uploads/images/**/cache/.gitkeep
+_conteudo
 
 # Sitemap (gerado dinamicamente ou por script)
 admin/sitemap.txt

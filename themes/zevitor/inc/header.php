@@ -42,7 +42,7 @@
 					<div class='main-menu__top-time-icon'>
 						<span class='fas fa-clock'></span>
 					</div>
-					<p class='main-menu__top-text'><b>Seg - Sex:</b> 08:00 - 11:45 | 14:00 - 18:00</p>
+					<p class='main-menu__top-text'><b>Seg - Sex:</b> 09:00 - 11:45 | 14:00 - 18:00</p>
 				</div>
 				<div class='main-menu__social'>
 

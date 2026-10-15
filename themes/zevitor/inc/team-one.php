@@ -11,7 +11,7 @@
 						<i class='section-title__circle'></i>
 					</div>
 				</div>
-				<h6 class='section-title__tagline'>TÉCNICO ESPECIALISTA</h6>
+				<h6 class='section-title__tagline'>Equipe Mecânica Zé Vitor</h6>
 				<div class='section-title__tagline-border'>
 					<div class='section-title__shape-2'>
 						<i class='section-title__circle'></i>

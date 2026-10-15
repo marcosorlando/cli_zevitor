@@ -326,6 +326,26 @@
         <?php
     }
 
+    if (APP_FAQS && $Admin['user_level'] >= LEVEL_WC_FAQS) {
+        ?>
+		<li class="dashboard_nav_menu_li <?= strstr($getViewInput, 'faqs/') ? 'dashboard_nav_menu_active' : ''; ?>">
+			<a class="icon-question" title="FAQ's" href="dashboard.php?wc=faqs/home">FAQ's</a>
+
+			<ul class="dashboard_nav_menu_sub">
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'faqs/create' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=faqs/create">&raquo; Nova Pergunta</a>
+				</li>
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'faqs/home' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=faqs/home">&raquo; Ver Perguntas</a>
+				</li>
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'faqs/end' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=faqs/end">&raquo; Inativas</a>
+				</li>
+			</ul>
+		</li>
+        <?php
+    }
+
     if (APP_LANDING_PAGES && $Admin['user_level'] >= LEVEL_WC_LANDING_PAGES) {
         ?>
 		<li class="dashboard_nav_menu_li <?= strstr(

@@ -26,16 +26,15 @@
 					<div class='process-one__single'>
 						<div class='process-one__single-inner'>
 							<div class='process-one__icon'>
-								<span class='icon-fast'></span>
+								<span class='icon-calendar'></span>
 							</div>
 							<div class='process-one__single-inner-bg'
 							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
 							</div>
 							<div class='process-one__content'>
 								<h3 class='process-one__title'>Agendamento</h3>
-								<p class='process-one__text'>Você pode vir até o nosso endereço e tomar um café
-									conosco, ou nos chamar pelos canais de comunicação, WhatsApp ou telefone para
-									agendar o seu horário</p>
+								<p class='process-one__text'>Chame no WhatsApp, ligue ou venha tomar um café com a gente
+									na oficina. Você escolhe o dia e o horário que encaixam na sua rotina.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>
@@ -47,16 +46,15 @@
 					<div class='process-one__single'>
 						<div class='process-one__single-inner'>
 							<div class='process-one__icon'>
-								<span class='icon-car'></span>
+								<span class='icon-fast'></span>
 							</div>
 							<div class='process-one__single-inner-bg'
 							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
 							</div>
 							<div class='process-one__content'>
-								<h3 class='process-one__title'>Recepção do Véiculos</h3>
-								<p class='process-one__text'>Anamnese para alinhar as expectativas em relação ao
-									serviços, deixando o carro aos cuidados da Mecanixa Zé Vitor para avaliação.
-									.</p>
+								<h3 class='process-one__title'>Recepção do Veículo</h3>
+								<p class='process-one__text'>Você conta o que está sentindo no carro e o que espera do
+									serviço. Registramos tudo antes de começar, para ninguém trabalhar no chute.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>
@@ -68,17 +66,16 @@
 					<div class='process-one__single'>
 						<div class='process-one__single-inner'>
 							<div class='process-one__icon'>
-								<span class='icon-technician'></span>
+								<span class='icon-diagnostic'></span>
 							</div>
 							<div class='process-one__single-inner-bg'
 							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
 							</div>
 							<div class='process-one__content'>
 								<h3 class='process-one__title'>Diagnóstico preliminar</h3>
-								<p class='process-one__text'>Faz um teste drive para levantar possiveis anomalias
-									detectadas e depois inicia o diagnóstico completo em caso de revisão os dos itens
-									apontados pelo técnico e cliente.
-									.</p>
+								<p class='process-one__text'>Fazemos um teste de rodagem para confirmar o que você
+									relatou e levantar outras falhas. Só depois partimos para o diagnóstico
+									completo.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>
@@ -96,17 +93,102 @@
 								<span class='icon-check-1'></span>
 							</div>
 							<div class='process-one__content'>
-								<h3 class='process-one__title'>Entrega ao domicílio</h3>
-								<p class='process-one__text'>Escolha seu serviço, escolha um horário - reserve seu carro
-									serviço
-									ou
-									reparar em apenas alguns cliques.</p>
+								<h3 class='process-one__title'>Orçamento</h3>
+								<p class='process-one__text'>Você recebe o orçamento detalhado, peça por peça e mão de
+									obra, e decide o que fazer. Nenhum serviço começa sem a sua aprovação.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>
 					</div>
 				</div>
 				<!--Process One Single End-->
+				<!--Process One Single Start-->
+				<div class='col-xl-3 col-lg-6 col-md-6 wow fadeInRight' data-wow-delay='400ms'>
+					<div class='process-one__single'>
+						<div class='process-one__single-inner'>
+							<div class='process-one__single-inner-bg'
+							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
+							</div>
+							<div class='process-one__icon'>
+								<span class='icon-mechanical'></span>
+							</div>
+							<div class='process-one__content'>
+								<h3 class='process-one__title'>Execução do Serviço</h3>
+								<p class='process-one__text'>Com o orçamento aprovado, o técnico executa o serviço
+									seguindo o procedimento do fabricante do seu veículo, sem atalho e sem
+									improviso.</p>
+							</div>
+						</div>
+						<div class='process-one__count'></div>
+					</div>
+				</div>
+				<!--Process One Single End-->
+
+				<!--Process One Single Start-->
+				<div class='col-xl-3 col-lg-6 col-md-6 wow fadeInRight' data-wow-delay='400ms'>
+					<div class='process-one__single'>
+						<div class='process-one__single-inner'>
+							<div class='process-one__single-inner-bg'
+							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
+							</div>
+							<div class='process-one__icon'>
+								<span class='icon-guarantee'></span>
+							</div>
+							<div class='process-one__content'>
+								<h3 class='process-one__title'>Controle de Qualidade</h3>
+								<p class='process-one__text'>Antes de liberar, o serviço é revisado item por item e o
+									carro passa por um novo teste de rodagem para confirmar que o problema acabou.</p>
+							</div>
+						</div>
+						<div class='process-one__count'></div>
+					</div>
+				</div>
+				<!--Process One Single End-->
+
+				<!--Process One Single Start-->
+				<div class='col-xl-3 col-lg-6 col-md-6 wow fadeInRight' data-wow-delay='400ms'>
+					<div class='process-one__single'>
+						<div class='process-one__single-inner'>
+							<div class='process-one__single-inner-bg'
+							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
+							</div>
+							<div class='process-one__icon'>
+								<span class='icon-phone-call'></span>
+							</div>
+							<div class='process-one__content'>
+								<h3 class='process-one__title'>Aviso de Conclusão</h3>
+								<p class='process-one__text'>Assim que o carro fica pronto, avisamos você pelo WhatsApp
+									ou telefone, com o resumo do que foi feito e o horário para retirada.</p>
+							</div>
+						</div>
+						<div class='process-one__count'></div>
+					</div>
+				</div>
+				<!--Process One Single End-->
+
+
+				<!--Process One Single Start-->
+				<div class='col-xl-3 col-lg-6 col-md-6 wow fadeInRight' data-wow-delay='400ms'>
+					<div class='process-one__single'>
+						<div class='process-one__single-inner'>
+							<div class='process-one__single-inner-bg'
+							     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/process-one-single-inner-bg.jpg);'>
+							</div>
+							<div class='process-one__icon'>
+								<span class='icon-spare-parts'></span>
+							</div>
+							<div class='process-one__content'>
+								<h3 class='process-one__title'>Entrega Técnica</h3>
+								<p class='process-one__text'>Na retirada, o técnico explica o que foi feito, mostra as
+									peças substituídas e orienta sobre os próximos cuidados com o seu carro.</p>
+							</div>
+						</div>
+						<div class='process-one__count'></div>
+					</div>
+				</div>
+				<!--Process One Single End-->
+
+
 			</div>
 		</div>
 	</div>

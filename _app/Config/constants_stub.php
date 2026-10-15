@@ -113,6 +113,10 @@ if (!defined('APP_DEPOSITIONS')) {
     define('APP_DEPOSITIONS', 1);
 }
 
+if (!defined('APP_FAQS')) {
+    define('APP_FAQS', 1);
+}
+
 if (!defined('APP_HELLO')) {
     define('APP_HELLO', 0);
 }
@@ -307,6 +311,10 @@ if (!defined('DB_CV')) {
 
 if (!defined('DB_DEPOSITIONS')) {
     define('DB_DEPOSITIONS', 'ws_depositions');
+}
+
+if (!defined('DB_FAQS')) {
+    define('DB_FAQS', 'zv_faqs');
 }
 
 if (!defined('DB_HELLO')) {
@@ -543,6 +551,10 @@ if (!defined('LEVEL_WC_CV')) {
 
 if (!defined('LEVEL_WC_DEPOSITIONS')) {
     define('LEVEL_WC_DEPOSITIONS', 9);
+}
+
+if (!defined('LEVEL_WC_FAQS')) {
+    define('LEVEL_WC_FAQS', 6);
 }
 
 if (!defined('LEVEL_WC_HELLO')) {

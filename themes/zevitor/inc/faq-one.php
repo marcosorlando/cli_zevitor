@@ -1,8 +1,30 @@
+<?php
+
+    use App\Conn\Read;
+    use App\Helpers\Check;
+
+    /**
+     * FAQ (home) — tema Zevitor.
+     * Dinâmico: 5 perguntas aleatórias de DB_FAQS (faq_status = 1) a cada carregamento.
+     * Renderiza só se houver registros. faq_answer vem do editor do painel (HTML).
+     */
+    $Read ??= new Read();
+
+    $Read->fullRead(
+        'SELECT faq_question, faq_answer FROM ' . DB_FAQS . ' WHERE faq_status = :st ORDER BY RAND() LIMIT :limit',
+        'st=1&limit=5'
+    );
+    $Faqs = $Read->getResult() ?: [];
+
+    if ($Faqs):
+?>
 <!--Faq One Start -->
 <section class='faq-one'>
-	<div class='faq-one__bg-shape' style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/faq-one-bg-shape-1.png);'>
+	<div class='faq-one__bg-shape'
+	     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/faq-one-bg-shape-1.png);'>
 	</div>
-	<div class='faq-one__bg-shape' style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/faq-one-bg-shape-2.png);'>
+	<div class='faq-one__bg-shape'
+	     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/shapes/faq-one-bg-shape-2.png);'>
 	</div>
 	<div class='container'>
 		<div class='row'>
@@ -27,68 +49,19 @@
 						</h3>
 					</div>
 					<div class='accrodion-grp' data-grp-name='faq-one-accrodion'>
-						<div class='accrodion wow fadeInLeft' data-wow-delay='0ms' data-wow-duration='1500ms'>
+                        <?php foreach ($Faqs as $Key => $Faq): ?>
+						<div class='accrodion<?= 0 === $Key ? ' active' : '' ?> wow <?= $Key % 2 ? 'fadeInRight' : 'fadeInLeft' ?>'
+						     data-wow-delay='<?= $Key * 100 ?>ms' data-wow-duration='1500ms'>
 							<div class='accrodion-title'>
-								<h4>O que está incluído em um serviço de carro completo?</h4>
+								<h4><?= Check::safeHtmlChars($Faq['faq_question']) ?></h4>
 							</div>
 							<div class='accrodion-content'>
 								<div class='inner'>
-									<p>Um serviço completo inclui troca de óleo, substituição de filtro, freio
-										inspeção, verificação de pneus, teste de bateria e diagnóstico do motor.
-									</p>
+                                    <?= $Faq['faq_answer'] ?>
 								</div><!-- /.inner -->
 							</div>
 						</div>
-						<div class='accrodion active wow fadeInRight' data-wow-delay='100ms' data-wow-duration='1500ms'>
-							<div class='accrodion-title'>
-								<h4>Vocês oferecem serviço de coleta e entrega?</h4>
-							</div>
-							<div class='accrodion-content'>
-								<div class='inner'>
-									<p>Recomendamos uma revisão completa a cada 6 meses ou 5.000–10.000 km, dependendo
-										em seus hábitos de condução.
-									</p>
-								</div><!-- /.inner -->
-							</div>
-						</div>
-						<div class='accrodion wow fadeInLeft' data-wow-delay='200ms' data-wow-duration='1500ms'>
-							<div class='accrodion-title'>
-								<h4>Quanto tempo leva um serviço padrão?</h4>
-							</div>
-							<div class='accrodion-content'>
-								<div class='inner'>
-									<p>A maioria dos serviços padrão são concluídos em 2–3 horas.Com certeza! Aproveite
-										nossa confortável sala de espera com Wi-Fi e bebidas.
-									</p>
-								</div><!-- /.inner -->
-							</div>
-						</div>
-						<div class='accrodion wow fadeInRight' data-wow-delay='300ms' data-wow-duration='1500ms'>
-							<div class='accrodion-title'>
-								<h4>O seu serviço está coberto pela garantia?</h4>
-							</div>
-							<div class='accrodion-content'>
-								<div class='inner'>
-									<p>Sim, oferecemos garantia de serviço de até 3 meses, dependendo do tipo de
-										reparo. Fornecemos estimativas antecipadas para que você saiba exatamente o que
-										esperar.
-									</p>
-								</div><!-- /.inner -->
-							</div>
-						</div>
-						<div class='accrodion wow fadeInLeft' data-wow-delay='400ms' data-wow-duration='1500ms'>
-							<div class='accrodion-title'>
-								<h4>Você fornece assistência rodoviária de emergência?</h4>
-							</div>
-							<div class='accrodion-content'>
-								<div class='inner'>
-									<p>Sim, reboque de emergência 24 horas por dia, 7 dias por semana e suporte para
-										reparos na estrada estão disponíveis.
-										forneça estimativas iniciais para que você saiba exatamente o que esperar.
-									</p>
-								</div><!-- /.inner -->
-							</div>
-						</div>
+                        <?php endforeach; ?>
 					</div>
 				</div>
 			</div>
@@ -96,7 +69,8 @@
 				<div class='faq-one__right'>
 					<div class='faq-one__img-box'>
 						<div class='faq-one__img wow fadeInDown' data-wow-delay='100ms'>
-							<img src='<?= INCLUDE_PATH ?>/assets/images/resources/faq-one-img-1.png' alt='' class='float-bob-y'>
+							<img src='<?= INCLUDE_PATH ?>/assets/images/resources/faq-one-img-1.png' alt=''
+							     class='float-bob-y'>
 						</div>
 						<div class='faq-one__img-2'>
 							<img src='<?= INCLUDE_PATH ?>/assets/images/resources/faq-one-img-2.png' alt=''>
@@ -108,3 +82,4 @@
 	</div>
 </section>
 <!--Faq One End -->
+<?php endif; ?>

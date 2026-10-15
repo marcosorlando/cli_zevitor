@@ -365,7 +365,7 @@
             if ('servico' === $this->file) {
                 $service = $this->fetchSingleRow(
                     $read,
-                    'SELECT svc_title, svc_subtitle, svc_cover FROM ' . DB_SVC . ' WHERE svc_name = :nm AND svc_created <= NOW()',
+                    'SELECT svc_title, svc_subtitle, svc_cover FROM ' . DB_SERVICES . ' WHERE svc_name = :nm AND svc_status = 1',
                     'nm=' . $this->link
                 );
                 if (null !== $service) {
