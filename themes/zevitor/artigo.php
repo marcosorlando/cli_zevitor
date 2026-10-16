@@ -2,6 +2,7 @@
 
     use App\Conn\Read;
     use App\Conn\Update;
+    use App\Helpers\DateHelper;
 
     $Read ??= new Read;
 
@@ -33,25 +34,42 @@
         );
         $Author = ($Read->getResult() ? $Read->getResult()[0] : []);
         $AuthorName = trim(($Author['user_name'] ?? '') . ' ' . ($Author['user_lastname'] ?? ''));
+
+        $Read->fullRead(
+            "SELECT COUNT(id) AS total FROM " . DB_COMMENTS . " WHERE post_id = :post",
+            "post={$post_id}"
+        );
+        $PostComments = (int)($Read->getResult()[0]['total'] ?? 0);
     }
     extract($Author);
+
+    ['day' => $PostDay, 'month' => $PostMonth] = DateHelper::dayMonth($post_date);
+    $ShareLink = urlencode(BASE . "/artigo/{$post_name}");
+    $ShareTitle = urlencode($post_title);
+    $PostTags = array_filter(array_map('trim', explode(',', (string)($post_tags ?? ''))));
 ?>
 
 <!--Page Header Start-->
 <section class='page-header'>
-	<div class='page-header__bg' style='background-image: url(assets/images/backgrounds/page-header-bg.jpg);'>
+	<div class='page-header__bg'
+	     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/page-header-bg.jpg);'>
 	</div>
 	<div class='container'>
 		<div class='page-header__inner'>
 			<div class='page-header__img-1'>
-				<img src='assets/images/resources/page-header-img-1.png' alt=''>
+				<img src='<?= INCLUDE_PATH ?>/assets/images/resources/page-header-img-1.png' alt=''>
 			</div>
-			<h3>Detalhes do blog à direita</h3>
+			<h3>Blog Mecânica Zé Vitor</h3>
 			<div class='thm-breadcrumb__inner'>
 				<ul class='thm-breadcrumb list-unstyled'>
-					<li><a href='index.html'>Início</a></li>
+					<li><a href='<?= BASE ?>'>Início</a></li>
 					<li><span class='fas fa-angle-right'></span></li>
-					<li>Detalhes do blog à direita</li>
+					<li>
+						<a href='<?= BASE ?>/artigos/<?= $PostCategory['category_name'] ?>'
+						   title='Ver mais: <?= $PostCategory['category_title'] ?> em <?= SITE_NAME ?>!'><?= $PostCategory['category_title'] ?></a>
+					</li>
+					<li><span class='fas fa-angle-right'></span></li>
+					<li><?= $post_title ?></li>
 				</ul>
 			</div>
 		</div>
@@ -67,174 +85,142 @@
 				<div class='blog-details__left'>
 					<div class='blog-details__img-box-1'>
 						<div class='blog-details__img'>
-							<img src='assets/images/blog/blog-details-img-1.jpg' alt=''>
+                            <?php
+                                if ($post_video) {
+                                    echo "<div class='embed-container'>";
+                                    echo "<iframe id='mediaview' width='640' height='360' src='https://www.youtube.com/embed/{$post_video}?rel=0&amp;showinfo=0&autoplay=0&origin=" . BASE . "' frameborder='0' allowfullscreen></iframe>";
+                                    echo "</div>";
+                                } else {
+                                    echo "<img title='{$post_title}' alt='{$post_title}' src='" . BASE . "/tim.php?src=uploads/{$post_cover}&w=1200&h=628'/>";
+                                }
+                            ?>
 						</div>
 						<div class='blog-details__date'>
-							<p>12<br><span>Nov</span></p>
+							<p><?= $PostDay ?><br><span><?= $PostMonth ?></span></p>
 						</div>
 					</div>
 					<div class='blog-details__content'>
 						<div class='blog-details__user-and-meta'>
 							<div class='blog-details__user'>
-								<p><span class='icon-user-1'></span>Por administrador</p>
+								<p><span class='icon-user-1'></span>Por <?= $AuthorName ?></p>
 							</div>
 							<ul class='blog-details__meta list-unstyled'>
 								<li>
-									<a href='#'><span class='fas fa-comments'></span>Comentários (05)</a>
+									<time datetime='<?= DateHelper::iso($post_date) ?>'>
+										<span class='fas fa-calendar-alt'></span><?= DateHelper::human($post_date) ?>
+									</time>
 								</li>
 								<li>
-									<a href='#'><span class='fas fa-clock'></span>4 min de leitura</a>
+									<a href='#comments' class='wc_goto'><span class='fas fa-comments'></span>Comentários (<?= str_pad((string)$PostComments, 2, '0', STR_PAD_LEFT) ?>)</a>
+								</li>
+								<li>
+									<span class='fas fa-eye'></span><?= $post_views ?> views
+								</li>
+								<li>
+									<span class='fas fa-clock'></span><?= $post_time ?> min de leitura
 								</li>
 							</ul>
 						</div>
-						<h3 class='blog-details__title'>Por que a manutenção regular do carro é essencial.</h3>
-						<p class='blog-details__text-1'>Um carro é uma parte essencial de nossas vidas diárias.
-							A manutenção regular não só melhora o desempenho, mas também garante a segurança no
-							estrada. Muitos motoristas atrasam ou ignoram a manutenção, pensando que é desnecessário,
-							mas isso
-							muitas vezes leva a problemas maiores e mais caros no futuro. Manutenção regular do carro
-							é crucial para manter seu veículo nas melhores condições. Isso não apenas torna o seu
-							dirige mais suavemente, mas também garante segurança.</p>
-						<p class='blog-details__text-2'>Um carro é uma parte essencial de nossas vidas diárias.
-							A manutenção regular não só melhora o desempenho, mas também garante a segurança no
-							estrada. Muitos motoristas atrasam ou ignoram a manutenção, pensando que é desnecessário,
-							mas isso
-							muitas vezes leva a problemas maiores e mais caros no futuro.</p>
-						<div class='blog-details__author-box'>
-							<h4 class='blog-details__author-text'>“O brilho, a determinação da sua equipe,
-								e
-								a confiança o levará a conquistar novas fronteiras; a grandeza está dentro
-								você.
-								a grandeza está na motivação O brilho, a determinação e a determinação da sua equipe
-								confiança
-								irá levá-lo a conquistar novas fronteiras; a grandeza está dentro de você”</h4>
-							<p class='blog-details__author-name'>Kane Williamson<span> / CEO</span></p>
+						<h1 class='blog-details__title'><?= $post_title ?></h1>
+                        <?php
+                            if (!empty($post_subtitle)) { ?>
+								<p class='blog-details__text-1'><?= $post_subtitle ?></p>
+                            <?php
+                            } ?>
+						<div class='htmlchars'>
+                            <?= $post_content ?>
 						</div>
-						<h3 class='blog-details__title-2'>A manutenção oportuna prolonga a vida útil do seu carro.
-						</h3>
-						<p class='blog-details__text-3'>Fora enigma ad minim veniam, quis nostrud
-							exercício
-							ullamco laboris nisi ut aliquip ex ea comodo consequat. Duis aute inure dor
-							em
-							o reprehenderit in voluptate velit esse cillum dolore eu fugiat null pariatur.
-							Excepteur snit occaecat cupidatat non proident, sunt in culpa qui officia
-							desertor
-							mollit anim id est laborum.</p>
-						<div class='blog-details__img-box'>
-							<div class='row'>
-								<div class='col-xl-6'>
-									<div class='blog-details__img-box-img'>
-										<img src='assets/images/blog/blog-details-img-box-img-1.jpg' alt=''>
-									</div>
-								</div>
-								<div class='col-xl-6'>
-									<div class='blog-details__img-box-img'>
-										<img src='assets/images/blog/blog-details-img-box-img-2.jpg' alt=''>
-									</div>
-								</div>
-							</div>
-						</div>
+
 						<div class='blog-details__tag-and-share'>
 							<div class='blog-details__tag'>
-								<h3 class='blog-details__tag-title'>Etiquetas:</h3>
-								<ul class='blog-details__tag-list list-unstyled'>
-									<li>
-										<a href='#'>#Serviço</a>
-									</li>
-									<li>
-										<a href='#'>#Reparar</a>
-									</li>
-								</ul>
+                                <?php
+                                    if ($PostTags) { ?>
+										<h3 class='blog-details__tag-title'>Etiquetas:</h3>
+										<ul class='blog-details__tag-list list-unstyled'>
+                                            <?php
+                                                foreach ($PostTags as $Tag) { ?>
+													<li>
+														<a href='<?= BASE ?>/pesquisa/<?= urlencode($Tag) ?>'>#<?= $Tag ?></a>
+													</li>
+                                                <?php
+                                                } ?>
+										</ul>
+                                    <?php
+                                    } ?>
 							</div>
 							<div class='blog-details__share-box'>
 								<h3 class='blog-details__share-title'>Compartilhar :</h3>
 								<div class='blog-details__share'>
-									<a href='#'><span class='icon-facebook-app-symbol'></span></a>
-									<a href='#'><span class='icon-twitter'></span></a>
-									<a href='#'><span class='icon-instagram'></span></a>
-									<a href='#'><span class='icon-pinterest'></span></a>
+									<a href='https://www.facebook.com/sharer/sharer.php?u=<?= $ShareLink ?>'
+									   target='_blank' rel='noopener' title='Compartilhar no Facebook'><span
+												class='icon-facebook-app-symbol'></span></a>
+									<a href='https://twitter.com/intent/tweet?url=<?= $ShareLink ?>&text=<?= $ShareTitle ?>'
+									   target='_blank' rel='noopener' title='Compartilhar no X'><span
+												class='icon-twitter'></span></a>
+									<a href='https://api.whatsapp.com/send?text=<?= $ShareTitle ?>%20<?= $ShareLink ?>'
+									   target='_blank' rel='noopener' title='Compartilhar no WhatsApp'><span
+												class='fab fa-whatsapp'></span></a>
+									<a href='https://www.linkedin.com/sharing/share-offsite/?url=<?= $ShareLink ?>'
+									   target='_blank' rel='noopener' title='Compartilhar no LinkedIn'><span
+												class='fab fa-linkedin-in'></span></a>
 								</div>
 							</div>
 						</div>
-						<div class='comment-one'>
-							<div class='comment-one__single'>
-								<div class='comment-one__image'>
-									<img src='assets/images/blog/comment-1-1.jpg' alt=''>
-								</div>
-								<div class='comment-one__content'>
-									<h3>Teresa Webb</h3>
-									<span>02 de junho de 2024 às 15h30</span>
-									<p>O homem sábio, portanto, sempre se mantém nestas questões
-										princípio de
-										seleção. Ele rejeita prazeres para garantir outros prazeres maiores,
-										ou
-										caso contrário, ele suporta esforços para evitar dores piores até o ponto de
-										seleção.
-										Mas
-										em certeza para todas essas circunstâncias</p>
-									<div class='comment-one__btn-box'>
-										<a href='blog-details.html' class='comment-one__btn'>Responder</a>
+
+                        <?php
+                            if ($Author) { ?>
+								<!--Autor-->
+								<div class='comment-one'>
+									<div class='comment-one__single'>
+										<div class='comment-one__image'>
+											<img src='<?= BASE ?>/tim.php?src=uploads/<?= $user_thumb ?>&w=100&h=100'
+											     alt='<?= $AuthorName ?>' title='<?= $AuthorName ?>'>
+										</div>
+										<div class='comment-one__content'>
+											<h3><?= $AuthorName ?></h3>
+											<span>Autor(a)</span>
+											<p><?= $user_description ?></p>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class='comment-one__single'>
-								<div class='comment-one__image'>
-									<img src='assets/images/blog/comment-1-2.jpg' alt=''>
-								</div>
-								<div class='comment-one__content'>
-									<h3>Cameron Williamson</h3>
-									<span>02 de junho de 2024 às 15h30</span>
-									<p>O homem sábio, portanto, sempre se mantém nestas questões
-										princípio de
-										seleção. Ele rejeita prazeres para garantir outros prazeres maiores,
-										ou
-										caso contrário, ele suporta esforços para evitar dores piores até o ponto de
-										seleção.
-										Mas
-										em certeza para todas essas circunstâncias</p>
-									<div class='comment-one__btn-box'>
-										<a href='blog-details.html' class='comment-one__btn'>Responder</a>
-									</div>
-								</div>
-							</div>
-						</div>
+                            <?php
+                            } ?>
+
+						<!--Comentários-->
 						<div class='comment-form'>
-							<h3 class='comment-form__title'>Deixe uma resposta</h3>
-							<p class='comment-form__text'>Ao usar o formulário você concorda com a mensagem enviada,
-								você
-								pode
-								entre em contato conosco diretamente agora</p>
-							<form action='assets/inc/sendemail.php' class='comment-one__form contact-form-validated'
-							      novalidate='novalidate'>
-								<div class='row'>
-									<div class='col-xl-6'>
-										<div class='comment-form__input-box'>
-											<input type='text' placeholder='Seu nome' name='name'>
-										</div>
-									</div>
-									<div class='col-xl-6'>
-										<div class='comment-form__input-box'>
-											<input type='email' placeholder='Seu e-mail' name='email'>
-										</div>
-									</div>
-								</div>
-								<div class='row'>
-									<div class='col-xl-12'>
-										<div class='comment-form__input-box text-message-box'>
-											<textarea name='message' placeholder='Escreva sua mensagem'></textarea>
-										</div>
-										<div class='comment-form__btn-box'>
-											<button type='submit' class='footer-widget__newsletter-btn thm-btn'>Enviar
-												agora<span class='icon-next'></span>
-											</button>
-										</div>
-									</div>
-								</div>
-							</form>
-							<div class='result'></div>
+                            <?php
+                                if (APP_COMMENTS && COMMENT_ON_POSTS) {
+                                    $CommentKey = $post_id;
+                                    $CommentType = 'post';
+                                    require 'assets/widgets/comments/comments.php';
+                                }
+                            ?>
 						</div>
 					</div>
 				</div>
+
+                <?php
+                    $Read->fullRead(
+                        "SELECT p.post_title, p.post_name, p.post_cover, p.post_date, p.post_views, u.user_name, u.user_lastname, u.user_thumb FROM " . DB_POSTS . " p, " . DB_USERS . " u WHERE p.post_status = 1 AND p.post_date <= NOW() AND p.post_category = :ct AND p.post_id != :id AND p.post_author = u.user_id ORDER BY p.post_date DESC LIMIT 2",
+                        "ct={$post_category}&id={$post_id}"
+                    );
+
+                    if ($Read->getResult()) { ?>
+						<!--Artigos Relacionados-->
+						<div class='blog-details__related'>
+							<h3 class='comment-form__title'>Artigos Relacionados</h3>
+							<div class='row'>
+                                <?php
+                                    foreach ($Read->getResult() as $More) {
+                                        extract($More);
+                                        $authorName = "{$user_name} {$user_lastname}";
+                                        require REQUIRE_PATH . '/inc/post.php';
+                                    }
+                                ?>
+							</div>
+						</div>
+                    <?php
+                    } ?>
 			</div>
             <?php
                 require_once REQUIRE_PATH . '/inc/sidebar-blog.php'
@@ -242,4 +228,4 @@
 		</div>
 	</div>
 </section>
-<!--Blog Details Start-->
+<!--Blog Details End-->

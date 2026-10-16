@@ -36,13 +36,13 @@
 					</div>
 				</li>
 			</ul>
-			<p class='main-menu__top-welcome-text'>Bem-vindo ao nosso escritório <?= SITE_NAME ?></p>
+
 			<div class='main-menu__top-right'>
 				<div class='main-menu__top-time'>
 					<div class='main-menu__top-time-icon'>
 						<span class='fas fa-clock'></span>
 					</div>
-					<p class='main-menu__top-text'><b>Seg - Sex:</b> 09:00 - 11:45 | 14:00 - 18:00</p>
+					<p class='main-menu__top-text'><b>Seg - Sex:</b> 08:00 - 11:50 | 13:30 - 18:00</p>
 				</div>
 				<div class='main-menu__social'>
 
@@ -96,7 +96,7 @@
 							<i class='icon-phone-call'></i>
 						</div>
 						<div class='main-menu__call-content'>
-							<p class='main-menu__call-sub-title'>Ligue a qualquer hora</p>
+
 							<h5 class='main-menu__call-number'>
 								<a href='tel:<?= Check::clearNumber(SITE_ADDR_PHONE_A); ?>'><?= SITE_ADDR_PHONE_A ?></a>
 							</h5>

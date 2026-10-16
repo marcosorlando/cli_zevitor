@@ -234,9 +234,9 @@
 <div class='search-popup'>
 	<div class='color-layer'></div>
 	<button class='close-search'><span class='far fa-times fa-fw'></span></button>
-	<form method='post' action='blog.html'>
+	<form name='search' method='post' action=''>
 		<div class='form-group'>
-			<input type='search' name='search-field' value='' placeholder='Pesquisar aqui' required=''>
+			<input type='search' name='p' value='' placeholder='Pesquisar serviços e artigos' autocomplete='off' required>
 			<button type='submit'><i class='fas fa-search'></i></button>
 		</div>
 	</form>

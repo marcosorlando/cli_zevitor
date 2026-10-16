@@ -10,8 +10,8 @@
 	<div class='sidebar sidebar--three'>
 		<!--Start Sidebar Single-->
 		<div class='sidebar__single sidebar__search wow fadeInUp' data-wow-delay='.1s'>
-			<form action='#' name="search_blog" class='sidebar__search-form'>
-				<input type='search' name="s" placeholder='Pesquisar...'>
+			<form name='search' action='' method='post' class='sidebar__search-form'>
+				<input type='search' name='s' placeholder='Pesquisar...' autocomplete='off' required>
 				<button type='submit'><i class='fa fa-search'></i></button>
 			</form>
 		</div>
@@ -23,6 +23,7 @@
 
             <?php
                 $Read ??= new Read();
+                $tags = []; // chave em minúsculas evita "Câmbio" e "câmbio" duplicadas
 
                 $Read->exeRead(
                     DB_CATEGORIES,
@@ -41,7 +42,7 @@
 
                         <?php
                             $Read->fullRead(
-                                'SELECT c.category_id, c.category_title, c.category_name, COUNT(DISTINCT p.post_id) AS category_posts, p.post_tags '
+                                'SELECT c.category_id, c.category_title, c.category_name, COUNT(DISTINCT p.post_id) AS category_posts '
                                 . 'FROM ' . DB_CATEGORIES . ' c '
                                 . 'INNER JOIN ' . DB_POSTS . ' p ON (p.post_category = c.category_id OR FIND_IN_SET(c.category_id, p.post_category_parent)) '
                                 . 'WHERE c.category_parent = :pr '
@@ -52,10 +53,7 @@
                                 "pr={$blogId}"
                             );
                             if ($Read->getResult()) {
-                                $tags = '';
-
                                 foreach ($Read->getResult() as $cat) {
-                                    $tags .= $cat['post_tags'] . ', ';
                                     $categoryPosts = (int)($cat['category_posts'] ?? 0);
                                     ?>
 
@@ -66,6 +64,40 @@
 											<span>(<?= $categoryPosts ?>)</span></a></li>
 
                                     <?php
+                                }
+                            }
+
+                            // TAGS: da categoria aberta (artigos.php) ou das subcategorias do post (artigo.php);
+                            // sem categoria (pesquisa), de todas as categorias listadas acima
+                            $tagCategories = isset($category_id)
+                                ? [(int)$category_id]
+                                : array_filter(array_map('intval', explode(',', (string)($post_category_parent ?? ''))));
+                            $tagParams = [];
+                            $tagFilter = [];
+                            foreach (array_values($tagCategories) as $i => $tagCategory) {
+                                $tagParams["c{$i}"] = $tagCategory;
+                                $tagFilter[] = "p.post_category = :c{$i} OR FIND_IN_SET(:c{$i}, p.post_category_parent)";
+                            }
+                            if (!$tagFilter) {
+                                $tagParams = ['c0' => $blogId];
+                                $tagFilter[] = 'EXISTS (SELECT 1 FROM ' . DB_CATEGORIES . ' c WHERE c.category_parent = :c0 '
+                                    . 'AND (p.post_category = c.category_id OR FIND_IN_SET(c.category_id, p.post_category_parent)))';
+                            }
+
+                            $Read->fullRead(
+                                'SELECT p.post_tags FROM ' . DB_POSTS . ' p '
+                                . 'WHERE p.post_status = 1 AND p.post_date <= NOW() '
+                                . "AND p.post_tags IS NOT NULL AND p.post_tags != '' "
+                                . 'AND (' . implode(' OR ', $tagFilter) . ') '
+                                . 'ORDER BY p.post_date DESC',
+                                http_build_query($tagParams)
+                            );
+                            foreach ($Read->getResult() ?: [] as $postTags) {
+                                foreach (explode(',', $postTags['post_tags']) as $tag) {
+                                    $tag = trim($tag);
+                                    if ('' !== $tag) {
+                                        $tags[mb_strtolower($tag)] ??= $tag;
+                                    }
                                 }
                             }
                         ?>
@@ -81,7 +113,7 @@
 
 		<!--Start Sidebar Single-->
 		<div class='sidebar__single sidebar__post wow fadeInUp' data-wow-delay='.1s'>
-			<h3 class='sidebar__title'>Postagem recente</h3>
+			<h3 class='sidebar__title'>Postagens recentes</h3>
 			<div class='sidebar__post-box'>
                 <?php
                     $Read->fullRead(
@@ -92,7 +124,7 @@
                             ?>
 							<div class='sidebar__post-single'>
 								<div class='sidebar-post__img'>
-									<img src='assets/images/blog/recent-post-img-1.jpg'
+									<img src='<?= BASE ?>/tim.php?src=uploads/<?= $post['post_cover'] ?>&w=600&h=314
 									     alt='<?= $post['post_title'] ?>'>
 								</div>
 								<div class='sidebar__post-content-box'>
@@ -137,16 +169,6 @@
 
         <?php
             if ($tags) {
-                $tags = explode(',', $tags);
-                $tags = array_values(
-                    array_unique(
-                        array_filter(
-                            array_map(static fn($item) => is_string($item) ? trim($item) : $item, $tags),
-                            static fn($item) => $item !== null && $item !== '' && $item !== []
-                        ),
-                        SORT_REGULAR
-                    )
-                );
                 ?>
 
 				<div class='sidebar__single sidebar__tags wow fadeInUp' data-wow-delay='.1s'>
@@ -156,10 +178,11 @@
                         <?php
                             foreach ($tags as $tag) {
                                 $searchWord = trim(Check::getCapilalize($tag));
-                                $searchSlug = Check::name($searchWord);
                                 ?>
 
-								<li><a href='<?= BASE ?>/pesquisa/<?= $searchSlug ?>'><?= $searchWord ?></a></li>
+								<li><a href='<?= BASE ?>/pesquisa/<?= urlencode($tag) ?>'><?= Check::safeHtmlChars(
+                                            $searchWord
+                                        ) ?></a></li>
 
                                 <?php
                             }

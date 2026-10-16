@@ -155,8 +155,15 @@
 	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/twentytwenty.css'>
 
 	<!-- template styles -->
-	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/style.css'>
-	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/responsive.css'>
+    <?php
+        // Produção: ?v=filemtime força o navegador a baixar o CSS quando o arquivo muda.
+        // Localhost: sem ?v, para o Workspace do DevTools mapear o arquivo e salvar as edições no disco.
+        $cssVersion = static fn(string $file): string => str_contains(BASE, '://localhost')
+            ? ''
+            : '?v=' . filemtime('themes/' . THEME . "/assets/css/{$file}");
+    ?>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/style.css<?= $cssVersion('style.css') ?>'>
+	<link rel='stylesheet' href='<?= INCLUDE_PATH ?>/assets/css/responsive.css<?= $cssVersion('responsive.css') ?>'>
 
 	<!--ZEN THEME JS-->
 	<!-- JS BASE ASSETS PROJECT -->
@@ -382,11 +389,11 @@
         ) {
             require __DIR__ . '/maintenance.php';
         } else {
-            // PESQUISA PRODUTOS
+            // PESQUISA GERAL | SERVIÇOS
             $Search = filter_input_array(INPUT_POST);
             if ($Search && !empty($Search['p'])) {
                 $Search = urlencode(strip_tags(trim($Search['p'])));
-                header('Location: ' . BASE . '/pesquisa-produtos/' . $Search);
+                header('Location: ' . BASE . '/pesquisa-geral/' . $Search);
 
                 exit;
             }

@@ -2,6 +2,7 @@
 
     use App\Conn\Read;
     use App\Helpers\Check;
+    use App\Helpers\DateHelper;
 
     /**
      * Blog (home) — tema Zevitor.
@@ -21,10 +22,6 @@
         'limit=3'
     );
 
-    $Meses = [
-        1 => 'Jan', 2 => 'Fev', 3 => 'Mar', 4 => 'Abr', 5 => 'Mai', 6 => 'Jun',
-        7 => 'Jul', 8 => 'Ago', 9 => 'Set', 10 => 'Out', 11 => 'Nov', 12 => 'Dez',
-    ];
     $Anim = ['fadeInLeft', 'fadeInUp', 'fadeInRight'];
 ?>
 <!--Blog One Start-->
@@ -59,51 +56,54 @@
                     foreach ($Read->getResult() as $Post) {
                         extract($Post);
                         $Capa = !empty($post_cover)
-                            ? BASE . '/tim.php?src=uploads/' . $post_cover . '&w=420&h=300'
+                            ? BASE . '/tim.php?src=uploads/' . $post_cover . '&w=1200&h=628'
                             : INCLUDE_PATH . '/assets/images/blog/blog-1-1.jpg';
                         $Link = BASE . '/artigo/' . $post_name;
-                        $Dia = date('d', strtotime($post_date));
-                        $Mes = $Meses[(int) date('n', strtotime($post_date))];
+                        ['day' => $Dia, 'month' => $Mes] = DateHelper::dayMonth($post_date);
                         $Tag = !empty($category_title) ? $category_title : 'Blog';
                         $Autor = !empty($user_name) ? $user_name : 'Mecânica Zé Vitor';
                         $Wow = $Anim[$i % 3];
                         $i++;
-            ?>
-			<!--Blog One Single Start-->
-			<div class='col-xl-4 col-lg-4 col-md-6 wow <?= $Wow ?>' data-wow-delay='<?= ($i * 100) ?>ms'>
-				<div class='blog-one__single'>
-					<div class='blog-one__single-inner'>
-						<div class='blog-one__img-box'>
-							<div class='blog-one__img'>
-								<img src='<?= $Capa ?>' alt='<?= Check::safeHtmlChars($post_title) ?>'>
-								<div class='blog-one__tags'>
-									<span><?= Check::safeHtmlChars($Tag) ?></span>
+                        ?>
+						<!--Blog One Single Start-->
+						<div class='col-xl-4 col-lg-4 col-md-6 wow <?= $Wow ?>' data-wow-delay='<?= ($i * 100) ?>ms'>
+							<div class='blog-one__single'>
+								<div class='blog-one__single-inner'>
+									<div class='blog-one__img-box'>
+										<div class='blog-one__img'>
+											<img src='<?= $Capa ?>' alt='<?= Check::safeHtmlChars($post_title) ?>'>
+											<div class='blog-one__tags'>
+												<span><?= Check::safeHtmlChars($Tag) ?></span>
+											</div>
+										</div>
+										<div class='blog-one__date'>
+											<p><?= $Dia ?> <span><?= $Mes ?></span></p>
+										</div>
+									</div>
+									<div class='blog-one__content'>
+										<ul class='blog-one__meta list-unstyled'>
+											<li>
+												<a href='<?= $Link ?>'>
+													<span class='fas fa-user'></span><?= Check::safeHtmlChars($Autor) ?>
+												</a>
+											</li>
+										</ul>
+										<h3 class='blog-one__title'><a href='<?= $Link ?>'><?= Check::safeHtmlChars(
+                                                    $post_title
+                                                ) ?></a></h3>
+										<p class='blog-one__text'><?= Check::safeHtmlChars(
+                                                (string)$post_subtitle
+                                            ) ?></p>
+									</div>
+								</div>
+								<div class='blog-one__read-more-box'>
+									<a href='<?= $Link ?>' class='blog-one__read-more'>Leia mais<span
+												class='fas fa-arrow-right'></span></a>
 								</div>
 							</div>
-							<div class='blog-one__date'>
-								<p><?= $Dia ?> <span><?= $Mes ?></span></p>
-							</div>
 						</div>
-						<div class='blog-one__content'>
-							<ul class='blog-one__meta list-unstyled'>
-								<li>
-									<a href='<?= $Link ?>'>
-										<span class='fas fa-user'></span><?= Check::safeHtmlChars($Autor) ?>
-									</a>
-								</li>
-							</ul>
-							<h3 class='blog-one__title'><a href='<?= $Link ?>'><?= Check::safeHtmlChars($post_title) ?></a></h3>
-							<p class='blog-one__text'><?= Check::safeHtmlChars((string) $post_subtitle) ?></p>
-						</div>
-					</div>
-					<div class='blog-one__read-more-box'>
-						<a href='<?= $Link ?>' class='blog-one__read-more'>Leia mais<span
-									class='fas fa-arrow-right'></span></a>
-					</div>
-				</div>
-			</div>
-			<!--Blog One Single End-->
-            <?php
+						<!--Blog One Single End-->
+                        <?php
                     }
                 }
             ?>

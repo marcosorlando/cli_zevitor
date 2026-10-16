@@ -45,119 +45,8 @@
 
         $_SESSION['search'][] = $Search;
     }
-
-    $Page = (!empty($URL[2]) && is_numeric($URL[2]) ? (int)$URL[2] : 1);
-    $Page = ($Page > 0 ? $Page : 1);
-    $Pager = new Pager(
-        BASE . "/pesquisa/{$SearchPage}/",
-        '<i class="fas fa-angle-left"></i>',
-        '<i class="fas fa-angle-right"></i>',
-        5
-    );
-    $Pager->exePager($Page, 9);
-
-    $SearchLike = "%{$Search}%";
-    $SearchParams = http_build_query([
-        'limit' => $Pager->getLimit(),
-        'offset' => $Pager->getOffset(),
-        'title' => $SearchLike,
-        'subtitle' => $SearchLike,
-        'tags' => $SearchLike,
-        'month' => $Search,
-    ]);
-
-    $Read->fullRead(
-        'SELECT p.post_title, p.post_subtitle, p.post_name, p.post_cover, p.post_date, '
-        . 'u.user_name, u.user_lastname, c.category_title '
-        . 'FROM ' . DB_POSTS . ' p '
-        . 'LEFT JOIN ' . DB_USERS . ' u ON p.post_author = u.user_id '
-        . 'LEFT JOIN ' . DB_CATEGORIES . ' c ON p.post_category = c.category_id '
-        . 'WHERE p.post_status = 1 AND p.post_date <= NOW() '
-        . 'AND (p.post_title LIKE :title OR p.post_subtitle LIKE :subtitle OR p.post_tags LIKE :tags OR MONTH(p.post_date) = :month) '
-        . 'ORDER BY p.post_date DESC LIMIT :limit OFFSET :offset',
-        $SearchParams
-    );
-    $SearchResults = $Read->getResult() ?: [];
-
-    var_dump($SearchResults);
-
-    $Months = [
-        1 => 'Jan',
-        2 => 'Fev',
-        3 => 'Mar',
-        4 => 'Abr',
-        5 => 'Mai',
-        6 => 'Jun',
-        7 => 'Jul',
-        8 => 'Ago',
-        9 => 'Set',
-        10 => 'Out',
-        11 => 'Nov',
-        12 => 'Dez'
-    ];
-    $Animations = ['fadeInLeft', 'fadeInUp', 'fadeInRight'];
-
-    $renderPostCard = static function (array $post, int $index) use ($Months, $Animations): void {
-
-        $postDate = !empty($post['post_date']) ? strtotime((string)$post['post_date']) : time();
-        $postDate = false !== $postDate ? $postDate : time();
-        $cover = !empty($post['post_cover'])
-            ? BASE . '/tim.php?src=uploads/' . $post['post_cover'] . '&w=420&h=300'
-            : INCLUDE_PATH . '/assets/images/blog/blog-1-1.jpg';
-        $link = BASE . '/artigo/' . ($post['post_name'] ?? '');
-        $day = date('d', $postDate);
-        $month = $Months[(int)date('n', $postDate)] ?? date('M', $postDate);
-        $category = !empty($post['category_title']) ? (string)$post['category_title'] : 'Blog';
-        $author = trim((string)($post['user_name'] ?? '') . ' ' . (string)($post['user_lastname'] ?? ''));
-        $author = '' !== $author ? $author : SITE_NAME;
-        $animation = $Animations[$index % count($Animations)];
-        $delay = (($index % 3) + 1) * 100;
-        ?>
-		<!--Blog One Single Start-->
-		<div class='col-xl-4 col-lg-4 col-md-6 wow <?= $animation ?>' data-wow-delay='<?= $delay ?>ms'>
-			<div class='blog-one__single'>
-				<div class='blog-one__single-inner'>
-					<div class='blog-one__img-box'>
-						<div class='blog-one__img'>
-							<img src='<?= Check::safeHtmlChars($cover) ?>'
-							     alt='<?= Check::safeHtmlChars((string)($post['post_title'] ?? '')) ?>'>
-							<div class='blog-one__tags'>
-								<span><?= Check::safeHtmlChars($category) ?></span>
-							</div>
-						</div>
-						<div class='blog-one__date'>
-							<p><?= $day ?> <span><?= $month ?></span></p>
-						</div>
-					</div>
-					<div class='blog-one__content'>
-						<ul class='blog-one__meta list-unstyled'>
-							<li>
-								<a href='<?= Check::safeHtmlChars($link) ?>'>
-									<span class='fas fa-user'></span><?= Check::safeHtmlChars($author) ?>
-								</a>
-							</li>
-						</ul>
-						<h3 class='blog-one__title'>
-							<a href='<?= Check::safeHtmlChars($link) ?>'><?= Check::safeHtmlChars(
-                                    (string)($post['post_title'] ?? '')
-                                ) ?></a>
-						</h3>
-						<p class='blog-one__text'><?= Check::safeHtmlChars(
-                                Check::chars((string)($post['post_subtitle'] ?? ''), 140)
-                            ) ?></p>
-					</div>
-				</div>
-				<div class='blog-one__read-more-box'>
-					<a href='<?= Check::safeHtmlChars($link) ?>' class='blog-one__read-more'>Leia mais<span
-								class='fas fa-arrow-right'></span></a>
-				</div>
-			</div>
-		</div>
-		<!--Blog One Single End-->
-        <?php
-    };
 ?>
-
+<!--Page Header Start-->
 <section class='page-header'>
 	<div class='page-header__bg'
 	     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/page-header-bg.jpg);'>
@@ -167,75 +56,99 @@
 			<div class='page-header__img-1'>
 				<img src='<?= INCLUDE_PATH ?>/assets/images/resources/page-header-img-1.png' alt=''>
 			</div>
-			<h3>Blog</h3>
+			<h3>Blog Mecânica Zé Vitor</h3>
 			<div class='thm-breadcrumb__inner'>
 				<ul class='thm-breadcrumb list-unstyled'>
 					<li><a href='<?= BASE ?>'>Início</a></li>
 					<li><span class='fas fa-angle-right'></span></li>
-					<li>Pesquisa por <span><?= $SearchEscaped ?></span></li>
+					<li>Pesquisa por: <a href="#search" class="wc_goto"><?= $SearchEscaped ?></a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
 </section>
+<!--Page Header End-->
 
-<section class='blog-page'>
+<!--Blog Right Sidebar Start -->
+<section id="search" class='blog-right-sidebar'>
 	<div class='container'>
 		<div class='row'>
-            <?php
-                if (!$SearchResults) {
-                    $Pager->returnPage();
-                    echo Check::ajaxErro(
-                        "Não encontramos conteúdo para a palavra-chave <b>({$SearchEscaped})</b>.",
-                        E_USER_NOTICE
-                    );
+			<div class='col-xl-8'>
+				<div class='row'>
+                    <?php
+                        $Page = (!empty($URL[2]) && is_numeric($URL[2]) ? (int)$URL[2] : 1);
+                        $Page = ($Page > 0 ? $Page : 1);
+                        $Pager = new Pager(BASE . "/pesquisa/{$SearchPage}/", '<', '>', 5);
+                        $Pager->exePager($Page, 10);
 
-                    $Read->fullRead(
-                        'SELECT p.post_title, p.post_subtitle, p.post_name, p.post_cover, p.post_date, '
-                        . 'u.user_name, u.user_lastname, c.category_title '
-                        . 'FROM ' . DB_POSTS . ' p '
-                        . 'LEFT JOIN ' . DB_USERS . ' u ON p.post_author = u.user_id '
-                        . 'LEFT JOIN ' . DB_CATEGORIES . ' c ON p.post_category = c.category_id '
-                        . 'WHERE p.post_status = 1 AND p.post_date <= NOW() '
-                        . 'ORDER BY p.post_date DESC LIMIT :limit',
-                        'limit=3'
-                    );
-                    $LatestPosts = $Read->getResult() ?: [];
-
-                    foreach ($LatestPosts as $index => $post) {
-                        $renderPostCard($post, $index);
-                    }
-                } else {
-                    foreach ($SearchResults as $index => $post) {
-                        $renderPostCard($post, $index);
-                    }
-
-                    $Pager->exePaginator(
-                        DB_POSTS,
-                        'WHERE post_status = 1 AND post_date <= NOW() '
-                        . 'AND (post_title LIKE :title OR post_subtitle LIKE :subtitle OR post_tags LIKE :tags OR MONTH(post_date) = :month)',
-                        http_build_query([
+                        $SearchLike = "%{$Search}%";
+                        $SearchTerms = "post_status = 1 AND post_date <= NOW() AND (post_title LIKE :title OR post_subtitle LIKE :subtitle OR post_tags LIKE :tags OR MONTH(post_date) = :month)";
+                        $SearchParams = [
                             'title' => $SearchLike,
                             'subtitle' => $SearchLike,
                             'tags' => $SearchLike,
                             'month' => $Search,
-                        ])
-                    );
-                    $Paginator = str_replace(
-                        ["class='paginator pagination'", 'class="active"'],
-                        ["class='pg-pagination list-unstyled'", "class='count active'"],
-                        $Pager->getPaginator()
-                    );
+                        ];
 
-                    if ('' !== $Paginator) {
-                        ?>
-						<div class='blog-list__pagination'>
-                            <?= $Paginator ?>
-						</div>
+                        $Read->fullRead(
+                            'SELECT p.post_title, p.post_subtitle, p.post_name, p.post_cover, p.post_date, p.post_author, p.post_views, u.user_name, u.user_lastname, u.user_thumb FROM ' . DB_POSTS . ' p, ' . DB_USERS . " u WHERE {$SearchTerms} AND post_author = user_id ORDER BY post_date DESC LIMIT :limit OFFSET :offset",
+                            http_build_query(
+                                ['limit' => $Pager->getLimit(), 'offset' => $Pager->getOffset()] + $SearchParams
+                            )
+                        );
+
+                        if (!$Read->getResult()) {
+                            $Pager->returnPage();
+                            echo Check::erro(
+                                "Não encontramos conteúdo para a palavra-chave <b>( {$SearchEscaped} )</b>. Confira os últimos artigos:",
+                                E_USER_NOTICE
+                            );
+
+                            $Read->fullRead(
+                                'SELECT p.post_title, p.post_subtitle, p.post_name, p.post_cover, p.post_date, p.post_author, p.post_views, u.user_name, u.user_lastname, u.user_thumb FROM ' . DB_POSTS . ' p, ' . DB_USERS . ' u WHERE post_status = 1 AND post_date <= NOW() AND post_author = user_id ORDER BY post_date DESC LIMIT :limit',
+                                'limit=4'
+                            );
+                        }
+
+                        foreach ($Read->getResult() ?: [] as $Post) {
+                            extract($Post);
+                            $authorName = "{$user_name} {$user_lastname}";
+                            require REQUIRE_PATH . '/inc/post.php';
+                        }
+                    ?>
+
+					<!--Blog List Pagination-->
+					<div class='blog-list__pagination'>
                         <?php
-                    }
-                }
-            ?>
+                            $Pager->exePaginator(DB_POSTS, "WHERE {$SearchTerms}", http_build_query($SearchParams));
+                            echo $Pager->getPaginator();
+                        ?>
+					</div>
+				</div>
+			</div>
+
+            <?php
+                require_once REQUIRE_PATH . '/inc/sidebar-blog.php' ?>
 		</div>
 	</div>
 </section>
+<!--Blog Right Sidebar End-->
+<script>
+    // Após carregar tudo (imagens incluídas), rola suave até os resultados.
+    // Espera o fade do #preloader (script.js: delay 200 + fadeOut slow ≈ 800ms);
+    // o desconto de 110px é o mesmo do .wc_goto, para o header fixo não cobrir o topo.
+    window.addEventListener('load', function () {
+        const target = document.getElementById('search');
+        if (!target) {
+            return;
+        }
+
+        setTimeout(function () {
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            window.scrollTo({
+                top: target.getBoundingClientRect().top + window.scrollY - 10,
+                behavior: reduceMotion ? 'auto' : 'smooth'
+            });
+        }, 800);
+    });
+</script>

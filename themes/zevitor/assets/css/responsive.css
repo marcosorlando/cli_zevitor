@@ -66,6 +66,7 @@
         background-color: transparent;
         -webkit-mask: none;
         mask: none;
+        aspect-ratio: auto;
     }
 
     .blog-one__read-more-box {
@@ -405,6 +406,7 @@
         background-color: transparent;
         -webkit-mask: none;
         mask: none;
+        aspect-ratio: auto;
     }
 
     .blog-one__read-more-box {
@@ -932,6 +934,7 @@
         background-color: transparent;
         -webkit-mask: none;
         mask: none;
+        aspect-ratio: auto;
     }
 
     .blog-one__read-more-box {
@@ -1787,6 +1790,7 @@
         background-color: transparent;
         -webkit-mask: none;
         mask: none;
+        aspect-ratio: auto;
     }
 
     .blog-one__read-more-box {
@@ -2197,6 +2201,7 @@
         padding: 20px 15px 150px;
         -webkit-mask: none;
         mask: none;
+        aspect-ratio: auto;
     }
 
     .blog-two__single-inner::before {

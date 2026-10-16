@@ -287,7 +287,7 @@
                 return;
             }
 
-            if ('pesquisa' === $this->file) {
+            if (in_array($this->file, ['pesquisa', 'pesquisa-geral'], true)) {
                 $keyword = $this->link ?? '';
                 $this->assignSeo(
                     'WebSite',

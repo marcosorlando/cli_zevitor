@@ -1,160 +1,101 @@
 <?php
 
-use App\Conn\Read;
+    use App\Conn\Read;
+    use App\Helpers\Check;
 
-$Read ??= new Read();
+    /**
+     * Menu principal — tema Zevitor.
+     * Serviços: DB_SERVICES ativos -> BASE/servico/<svc_name> (topo: BASE/servicos).
+     * Projetos: só aparece se houver projeto ativo em DB_PROJECTS.
+     * Blog: categorias de DB_CATEGORIES com post publicado -> BASE/artigos/<category_name>.
+     *       Uma única categoria raiz vira o link do topo e as filhas formam o submenu.
+     * Encanamento: padrão do WC ($Read->fullRead + foreach + extract).
+     */
+    $Read ??= new Read();
 
-if (!function_exists('zevitorMenuEsc')) {
-    function zevitorMenuEsc(mixed $value): string
-    {
-        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
-    }
-}
+    // SERVIÇOS
+    $Read->fullRead(
+        'SELECT svc_name, svc_title FROM ' . DB_SERVICES . ' WHERE svc_status = :st ORDER BY svc_id ASC',
+        'st=1'
+    );
+    $MenuServices = $Read->getResult() ?: [];
 
-if (!function_exists('zevitorMenuRenderCategories')) {
-    function zevitorMenuRenderCategories(array $categories, string $segment, string $slugField = 'category_name'): void
-    {
-        if (!$categories) {
-            return;
-        }
+    // PROJETOS
+    $Read->fullRead('SELECT project_id FROM ' . DB_PROJECTS . ' WHERE project_status = :st LIMIT 1', 'st=1');
+    $MenuProjects = (bool) $Read->getResult();
 
-        echo "<li class='dropdown'><a href='#'>Categorias</a><ul>";
-        foreach ($categories as $category) {
-            $title = zevitorMenuEsc($category['category_title'] ?? '');
-            $slug = zevitorMenuEsc($category[$slugField] ?? '');
-            $children = $category['children'] ?? [];
-
-            if ($children) {
-                echo "<li class='dropdown'><a href='" . BASE . "/{$segment}/{$slug}'>{$title}</a><ul>";
-                foreach ($children as $child) {
-                    $childTitle = zevitorMenuEsc($child['category_title'] ?? '');
-                    $childSlug = zevitorMenuEsc($child[$slugField] ?? '');
-                    echo "<li><a href='" . BASE . "/{$segment}/{$childSlug}'>{$childTitle}</a></li>";
-                }
-                echo '</ul></li>';
-            } else {
-                echo "<li><a href='" . BASE . "/{$segment}/{$slug}'>{$title}</a></li>";
-            }
-        }
-        echo '</ul></li>';
-    }
-}
-
-if (!function_exists('zevitorMenuReadBlogCategories')) {
-    function zevitorMenuReadBlogCategories(Read $read): array
-    {
-        $read->fullRead(
-            'SELECT c.category_id, c.category_title, c.category_name '
-            . 'FROM ' . DB_CATEGORIES . ' c '
-            . 'WHERE c.category_parent IS NULL '
-            . 'AND c.category_id IN ('
-            . 'SELECT post_category FROM ' . DB_POSTS . ' WHERE post_status = 1 AND post_date <= NOW()'
-            . ') '
-            . 'ORDER BY c.category_title ASC'
+    // BLOG (categorias raiz com post publicado + filhas com post publicado)
+    $Read->fullRead(
+        'SELECT category_id, category_title, category_name FROM ' . DB_CATEGORIES . ' '
+        . 'WHERE category_parent IS NULL AND category_id IN ('
+        . 'SELECT post_category FROM ' . DB_POSTS . ' WHERE post_status = 1 AND post_date <= NOW()'
+        . ') ORDER BY category_title ASC'
+    );
+    $MenuBlog = $Read->getResult() ?: [];
+    foreach ($MenuBlog as $Key => $Category) {
+        $Read->fullRead(
+            'SELECT category_title, category_name FROM ' . DB_CATEGORIES . ' c '
+            . 'WHERE c.category_parent = :parent AND EXISTS ('
+            . 'SELECT 1 FROM ' . DB_POSTS . ' p WHERE p.post_status = 1 AND p.post_date <= NOW() '
+            . 'AND FIND_IN_SET(c.category_id, p.post_category_parent)'
+            . ') ORDER BY c.category_title ASC',
+            "parent={$Category['category_id']}"
         );
-        $parents = $read->getResult() ?: [];
-
-        foreach ($parents as $index => $parent) {
-            $read->fullRead(
-                'SELECT c.category_id, c.category_title, c.category_name '
-                . 'FROM ' . DB_CATEGORIES . ' c '
-                . 'WHERE c.category_parent = :parent '
-                . 'AND EXISTS ('
-                . 'SELECT 1 FROM ' . DB_POSTS . ' p '
-                . 'WHERE p.post_status = 1 AND p.post_date <= NOW() '
-                . 'AND FIND_IN_SET(c.category_id, p.post_category_parent)'
-                . ') '
-                . 'ORDER BY c.category_title ASC',
-                'parent=' . $parent['category_id']
-            );
-            $parents[$index]['children'] = $read->getResult() ?: [];
-        }
-
-        return $parents;
+        $MenuBlog[$Key]['children'] = $Read->getResult() ?: [];
     }
-}
 
-if (!function_exists('zevitorMenuReadModuleCategories')) {
-    function zevitorMenuReadModuleCategories(
-        Read $read,
-        string $categoryTable,
-        string $contentTable,
-        string $contentCategoryField,
-        string $contentStatusField
-    ): array {
-        $read->fullRead(
-            'SELECT c.category_id, c.category_title, c.category_slug '
-            . "FROM {$categoryTable} c "
-            . 'WHERE c.category_parent IS NULL '
-            . "AND (c.category_id IN (SELECT {$contentCategoryField} FROM {$contentTable} WHERE {$contentStatusField} = 1) "
-            . "OR c.category_id IN (SELECT category_parent FROM {$categoryTable} WHERE category_id IN "
-            . "(SELECT {$contentCategoryField} FROM {$contentTable} WHERE {$contentStatusField} = 1) "
-            . 'AND category_parent IS NOT NULL)) '
-            . 'ORDER BY c.category_title ASC'
-        );
-        $parents = $read->getResult() ?: [];
-
-        foreach ($parents as $index => $parent) {
-            $read->fullRead(
-                'SELECT c.category_id, c.category_title, c.category_slug '
-                . "FROM {$categoryTable} c "
-                . 'WHERE c.category_parent = :parent '
-                . "AND c.category_id IN (SELECT {$contentCategoryField} FROM {$contentTable} WHERE {$contentStatusField} = 1) "
-                . 'ORDER BY c.category_title ASC',
-                'parent=' . $parent['category_id']
-            );
-            $parents[$index]['children'] = $read->getResult() ?: [];
-        }
-
-        return $parents;
-    }
-}
-
-$ServiceCategories = (defined('DB_SERVICES_CATEGORIES') && defined('DB_SERVICES')
-    ? zevitorMenuReadModuleCategories($Read, DB_SERVICES_CATEGORIES, DB_SERVICES, 'svc_category', 'svc_status')
-    : []);
-
-$ProjectCategories = (defined('DB_PROJECTS_CATEGORIES') && defined('DB_PROJECTS')
-    ? zevitorMenuReadModuleCategories($Read, DB_PROJECTS_CATEGORIES, DB_PROJECTS, 'project_category', 'project_status')
-    : []);
-
-$BlogCategories = (defined('DB_CATEGORIES') && defined('DB_POSTS')
-    ? zevitorMenuReadBlogCategories($Read)
-    : []);
+    $BlogRoot = 1 === count($MenuBlog) ? $MenuBlog[0] : null;
+    $BlogItems = $BlogRoot ? $BlogRoot['children'] : $MenuBlog;
+    $BlogLink = $MenuBlog ? BASE . '/artigos/' . $MenuBlog[0]['category_name'] : '#';
 ?>
 
 <ul class="main-menu__list">
-    <li><a href="<?= BASE; ?>" title="<?= SITE_NAME; ?> | Home">Home</a></li>
+	<li><a href="<?= BASE ?>" title="<?= SITE_NAME ?> | Home">Home</a></li>
 
-    <li class="<?= $ServiceCategories ? 'dropdown' : ''; ?>">
-        <a href="<?= $ServiceCategories ? '#' : BASE . '/servicos'; ?>" title="<?= SITE_NAME; ?> | Serviços">Serviços</a>
-        <?php if ($ServiceCategories): ?>
-            <ul class="shadow-box">
-                <?php zevitorMenuRenderCategories($ServiceCategories, 'servicos', 'category_slug'); ?>
-            </ul>
+	<li class="<?= $MenuServices ? 'dropdown' : '' ?>">
+		<a href="<?= BASE ?>/servicos" title="<?= SITE_NAME ?> | Serviços">Serviços</a>
+        <?php if ($MenuServices): ?>
+		<ul class="shadow-box">
+            <?php foreach ($MenuServices as $Service): extract($Service); ?>
+			<li><a href="<?= BASE ?>/servico/<?= $svc_name ?>"
+			       title="<?= Check::safeHtmlChars($svc_title) ?>"><?= Check::safeHtmlChars($svc_title) ?></a></li>
+            <?php endforeach; ?>
+		</ul>
         <?php endif; ?>
-    </li>
+	</li>
 
-    <li class="<?= $ProjectCategories ? 'dropdown' : ''; ?>">
-        <a href="<?= $ProjectCategories ? '#' : BASE . '/projetos'; ?>" title="<?= SITE_NAME; ?> | Projetos">Projetos</a>
-        <?php if ($ProjectCategories): ?>
-            <ul class="shadow-box">
-                <?php zevitorMenuRenderCategories($ProjectCategories, 'projetos', 'category_slug'); ?>
-            </ul>
+    <?php if ($MenuProjects): ?>
+	<li><a href="<?= BASE ?>/projetos" title="<?= SITE_NAME ?> | Projetos">Projetos</a></li>
+    <?php endif; ?>
+
+	<li><a href="<?= BASE ?>/sobre" title="<?= SITE_NAME ?> | Sobre nós">Sobre nós</a></li>
+
+    <?php if ($MenuBlog): ?>
+	<li class="<?= $BlogItems ? 'dropdown menu-list-apper-right' : '' ?>">
+		<a href="<?= $BlogLink ?>" title="<?= SITE_NAME ?> | Blog">Blog</a>
+        <?php if ($BlogItems): ?>
+		<ul class="shadow-box">
+            <?php foreach ($BlogItems as $Category): extract($Category);
+                $Children = $Category['children'] ?? [];
+            ?>
+			<li class="<?= $Children ? 'dropdown' : '' ?>">
+				<a href="<?= BASE ?>/artigos/<?= $category_name ?>"
+				   title="<?= Check::safeHtmlChars($category_title) ?>"><?= Check::safeHtmlChars($category_title) ?></a>
+                <?php if ($Children): ?>
+				<ul>
+                    <?php foreach ($Children as $Child): ?>
+					<li><a href="<?= BASE ?>/artigos/<?= $Child['category_name'] ?>"
+					       title="<?= Check::safeHtmlChars($Child['category_title']) ?>"><?= Check::safeHtmlChars($Child['category_title']) ?></a></li>
+                    <?php endforeach; ?>
+				</ul>
+                <?php endif; ?>
+			</li>
+            <?php endforeach; ?>
+		</ul>
         <?php endif; ?>
-    </li>
+	</li>
+    <?php endif; ?>
 
-    <li><a href="<?= BASE; ?>/sobre" title="<?= SITE_NAME; ?> | Sobre nós">Sobre nós</a></li>
-
-    <li class="<?= $BlogCategories ? 'dropdown menu-list-apper-right' : ''; ?>">
-        <a href="#" title="<?= SITE_NAME; ?> | Blog">Blog</a>
-        <?php if ($BlogCategories): ?>
-            <ul class="shadow-box">
-                <?php zevitorMenuRenderCategories($BlogCategories, 'artigos'); ?>
-            </ul>
-        <?php endif; ?>
-    </li>
-
-    <li><a href="<?= BASE; ?>/materiais" title="<?= SITE_NAME; ?> | Materiais">Materiais</a></li>
-    <li><a href="<?= BASE; ?>/contato" title="<?= SITE_NAME; ?> | Contato">Contato</a></li>
+	<li><a href="<?= BASE ?>/materiais" title="<?= SITE_NAME ?> | Materiais">Materiais</a></li>
+	<li><a href="<?= BASE ?>/contato" title="<?= SITE_NAME ?> | Contato">Contato</a></li>
 </ul>

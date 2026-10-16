@@ -104,6 +104,26 @@ final class DateHelper
     }
 
     /**
+     * Dia e mês separados, para badges de data.
+     * Ex.: ['day' => '25', 'month' => 'Mar'].
+     *
+     * @return array{day: string, month: string}
+     */
+    public static function dayMonth(mixed $value, string $tz = 'America/Sao_Paulo'): array
+    {
+
+        $months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+        $date = (new DateTimeImmutable('@' . self::toTimestamp($value)))
+            ->setTimezone(new DateTimeZone($tz));
+
+        return [
+            'day'   => $date->format('d'),
+            'month' => $months[(int) $date->format('n') - 1],
+        ];
+    }
+
+    /**
      * Atalho comum: dd/MM/yyyy HH:mm (24h).
      */
     public static function humanWithTime(
