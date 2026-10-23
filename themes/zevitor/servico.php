@@ -128,8 +128,8 @@
 					<div class='service-details__sidebar-contact'>
 						<div class='service-details__sidebar-contact-img'>
 							<div class='inner'>
-								<img src='<?= INCLUDE_PATH ?>/assets/images/services/service-details-sidebar-img.png'
-								     alt=''>
+								<img src='<?= INCLUDE_PATH ?>/assets/images/services/service-details-sidebar-img.webp'
+								     alt='Se precisar de ajuda entre em contato'>
 							</div>
 						</div>
 
