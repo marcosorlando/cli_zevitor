@@ -43,45 +43,52 @@
                     <?php
                         if (!$Read->getResult()) {
                             echo Check::erro(
-                                'Os depoimentos ainda serão cadastrados no painel. Volte em breve :)',
+                                'Os depoimentos ainda serão cadastrados no painel. Volte em breve.',
                                 E_USER_NOTICE
                             );
                         } else {
                             foreach ($Read->getResult() as $Depo) {
                                 extract($Depo);
                                 $Foto = !empty($depositions_image)
-                                    ? BASE . '/tim.php?src=uploads/depositions/' . $depositions_image . '&w=120&h=120'
+                                    ? BASE . '/tim.php?src=uploads/' . $depositions_image . '&w=120&h=120'
                                     : INCLUDE_PATH . '/assets/images/testimonial/testimonial-1-1.jpg';
-                    ?>
-					<!--Testimonial One Single Start-->
-					<div class='swiper-slide'>
-						<div class='testimonial-one__single-inner'>
-							<div class='testimonial-one__single'>
-								<div class='testimonial-one__client-info'>
-									<div class='testimonial-one__client-content'>
-										<h4 class='testimonial-one__client-name'><?= Check::safeHtmlChars($depositions_name) ?></h4>
-										<p class='testimonial-one__client-sub-title'><?= Check::safeHtmlChars((string) $depositions_profession) ?></p>
+                                ?>
+								<!--Testimonial One Single Start-->
+								<div class='swiper-slide'>
+									<div class='testimonial-one__single-inner'>
+										<div class='testimonial-one__single'>
+											<div class='testimonial-one__client-info'>
+												<div class='testimonial-one__client-content'>
+													<h4 class='testimonial-one__client-name'><?= Check::safeHtmlChars(
+                                                            $depositions_name
+                                                        ) ?></h4>
+													<p class='testimonial-one__client-sub-title'><?= Check::safeHtmlChars(
+                                                            (string)$depositions_profession
+                                                        ) ?></p>
+												</div>
+											</div>
+											<p class='testimonial-one__text'><?= Check::safeHtmlChars(
+                                                    $depositions_text
+                                                ) ?></p>
+										</div>
+										<div class='testimonial-one__img'>
+											<img src='<?= $Foto ?>'
+											     alt='<?= Check::safeHtmlChars($depositions_name) ?>'>
+											<div class='testimonial-one__rating'>
+												<span class='fas fa-star'></span>
+												<span class='fas fa-star'></span>
+												<span class='fas fa-star'></span>
+												<span class='fas fa-star'></span>
+												<span class='fas fa-star'></span>
+											</div>
+										</div>
+										<div class='testimonial-one__quote'>
+											<span class='icon-left'></span>
+										</div>
 									</div>
 								</div>
-								<p class='testimonial-one__text'><?= Check::safeHtmlChars($depositions_text) ?></p>
-							</div>
-							<div class='testimonial-one__img'>
-								<img src='<?= $Foto ?>' alt='<?= Check::safeHtmlChars($depositions_name) ?>'>
-								<div class='testimonial-one__rating'>
-									<span class='fas fa-star'></span>
-									<span class='fas fa-star'></span>
-									<span class='fas fa-star'></span>
-									<span class='fas fa-star'></span>
-									<span class='fas fa-star'></span>
-								</div>
-							</div>
-							<div class='testimonial-one__quote'>
-								<span class='icon-left'></span>
-							</div>
-						</div>
-					</div>
-					<!--Testimonial One Single End-->
-                    <?php
+								<!--Testimonial One Single End-->
+                                <?php
                             }
                         }
                     ?>

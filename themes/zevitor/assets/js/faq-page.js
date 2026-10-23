@@ -1,0 +1,52 @@
+(() => {
+  const search = document.getElementById('faq-search');
+  const category = document.getElementById('faq-category');
+  const resultCount = document.getElementById('faq-results-count');
+  const noResults = document.getElementById('faq-no-results');
+
+  if (!search || !category || !resultCount || !noResults) {
+    return;
+  }
+
+  const questions = Array.from(document.querySelectorAll('.faq-page details.accrodion'));
+  const normalize = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
+
+  const filterQuestions = () => {
+    const query = normalize(search.value.trim());
+    let visibleCount = 0;
+
+    questions.forEach((question) => {
+      const matchesText = normalize(question.textContent).includes(query);
+      const matchesCategory = !category.value || question.dataset.category === category.value;
+      const visible = matchesText && matchesCategory;
+
+      question.hidden = !visible;
+      if (!visible) {
+        question.open = false;
+      } else {
+        visibleCount += 1;
+      }
+    });
+
+    resultCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'pergunta encontrada' : 'perguntas encontradas'}`;
+    noResults.hidden = visibleCount !== 0;
+  };
+
+  questions.forEach((question) => {
+    question.addEventListener('toggle', () => {
+      if (!question.open) {
+        return;
+      }
+
+      question.parentElement.querySelectorAll('details.accrodion[open]').forEach((other) => {
+        if (other !== question) {
+          other.open = false;
+        }
+      });
+    });
+  });
+
+  search.addEventListener('input', filterQuestions);
+  category.addEventListener('change', filterQuestions);
+  filterQuestions();
+})();

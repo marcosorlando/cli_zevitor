@@ -22,7 +22,6 @@ use App\Helpers\Check;
         'project_subtitle' => '',
         'project_description' => '',
         'project_cover' => '',
-        'project_icon' => '',
         'project_category' => '',
         'project_status' => 0,
     ];
@@ -242,29 +241,6 @@ use App\Helpers\Check;
                             echo IMAGE_H; ?>px):</span>
 					<input type="file" name="image[]" multiple/>
 				</label>
-
-				<div class='label'>
-					<label class='label'>
-						<span class='legend'>ÍCONE (PNG <?php
-                                echo AVATAR_W; ?>x<?php
-                                echo AVATAR_H; ?>px):</span>
-						<input type="file" class="wc_loadimage" name="project_icon"/>
-					</label>
-				</div>
-                <?php
-                    $icone = (file_exists('../uploads/' . $project_icon) && !is_dir(
-                        '../uploads/' . $project_icon
-                    ) ? 'uploads/' . $project_icon : 'admin/_img/no_image.jpg');
-                ?>
-				<img class="project_icon" alt="Ícone do Segmento" title="Ícone do Segmento"
-				     src="../tim.php?src=<?php
-                         echo $icone; ?>&w=<?php
-                         echo AVATAR_W; ?>&h=<?php
-                         echo AVATAR_H; ?>"
-				     default="../tim.php?src=<?php
-                         echo $icone; ?>&w=<?php
-                         echo AVATAR_W; ?>&h=<?php
-                         echo AVATAR_H; ?>">
 
 				<div class="m_top">&nbsp;</div>
 

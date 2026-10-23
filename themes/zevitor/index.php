@@ -13,7 +13,7 @@
     include_once REQUIRE_PATH . '/inc/carrossel-texts-services.php';
     include_once REQUIRE_PATH . '/inc/faq-one.php';
     include_once REQUIRE_PATH . '/inc/depoimentos.php';
-    include_once REQUIRE_PATH . '/inc/appdown.php';
+    //include_once REQUIRE_PATH . '/inc/appdown.php';
     include_once REQUIRE_PATH . '/inc/blognews.php';
     include_once REQUIRE_PATH . '/inc/agendarservico.php';
     include_once REQUIRE_PATH . '/inc/instafeed.php';

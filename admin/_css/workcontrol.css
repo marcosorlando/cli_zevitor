@@ -1612,6 +1612,16 @@ div.mce-fullscreen {
     background: rgba(197, 68, 78, 0.8);
 }
 
+.single_team.inactive .panel_header {
+    background: rgba(197, 68, 78, 0.8);
+    color: #fff;
+}
+
+.single_team.inactive img {
+    opacity: 0.6;
+    filter: grayscale(1);
+}
+
 .single_pdt.outsale img {
     border-color: #cc8d41;
 }

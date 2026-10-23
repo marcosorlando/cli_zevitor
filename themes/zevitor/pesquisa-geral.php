@@ -9,7 +9,7 @@
     /**
      * Pesquisa geral (popup do menu principal) — tema Zevitor. Rota: /pesquisa-geral/{termo}/{página}
      * Busca em DB_SERVICES, DB_FAQS e DB_POSTS, nessa ordem.
-     * Visual: services-page (page-servicos.php) + acordeão do inc/faq-one.php + blog-page (blog-2.html, sem sidebar).
+     * Visual: services-page (servicos.php) + acordeão do inc/faq-one.php + blog-page (blog-2.html, sem sidebar).
      */
     if (empty($URL[1])) {
         require REQUIRE_PATH . '/404.php';

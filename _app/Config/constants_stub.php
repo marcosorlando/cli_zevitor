@@ -205,6 +205,10 @@ if (!defined('APP_SLIDE')) {
     define('APP_SLIDE', 1);
 }
 
+if (!defined('APP_TEAM')) {
+    define('APP_TEAM', 1);
+}
+
 if (!defined('APP_THANKYOU_PAGES')) {
     define('APP_THANKYOU_PAGES', 1);
 }
@@ -461,6 +465,10 @@ if (!defined('DB_STATES')) {
     define('DB_STATES', 'states');
 }
 
+if (!defined('DB_TEAM')) {
+    define('DB_TEAM', 'zv_team');
+}
+
 if (!defined('DB_THANKYOU_PAGES')) {
     define('DB_THANKYOU_PAGES', 'ws_thankyoupages');
 }
@@ -619,6 +627,10 @@ if (!defined('LEVEL_WC_SERVICES')) {
 
 if (!defined('LEVEL_WC_SLIDES')) {
     define('LEVEL_WC_SLIDES', 9);
+}
+
+if (!defined('LEVEL_WC_TEAM')) {
+    define('LEVEL_WC_TEAM', 6);
 }
 
 if (!defined('LEVEL_WC_THANKYOU_PAGES')) {

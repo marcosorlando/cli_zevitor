@@ -34,7 +34,7 @@
 							<div class='process-one__content'>
 								<h3 class='process-one__title'>Agendamento</h3>
 								<p class='process-one__text'>Chame no WhatsApp, ligue ou venha tomar um café com a gente
-									na oficina. Você escolhe o dia e o horário que encaixam na sua rotina.</p>
+									na oficina. Vamos encontrar o dia e o horário que encaixam na sua rotina.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>
@@ -74,8 +74,8 @@
 							<div class='process-one__content'>
 								<h3 class='process-one__title'>Diagnóstico preliminar</h3>
 								<p class='process-one__text'>Fazemos um teste de rodagem para confirmar o que você
-									relatou e levantar outras falhas. Só depois partimos para o diagnóstico
-									completo.</p>
+									relatou e levantar outras falhas sob uma perspectiva técnica. Só depois partimos
+									para o diagnóstico completo.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>
@@ -115,8 +115,8 @@
 							<div class='process-one__content'>
 								<h3 class='process-one__title'>Execução do Serviço</h3>
 								<p class='process-one__text'>Com o orçamento aprovado, o técnico executa o serviço
-									seguindo o procedimento do fabricante do seu veículo, sem atalho e sem
-									improviso.</p>
+									usando nossa expertise e apoiado na literatura técnica e procedimentos do fabricante
+									do seu veículo, sem atalho e sem improviso.</p>
 							</div>
 						</div>
 						<div class='process-one__count'></div>

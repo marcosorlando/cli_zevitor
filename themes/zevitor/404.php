@@ -6,7 +6,7 @@
 	<div class='container'>
 		<div class='page-header__inner'>
 			<div class='page-header__img-1'>
-				<img src=''<?= INCLUDE_PATH ?>/assets/images/resources/page-header-img-1.png' alt=''>
+				<img src='<?= INCLUDE_PATH ?>/assets/images/resources/page-header-img-1.png' alt=''>
 			</div>
 			<h3>Erro 404</h3>
 			<div class='thm-breadcrumb__inner'>
@@ -26,7 +26,7 @@
 	<div class='container'>
 		<div class='error-page__inner text-center'>
 			<div class='error-page__img float-bob-y'>
-				<img src=''<?= INCLUDE_PATH ?>/assets/images/resources/error-page-img1.png' alt=''>
+				<img src='<?= INCLUDE_PATH ?>/assets/images/resources/error-page-img1.png' alt=''>
 			</div>
 
 			<div class='error-page__content'>

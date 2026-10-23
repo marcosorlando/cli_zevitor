@@ -219,6 +219,7 @@
                 'APP_SERVICES' => 1,
                 'APP_PROJECTS' => 1,
                 'APP_FAQS' => 1,
+                'APP_TEAM' => 1,
                 'APP_DEBUG' => self::env('APP_DEBUG')
             ];
 
@@ -232,6 +233,7 @@
                 'LEVEL_WC_SERVICES' => 6,
                 'LEVEL_WC_PROJECTS' => 6,
                 'LEVEL_WC_FAQS' => 6,
+                'LEVEL_WC_TEAM' => 6,
                 'LEVEL_WC_POSTS' => 6,
                 'LEVEL_WC_COMMENTS' => 6,
                 'LEVEL_WC_LINKTREE' => 6,
@@ -365,6 +367,7 @@
                 'DB_PROJECTS_IMAGE' => 'zv_projects_images',
                 'DB_PROJECTS_GALLERY' => 'zv_projects_gallery',
                 'DB_FAQS' => 'zv_faqs',
+                'DB_TEAM' => 'zv_team',
                 'DB_CTAS' => 'ws_ctas',
                 'DB_REPRESENTATIVES' => 'ws_representatives',
                 'DB_STATES' => 'states',

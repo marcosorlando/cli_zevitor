@@ -3,28 +3,35 @@
     use App\Conn\Read;
     use App\Helpers\Check;
 
-    /**
-     * Menu principal — tema Zevitor.
-     * Serviços: DB_SERVICES ativos -> BASE/servico/<svc_name> (topo: BASE/servicos).
-     * Projetos: só aparece se houver projeto ativo em DB_PROJECTS.
-     * Blog: categorias de DB_CATEGORIES com post publicado -> BASE/artigos/<category_name>.
-     *       Uma única categoria raiz vira o link do topo e as filhas formam o submenu.
-     * Encanamento: padrão do WC ($Read->fullRead + foreach + extract).
-     */
     $Read ??= new Read();
 
-    // SERVIÇOS
+    $Read->fullRead(
+        'SELECT page_name, page_title, page_status, page_menu FROM ' . DB_PAGES
+        . ' ORDER BY page_order IS NULL, page_order ASC, page_title ASC'
+    );
+    $RegisteredPages = $Read->getResult() ?: [];
+    $MenuPages = array_values(array_filter(
+        $RegisteredPages,
+        static fn(array $Page): bool => (int)$Page['page_status'] === 1
+            && (int)$Page['page_menu'] === 1
+            && !empty($Page['page_name'])
+            && !in_array($Page['page_name'], ['index', 'home', 'projeto', 'servico', 'artigo', 'artigos'], true)
+    ));
+
     $Read->fullRead(
         'SELECT svc_name, svc_title FROM ' . DB_SERVICES . ' WHERE svc_status = :st ORDER BY svc_id ASC',
         'st=1'
     );
     $MenuServices = $Read->getResult() ?: [];
 
-    // PROJETOS
     $Read->fullRead('SELECT project_id FROM ' . DB_PROJECTS . ' WHERE project_status = :st LIMIT 1', 'st=1');
     $MenuProjects = (bool) $Read->getResult();
 
-    // BLOG (categorias raiz com post publicado + filhas com post publicado)
+    $RegisteredSlugs = array_column($RegisteredPages, 'page_name');
+    if ($MenuProjects && !in_array('projetos', $RegisteredSlugs, true)) {
+        array_unshift($MenuPages, ['page_name' => 'projetos', 'page_title' => 'Projetos']);
+    }
+
     $Read->fullRead(
         'SELECT category_id, category_title, category_name FROM ' . DB_CATEGORIES . ' '
         . 'WHERE category_parent IS NULL AND category_id IN ('
@@ -46,31 +53,31 @@
 
     $BlogRoot = 1 === count($MenuBlog) ? $MenuBlog[0] : null;
     $BlogItems = $BlogRoot ? $BlogRoot['children'] : $MenuBlog;
-    $BlogLink = $MenuBlog ? BASE . '/artigos/' . $MenuBlog[0]['category_name'] : '#';
+    $BlogLink = $MenuBlog ? BASE . '/artigos/' . rawurlencode($MenuBlog[0]['category_name']) : null;
 ?>
 
 <ul class="main-menu__list">
 	<li><a href="<?= BASE ?>" title="<?= SITE_NAME ?> | Home">Home</a></li>
 
-	<li class="<?= $MenuServices ? 'dropdown' : '' ?>">
-		<a href="<?= BASE ?>/servicos" title="<?= SITE_NAME ?> | Serviços">Serviços</a>
-        <?php if ($MenuServices): ?>
-		<ul class="shadow-box">
-            <?php foreach ($MenuServices as $Service): extract($Service); ?>
-			<li><a href="<?= BASE ?>/servico/<?= $svc_name ?>"
-			       title="<?= Check::safeHtmlChars($svc_title) ?>"><?= Check::safeHtmlChars($svc_title) ?></a></li>
-            <?php endforeach; ?>
-		</ul>
+    <?php foreach ($MenuPages as $Page):
+        $PageName = $Page['page_name'];
+        $PageTitle = Check::safeHtmlChars($Page['page_title'] ?: $PageName);
+        $SubServices = 'servicos' === $PageName ? $MenuServices : [];
+    ?>
+    <li class="<?= $SubServices ? 'dropdown' : '' ?>">
+        <a href="<?= BASE ?>/<?= rawurlencode($PageName) ?>" title="<?= $PageTitle ?>"><?= $PageTitle ?></a>
+        <?php if ($SubServices): ?>
+            <ul class="shadow-box">
+                <?php foreach ($SubServices as $Service): ?>
+                    <li><a href="<?= BASE ?>/servico/<?= rawurlencode($Service['svc_name']) ?>"
+                           title="<?= Check::safeHtmlChars($Service['svc_title']) ?>"><?= Check::safeHtmlChars($Service['svc_title']) ?></a></li>
+                <?php endforeach; ?>
+            </ul>
         <?php endif; ?>
-	</li>
+    </li>
+    <?php endforeach; ?>
 
-    <?php if ($MenuProjects): ?>
-	<li><a href="<?= BASE ?>/projetos" title="<?= SITE_NAME ?> | Projetos">Projetos</a></li>
-    <?php endif; ?>
-
-	<li><a href="<?= BASE ?>/sobre" title="<?= SITE_NAME ?> | Sobre nós">Sobre nós</a></li>
-
-    <?php if ($MenuBlog): ?>
+    <?php if ($BlogLink): ?>
 	<li class="<?= $BlogItems ? 'dropdown menu-list-apper-right' : '' ?>">
 		<a href="<?= $BlogLink ?>" title="<?= SITE_NAME ?> | Blog">Blog</a>
         <?php if ($BlogItems): ?>
@@ -79,12 +86,12 @@
                 $Children = $Category['children'] ?? [];
             ?>
 			<li class="<?= $Children ? 'dropdown' : '' ?>">
-				<a href="<?= BASE ?>/artigos/<?= $category_name ?>"
+				<a href="<?= BASE ?>/artigos/<?= rawurlencode($category_name) ?>"
 				   title="<?= Check::safeHtmlChars($category_title) ?>"><?= Check::safeHtmlChars($category_title) ?></a>
                 <?php if ($Children): ?>
 				<ul>
                     <?php foreach ($Children as $Child): ?>
-					<li><a href="<?= BASE ?>/artigos/<?= $Child['category_name'] ?>"
+					<li><a href="<?= BASE ?>/artigos/<?= rawurlencode($Child['category_name']) ?>"
 					       title="<?= Check::safeHtmlChars($Child['category_title']) ?>"><?= Check::safeHtmlChars($Child['category_title']) ?></a></li>
                     <?php endforeach; ?>
 				</ul>
@@ -96,6 +103,4 @@
 	</li>
     <?php endif; ?>
 
-	<li><a href="<?= BASE ?>/materiais" title="<?= SITE_NAME ?> | Materiais">Materiais</a></li>
-	<li><a href="<?= BASE ?>/contato" title="<?= SITE_NAME ?> | Contato">Contato</a></li>
 </ul>

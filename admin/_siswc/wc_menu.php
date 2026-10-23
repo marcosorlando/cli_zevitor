@@ -346,6 +346,23 @@
         <?php
     }
 
+    if (APP_TEAM && $Admin['user_level'] >= LEVEL_WC_TEAM) {
+        ?>
+		<li class="dashboard_nav_menu_li <?= strstr($getViewInput, 'team/') ? 'dashboard_nav_menu_active' : ''; ?>">
+			<a class="icon-users" title="Time" href="dashboard.php?wc=team/home">Time</a>
+
+			<ul class="dashboard_nav_menu_sub">
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'team/create' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=team/create">&raquo; Novo Funcionário</a>
+				</li>
+				<li class="dashboard_nav_menu_sub_li <?= $getViewInput == 'team/home' ? 'dashboard_nav_menu_active' : ''; ?>">
+					<a href="dashboard.php?wc=team/home">&raquo; Ver Time</a>
+				</li>
+			</ul>
+		</li>
+        <?php
+    }
+
     if (APP_LANDING_PAGES && $Admin['user_level'] >= LEVEL_WC_LANDING_PAGES) {
         ?>
 		<li class="dashboard_nav_menu_li <?= strstr(

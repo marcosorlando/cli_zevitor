@@ -62,6 +62,8 @@ sitemap.xsl
 cache
 /cache/*
 !cache/.gitkeep
+/_app/Config/.instagram-token.json
+/_app/Config/.instagram-token.json.lock
 
 #Deployments e builds
 deploy-ftp.env
@@ -70,3 +72,6 @@ deploy-ftp.env
 #theme html
 pack-file
 servixa-car-repair-html5-template-2026-04-13-17-04-18-utc.zip
+
+#Claude Code (config local por máquina)
+.claude/settings.local.json

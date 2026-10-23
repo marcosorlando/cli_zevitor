@@ -239,3 +239,21 @@ CREATE TABLE IF NOT EXISTS `zv_projects_gallery` (
   CONSTRAINT `fk_projects_gallery_project_id` FOREIGN KEY (`project_id`) REFERENCES `zv_projects` (`project_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
+
+## Modulo Time (funcionários sem acesso ao painel)
+
+```sql
+CREATE TABLE IF NOT EXISTS `zv_team` (
+  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_fullname` varchar(255) DEFAULT NULL,
+  `user_skill` varchar(155) DEFAULT NULL,
+  `user_icon` varchar(255) DEFAULT NULL,
+  `user_image` varchar(255) DEFAULT NULL,
+  `user_order` int(11) DEFAULT 0,
+  `user_status` tinyint(1) DEFAULT 0,
+  `user_created` timestamp NULL DEFAULT current_timestamp(),
+  `user_updated` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`user_id`),
+  KEY `idx_team_status_order` (`user_status`, `user_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+```

@@ -98,34 +98,6 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                     }
                 }
 
-                if (isset($_FILES['project_icon']) && (int)($_FILES['project_icon']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
-                    $File = $_FILES['project_icon'];
-
-                    if (
-                        $Project['project_icon'] && file_exists('../../uploads/' . $Project['project_icon']) && !is_dir(
-                            '../../uploads/' . $Project['project_icon']
-                        )
-                    ) {
-                        unlink('../../uploads/' . $Project['project_icon']);
-                    }
-
-                    $Upload->image($File, sprintf('%s-%s-', $ProjectId, $PostData['project_name']) . time(), 1200);
-                    if ($Upload->getResult()) {
-                        $PostData['project_icon'] = $Upload->getResult();
-                    } else {
-                        $jSON['trigger'] = Check::ajaxErro(
-                            sprintf(
-                                "<b class='icon-image'>ERRO AO ENVIAR CAPA:</b> Olá %s, selecione uma imagem JPG de 1200X628px para a capa!",
-                                $_SESSION['userLogin']['user_name']
-                            ),
-                            E_USER_WARNING
-                        );
-                        echo json_encode($jSON);
-
-                        return;
-                    }
-                }
-
                 if (!empty($_FILES['image']['tmp_name']) && is_array($_FILES['image']['tmp_name'])) {
                     $File = $_FILES['image'];
                     $gbCount = count($File['type']);

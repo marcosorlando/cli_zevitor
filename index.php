@@ -15,6 +15,7 @@
 
     use App\Conn\Read;
     use App\Conn\Update;
+    use App\Helpers\Check;
     use App\Models\Seo;
     use App\Models\Session;
 
@@ -248,12 +249,18 @@
 	</div>
 </div>
 <!--End Preloader-->
-
-<div class='chat-icon'>
-	<button type='button' class='chat-toggler'><i class='fa fa-comment'></i></button>
+<div class='whats-icon'>
+	<a target="_blank" title="Chamar no Whats" href="<?= Check::whatsMessage(
+        SITE_ADDR_WHATS,
+        'Olá, estou no site da Mecânica Zé Vitor quero falar com atendimento ao cliente.'
+    ) ?>"><i class='fab fa-whatsapp'></i></a>
 </div>
+<!--https://api.whatsapp.com/send/?phone=5554991747279&text=Ol%C3%A1%2C%20estou%20no%20site%20da%20Mec%C3%A2nica%20Z%C3%A9%20Vitor.%20Quero%20agendar%20uma%20visita.&type=phone_number&app_absent=0-->
+<!--<div class='chat-icon'>
+	<button type='button' class='chat-toggler'><i class='fa fa-comment'></i></button>
+</div>-->
 <!--Chat Popup-->
-<div id='chat-popup' class='chat-popup'>
+<!--<div id='chat-popup' class='chat-popup'>
 	<div class='popup-inner'>
 		<div class='close-chat'><i class='fa fa-times'></i></div>
 		<div class='chat-form'>
@@ -276,11 +283,11 @@
 			</form>
 		</div>
 	</div>
-</div>
+</div>-->
 
 
 <!-- Start sidebar widget content -->
-<div class='xs-sidebar-group info-group info-sidebar'>
+<!--<div class='xs-sidebar-group info-group info-sidebar'>
 	<div class='xs-overlay xs-bg-black'></div>
 	<div class='xs-sidebar-widget'>
 		<div class='sidebar-widget-container'>
@@ -365,7 +372,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
 <!-- End sidebar widget content -->
 
 
@@ -479,7 +486,12 @@
                     }
                 }
 
-                if (in_array($URL[0], $Pages) && file_exists('themes/' . $_SESSION['WC_THEME'] . '/pagina.php')) {
+                if (
+                    in_array($URL[0], ['projetos', 'servicos', 'projeto', 'servico', 'faq'], true)
+                    && file_exists('themes/' . $_SESSION['WC_THEME'] . '/' . $URL[0] . '.php')
+                ) {
+                    require 'themes/' . $_SESSION['WC_THEME'] . '/' . $URL[0] . '.php';
+                } elseif (in_array($URL[0], $Pages) && file_exists('themes/' . $_SESSION['WC_THEME'] . '/pagina.php')) {
                     if (file_exists('themes/' . $_SESSION['WC_THEME'] . sprintf('/page-%s.php', $URL[0]))) {
                         require 'themes/' . $_SESSION['WC_THEME'] . sprintf('/page-%s.php', $URL[0]);
                     } else {
@@ -539,7 +551,12 @@
                     }
                 }
 
-                if (in_array($URL[0], $Pages) && file_exists(REQUIRE_PATH . '/pagina.php')) {
+                if (
+                    in_array($URL[0], ['projetos', 'servicos', 'projeto', 'servico', 'faq'], true)
+                    && file_exists(REQUIRE_PATH . '/' . $URL[0] . '.php')
+                ) {
+                    require REQUIRE_PATH . '/' . $URL[0] . '.php';
+                } elseif (in_array($URL[0], $Pages) && file_exists(REQUIRE_PATH . '/pagina.php')) {
                     if (file_exists(REQUIRE_PATH . sprintf('/page-%s.php', $URL[0]))) {
                         require REQUIRE_PATH . sprintf('/page-%s.php', $URL[0]);
                     } else {

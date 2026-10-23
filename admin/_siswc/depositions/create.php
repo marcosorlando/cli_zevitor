@@ -1,9 +1,8 @@
 <?php
 
-use App\Helpers\Check;
-
     use App\Conn\Create;
     use App\Conn\Read;
+    use App\Helpers\Check;
 
     $AdminLevel = LEVEL_WC_DEPOSITIONS;
     if (!APP_DEPOSITIONS || empty($DashboardLogin) || empty($Admin) || $Admin['user_level'] < $AdminLevel) {
@@ -108,7 +107,7 @@ use App\Helpers\Check;
                 <?php
                     $Image = (\file_exists('../uploads/' . $depositions_image) && !\is_dir(
                         '../uploads/' . $depositions_image
-                    ) ? 'uploads/' . $depositions_image : 'admin/_img/no_image.jpg');
+                    ) ? 'uploads/' . $depositions_image : 'admin/_img/no_avatar.jpg');
                 ?>
 				<img class="depositions_image" src="../tim.php?src=<?php
                     echo $Image; ?>&w=500&h=500"
@@ -117,9 +116,12 @@ use App\Helpers\Check;
 				<div class="box_content">
 					<div class="m_top">&nbsp;</div>
 					<div class="wc_actions" style="text-align: center">
-						<button name="public" value="1" class="btn btn_green icon-share">ATUALIZAR</button>
-						<img class="form_load none" style="margin-left: 10px;" alt="Enviando Requisição!"
-						     title="Enviando Requisição!" src="_img/load.gif"/>
+						<button name="public" value="1" class="btn btn_save"><img class='form_load none'
+						                                                          alt='Enviando Requisição!'
+						                                                          title='Enviando Requisição!'
+						                                                          src='_img/load_w.gif'/> SALVAR
+						</button>
+
 					</div>
 					<div class="clear"></div>
 				</div>

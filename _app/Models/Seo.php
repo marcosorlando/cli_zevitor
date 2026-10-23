@@ -92,15 +92,21 @@
 
             $read = new Read();
 
-            $pages = $this->fetchColumnValues($read, 'SELECT page_name FROM ' . DB_PAGES, 'page_name');
+            $pages = $this->fetchColumnValues(
+                $read,
+                'SELECT page_name FROM ' . DB_PAGES . ' WHERE page_status = 1',
+                'page_name'
+            );
             $landingPages = $this->fetchColumnValues($read, 'SELECT page_name FROM ' . DB_LANDING_PAGES, 'page_name');
             $thankYouPages = $this->fetchColumnValues($read, 'SELECT page_name FROM ' . DB_THANKYOU_PAGES, 'page_name');
             $cards = $this->fetchColumnValues($read, 'SELECT carduser_url FROM ' . DB_CARD_USER, 'carduser_url');
 
-            if (null !== $this->file && in_array($this->file, $pages, true)) {
+            if (null !== $this->file && !in_array($this->file, ['projetos', 'servicos', 'projeto', 'servico', 'faq'], true)
+                && in_array($this->file, $pages, true)) {
                 $page = $this->fetchSingleRow(
                     $read,
-                    'SELECT page_title, page_subtitle, page_cover FROM ' . DB_PAGES . ' WHERE page_name = :nm',
+                    'SELECT page_title, page_subtitle, page_cover FROM ' . DB_PAGES
+                    . ' WHERE page_name = :nm AND page_status = 1',
                     'nm=' . $this->file
                 );
                 if (null !== $page) {
@@ -362,6 +368,66 @@
                 return;
             }
 
+            if (in_array($this->file, ['projetos', 'servicos', 'faq'], true)) {
+                $page = $this->fetchSingleRow(
+                    $read,
+                    'SELECT page_title, page_subtitle, page_cover FROM ' . DB_PAGES
+                    . ' WHERE page_name = :nm AND page_status = 1',
+                    'nm=' . $this->file
+                );
+                if (null === $page && 'projetos' !== $this->file) {
+                    $this->set404();
+
+                    return;
+                }
+
+                $defaultTitle = match ($this->file) {
+                    'servicos' => 'Serviços',
+                    'faq' => 'Perguntas frequentes',
+                    default => 'Projetos',
+                };
+                $defaultDescription = match ($this->file) {
+                    'servicos' => 'Conheça os serviços da ' . SITE_NAME . '.',
+                    'faq' => 'Tire suas dúvidas sobre os serviços da ' . SITE_NAME . '.',
+                    default => 'Conheça os projetos da ' . SITE_NAME . '.',
+                };
+                $this->assignSeo(
+                    'WebSite',
+                    ($this->stringValue($page['page_title'] ?? null) ?? $defaultTitle) . ' - ' . SITE_NAME,
+                    $this->stringValue($page['page_subtitle'] ?? null) ?? $defaultDescription,
+                    $this->resolveImagePath($this->stringValue($page['page_cover'] ?? null), '/uploads/')
+                );
+
+                return;
+            }
+
+            if ('projeto' === $this->file) {
+                $project = $this->fetchSingleRow(
+                    $read,
+                    'SELECT project_title, project_subtitle, project_cover FROM ' . DB_PROJECTS
+                    . ' WHERE project_name = :nm AND project_status = 1',
+                    'nm=' . $this->link
+                );
+                if (null !== $project) {
+                    $projectTitle = $this->stringValue($project['project_title'] ?? null);
+                    $projectSubtitle = $this->stringValue($project['project_subtitle'] ?? null);
+                    $projectCover = $this->stringValue($project['project_cover'] ?? null);
+
+                    $this->assignSeo(
+                        'WebSite',
+                        ($projectTitle ?? SITE_NAME) . ' - ' . SITE_NAME,
+                        $projectSubtitle ?? SITE_DESC,
+                        $this->resolveImagePath($projectCover, '/uploads/')
+                    );
+
+                    return;
+                }
+
+                $this->set404();
+
+                return;
+            }
+
             if ('servico' === $this->file) {
                 $service = $this->fetchSingleRow(
                     $read,
@@ -384,17 +450,6 @@
                 }
 
                 $this->set404();
-
-                return;
-            }
-
-            if ('servicos' === $this->file) {
-                $this->assignSeo(
-                    'WebSite',
-                    'Serviços - ' . SITE_NAME,
-                    'Serviços prestados pela Travi.',
-                    $this->defaultImagePath()
-                );
 
                 return;
             }

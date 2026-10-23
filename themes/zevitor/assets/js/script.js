@@ -312,11 +312,12 @@
 
   // Gallery One
   if ($(".gallery-one__carousel").length > 0) {
+    const gallerySlideCount = $(".gallery-one__carousel .swiper-slide").length;
     const swiper = new Swiper('.gallery-one__carousel', {
       "slidesPerView": 6,
       "spaceBetween": 0,
       "speed": 2000,
-      "loop": true,
+      "loop": gallerySlideCount > 6,
       "pagination": {
         "el": ".swiper-dot-style1",
         "type": "bullets",
@@ -706,14 +707,25 @@
         }
       },
       submitHandler: function (form) {
-        $.post(
-          $(form).attr("action"),
-          $(form).serialize(),
-          function (response) {
-            $(form).find(".result").html(response);
-            $(form).find('input[type="text"], input[type="email"], textarea').val("");
-          }
-        );
+        var result = $(form).find(".result");
+        var submitButton = $(form).find('button[type="submit"]');
+        submitButton.prop("disabled", true);
+        result.empty();
+
+        $.post($(form).attr("action"), $(form).serialize())
+          .done(function (response) {
+            result.html(response);
+            if (result.find(".trigger_success").length) {
+              form.reset();
+              $(form).find("select:not(.ignore)").niceSelect("update");
+            }
+          })
+          .fail(function () {
+            result.html("<div class='trigger trigger_alert'><span>Não foi possível enviar agora. Tente novamente.</span></div>");
+          })
+          .always(function () {
+            submitButton.prop("disabled", false);
+          });
         return false;
       }
     });

@@ -59,35 +59,40 @@
                     } else {
                         foreach ($Read->getResult() as $Project) {
                             extract($Project);
-                            $Thumb = BASE . '/tim.php?src=uploads/' . $project_cover . '&w=600&h=450';
-                            $Full = BASE . '/tim.php?src=uploads/' . $project_cover . '&w=1200&h=900';
+                            $Thumb = BASE . '/tim.php?src=uploads/' . $project_cover . '&w=410&h=350';
+                            $Full = BASE . '/tim.php?src=uploads/' . $project_cover . '&w=410&h=350';
                             $Link = BASE . '/projeto/' . $project_name;
                             $Sub = !empty($project_subtitle) ? $project_subtitle : 'Veículos reparados';
-                ?>
-				<!--Project One Single Start-->
-				<div class='swiper-slide'>
-					<div class='project-one__single'>
-						<div class='project-one__img-box'>
-							<div class='project-one__img'>
-								<img src='<?= $Thumb ?>' alt='<?= Check::safeHtmlChars($project_title) ?>'>
-							</div>
-							<div class='project-one__arrow'>
-								<a href='<?= $Full ?>' class='img-popup'><span class='icon-next'></span></a>
-							</div>
-							<div class='project-one__content-inner'>
-								<div class='project-one__content'>
-									<div class='project-one__sub-title-and-shape'>
-										<span class='project-one__sub-title'><?= Check::safeHtmlChars($Sub) ?></span>
-										<div class='project-one__sub-title-bdr'></div>
+                            ?>
+							<!--Project One Single Start-->
+							<div class='swiper-slide'>
+								<div class='project-one__single'>
+									<div class='project-one__img-box'>
+										<div class='project-one__img'>
+											<img src='<?= $Thumb ?>' alt='<?= Check::safeHtmlChars($project_title) ?>'>
+										</div>
+										<div class='project-one__arrow'>
+											<a href='<?= $Full ?>' class='img-popup'><span class='icon-next'></span></a>
+										</div>
+										<div class='project-one__content-inner'>
+											<div class='project-one__content'>
+												<div class='project-one__sub-title-and-shape'>
+													<span class='project-one__sub-title'><?= Check::safeHtmlChars(
+                                                            $Sub
+                                                        ) ?></span>
+													<div class='project-one__sub-title-bdr'></div>
+												</div>
+												<h3 class='project-one__title'><a
+															href='<?= $Link ?>'><?= Check::safeHtmlChars(
+                                                            $project_title
+                                                        ) ?></a></h3>
+											</div>
+										</div>
 									</div>
-									<h3 class='project-one__title'><a href='<?= $Link ?>'><?= Check::safeHtmlChars($project_title) ?></a></h3>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<!--Project One Single End-->
-                <?php
+							<!--Project One Single End-->
+                            <?php
                         }
                     }
                 ?>

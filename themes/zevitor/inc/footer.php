@@ -2,6 +2,14 @@
 
     use App\Helpers\Check;
 
+    $FooterPages = $MenuPages ?? [];
+    $FooterServices = $MenuServices ?? [];
+    $FooterBlogLink = $BlogLink ?? null;
+    $LegalSlugs = ['termos-de-uso', 'termos-e-condicoes', 'politica-de-privacidade'];
+    $LegalPages = array_values(array_filter(
+        $FooterPages,
+        static fn(array $Page): bool => in_array($Page['page_name'], $LegalSlugs, true)
+    ));
 ?>
 <!--CTA One Start-->
 <section class='cta-one'>
@@ -53,22 +61,17 @@
 								<h3 class='footer-widget__title'>Links rápidos</h3>
 							</div>
 							<ul class='footer-widget__quick-link-list list-unstyled'>
-								<li>
-									<a href='about.html'><span class='fas fa-angle-right'></span>Sobre nós</a>
-								</li>
-								<li>
-									<a href='team-v1.html'><span class='fas fa-angle-right'></span>Nossa equipe</a>
-								</li>
-								<li>
-									<a href='pricing.html'><span class='fas fa-angle-right'></span>Nosso
-										Preços</a>
-								</li>
-								<li>
-									<a href='contact.html'><span class='fas fa-angle-right'></span>Agendamento</a>
-								</li>
-								<li>
-									<a href='contact.html'><span class='fas fa-angle-right'></span>Contate-nos</a>
-								</li>
+								<li><a href='<?= BASE ?>'><span class='fas fa-angle-right'></span>Início</a></li>
+                                <?php foreach ($FooterPages as $Page):
+                                    if (in_array($Page['page_name'], $LegalSlugs, true)) {
+                                        continue;
+                                    }
+                                ?>
+                                    <li><a href='<?= BASE ?>/<?= rawurlencode($Page['page_name']) ?>'><span class='fas fa-angle-right'></span><?= Check::safeHtmlChars($Page['page_title'] ?: $Page['page_name']) ?></a></li>
+                                <?php endforeach; ?>
+                                <?php if ($FooterBlogLink): ?>
+                                    <li><a href='<?= Check::safeHtmlChars($FooterBlogLink) ?>'><span class='fas fa-angle-right'></span>Blog</a></li>
+                                <?php endif; ?>
 							</ul>
 						</div>
 					</div>
@@ -78,25 +81,9 @@
 								<h3 class='footer-widget__title'>Nossos serviços</h3>
 							</div>
 							<ul class='footer-widget__quick-link-list list-unstyled'>
-								<li>
-									<a href='oil-change-filters.html'><span class='fas fa-angle-right'></span>Troca de
-										óleo e filtros</a>
-								</li>
-								<li>
-									<a href='engine-repair.html'><span class='fas fa-angle-right'></span>Reparo do motor</a>
-								</li>
-								<li>
-									<a href='brake-service.html'><span class='fas fa-angle-right'></span>Serviço de
-										freios</a>
-								</li>
-								<li>
-									<a href='tire-wheel-services.html'><span class='fas fa-angle-right'></span>Serviços
-										de pneus e rodas</a>
-								</li>
-								<li>
-									<a href='battery-electrical.html'><span class='fas fa-angle-right'></span>Bateria e
-										elétrica</a>
-								</li>
+                                <?php foreach ($FooterServices as $Service): ?>
+                                    <li><a href='<?= BASE ?>/servico/<?= rawurlencode($Service['svc_name']) ?>'><span class='fas fa-angle-right'></span><?= Check::safeHtmlChars($Service['svc_title']) ?></a></li>
+                                <?php endforeach; ?>
 							</ul>
 						</div>
 					</div>
@@ -127,7 +114,6 @@
 									<div class='content'>
 										<span>Horário de funcionamento:</span>
 										<p>Seg - Sex: 08h00 - 18h00</p>
-										<p>Sábados: 08h00 - 12h00</p>
 									</div>
 								</li>
 								<li>
@@ -141,13 +127,15 @@
                                               (
                                                   SITE_ADDR_PHONE_A
                                               )
-                                              ?>'><?= SITE_ADDR_PHONE_A ?></a><span> ou </span><a
-													title='Chamar no Whats: <?= SITE_ADDR_PHONE_A ?> ' target='_blank'
-													href='<?= Check::whatsMessage(
-                                                        SITE_ADDR_WHATS,
-                                                        'Escreva sua mensagem para Mecânica Zé Vitor: '
-                                                    )
-                                                    ?>'><?= SITE_ADDR_WHATS ?></a></p>
+                                              ?>'><?= SITE_ADDR_PHONE_A ?></a><span> ou </span><a class="icon-whatsapp"
+										                                                          title='Chamar no Whats: <?= SITE_ADDR_PHONE_A ?> '
+										                                                          target='_blank'
+										                                                          href='<?= Check::whatsMessage(
+                                                                                                      SITE_ADDR_WHATS,
+                                                                                                      'Escreva sua mensagem para Mecânica Zé Vitor: '
+                                                                                                  )
+                                                                                                  ?>'><?= SITE_ADDR_WHATS ?></a>
+										</p>
 									</div>
 								</li>
 							</ul>
@@ -163,10 +151,11 @@
 				<p class='site-footer__bottom-text'>© Direitos autorais <?= date('Y') ?> por <a
 							href='https://zen.ppg.br'>Zen Agência Web</a>. Todos os direitos
 					Reservado.</p>
-				<ul class='list-unstyled site-footer__bottom-menu'>
-					<li><a href='#'>Termos e condições</a></li>
-					<li><a href='#'>Política de privacidade</a></li>
-				</ul>
+						<ul class='list-unstyled site-footer__bottom-menu'>
+                        <?php foreach ($LegalPages as $Page): ?>
+                            <li><a href='<?= BASE ?>/<?= rawurlencode($Page['page_name']) ?>'><?= Check::safeHtmlChars($Page['page_title'] ?: $Page['page_name']) ?></a></li>
+                        <?php endforeach; ?>
+						</ul>
 			</div>
 		</div>
 	</div>
@@ -236,7 +225,8 @@
 	<button class='close-search'><span class='far fa-times fa-fw'></span></button>
 	<form name='search' method='post' action=''>
 		<div class='form-group'>
-			<input type='search' name='p' value='' placeholder='Pesquisar serviços e artigos' autocomplete='off' required>
+			<input type='search' name='p' value='' placeholder='Pesquisar serviços e artigos' autocomplete='off'
+			       required>
 			<button type='submit'><i class='fas fa-search'></i></button>
 		</div>
 	</form>

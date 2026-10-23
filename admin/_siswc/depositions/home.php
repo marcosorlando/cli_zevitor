@@ -105,7 +105,7 @@
 
                 $DepositionCover = (\file_exists('../uploads/' . $depositions_image) && !\is_dir(
                     '../uploads/' . $depositions_image
-                ) ? 'uploads/' . $depositions_image : 'admin/_img/no_image.jpg');
+                ) ? 'uploads/' . $depositions_image : 'admin/_img/no_avatar.jpg');
 
                 $depositions_name = (empty($depositions_name) ? 'Edite esse rascunho para poder exibir como depoimento em seu site!' : $depositions_name);
 

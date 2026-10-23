@@ -59,6 +59,8 @@
     --servixa-gray: #585b6b;
     --servixa-gray-rgb: 88, 91, 107;
     --servixa-base: #dd1629;
+    --servixa-whats: rgb(5 135 106);
+    --servixa-whats-rgb: 5, 135, 106;
     --servixa-base-rgb: 221, 22, 41;
     --servixa-primary: #ebebeb;
     --servixa-primary-rgb: 235, 235, 235;
@@ -69,6 +71,22 @@
     --servixa-bdr-color: #dedede;
     --servixa-bdr-color-rgb: 222, 222, 222;
     --servixa-bdr-radius: 10px;
+}
+
+.workcontrol_maintenance {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #dd1629;
+    color: #ffffff;
+    text-shadow: 2px 2px 2px rgb(26 26 26 / 0.2);
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    z-index: 9999;
 }
 
 .row {
@@ -329,7 +347,7 @@ ul {
 }
 
 
-.chat-icon {
+.chat-icon, .whats-icon {
     position: fixed;
     display: inline-block;
     left: 30px;
@@ -337,7 +355,7 @@ ul {
     z-index: 99;
 }
 
-.chat-icon button {
+.chat-icon button, .whats-icon a {
     position: relative;
     display: inline-block;
     width: 45px;
@@ -352,7 +370,7 @@ ul {
     border: none;
 }
 
-.chat-icon button:before {
+.chat-icon button:before, .whats-icon a:before {
     content: "";
     position: absolute;
     top: -5px;
@@ -362,6 +380,15 @@ ul {
     background-color: rgba(var(--servixa-base-rgb), .20);
     border-radius: 5px;
     z-index: -1;
+}
+
+
+.whats-icon a {
+    background: var(--servixa-whats);
+}
+
+.whats-icon a:before {
+    background-color: rgba(var(--servixa-whats-rgb), .20);
 }
 
 
@@ -4948,6 +4975,20 @@ xs sidebar
     z-index: 1;
 }
 
+.about-page__content {
+    margin-top: 30px;
+    overflow-wrap: anywhere;
+}
+
+.about-page__content > * + * {
+    margin-top: 16px;
+}
+
+.about-page__content img {
+    max-width: 100%;
+    height: auto;
+}
+
 .about-one__shape-1 {
     position: absolute;
     top: 255px;
@@ -6420,7 +6461,9 @@ xs sidebar
 }
 
 .appointment-one__input-box input[type="text"],
-.appointment-one__input-box input[type="email"] {
+.appointment-one__input-box input[type="email"],
+.appointment-one__input-box select,
+.appointment-one__input-box textarea {
     height: 60px;
     width: 100%;
     border: 1px solid rgba(var(--servixa-white-rgb), .50);
@@ -6433,6 +6476,31 @@ xs sidebar
     display: block;
     font-weight: 400;
     border-radius: var(--servixa-bdr-radius);
+}
+
+.appointment-one__input-box select option {
+    color: var(--servixa-black);
+}
+
+.appointment-one__input-box textarea {
+    min-height: 140px;
+    padding-top: 18px;
+    resize: vertical;
+}
+
+.appointment-one__input-box input::placeholder,
+.appointment-one__input-box textarea::placeholder {
+    color: rgba(var(--servixa-white-rgb), .85);
+}
+
+.appointment-one__form label.error {
+    display: block;
+    margin-top: 6px;
+    color: var(--servixa-white);
+}
+
+.appointment-one__form .result {
+    margin-top: 20px;
 }
 
 .appointment-one__input-box-icon {
@@ -10171,6 +10239,76 @@ FAQ Page
     display: block;
     padding: 120px 0 120px;
     z-index: 1;
+}
+
+.faq-page__filters {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+.faq-page__filter label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--servixa-black);
+    font-weight: 600;
+}
+
+.faq-page__filter input,
+.faq-page__filter select {
+    width: 100%;
+    height: 56px;
+    padding: 0 18px;
+    border: 1px solid var(--servixa-bdr-color);
+    border-radius: var(--servixa-bdr-radius);
+    background: var(--servixa-white);
+    color: var(--servixa-black);
+}
+
+.faq-page__filter input:focus,
+.faq-page__filter select:focus {
+    outline: 2px solid var(--servixa-base);
+    outline-offset: 2px;
+}
+
+.faq-page__results {
+    margin-bottom: 30px;
+}
+
+.faq-page__no-results {
+    margin-top: 20px;
+}
+
+.faq-page [hidden] {
+    display: none !important;
+}
+
+.faq-page .accrodion-title {
+    list-style: none;
+}
+
+.faq-page .accrodion-title::-webkit-details-marker {
+    display: none;
+}
+
+.faq-page .accrodion-title h4 {
+    padding-right: 55px;
+}
+
+.faq-page .accrodion[open] {
+    border-color: rgba(var(--servixa-black-rgb), .15);
+}
+
+.faq-page .accrodion[open] .accrodion-title h4::before {
+    content: "\f107";
+    background-color: var(--servixa-black);
+}
+
+@media (max-width: 767px) {
+    .faq-page__filters {
+        grid-template-columns: 1fr;
+    }
 }
 
 /*--------------------------------------------------------------
@@ -19155,7 +19293,8 @@ Team One
     width: 45px;
     height: 45px;
     background-color: var(--servixa-base);
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 500;
     color: var(--servixa-white);
     border-radius: var(--servixa-bdr-radius);
     cursor: pointer;

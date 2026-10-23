@@ -12,7 +12,7 @@
      */
     $Read ??= new Read();
 
-    $Read->exeRead(DB_PAGES, 'WHERE page_name = :nm AND page_status = 1', "nm={$URL[0]}");
+    $Read->exeRead(DB_PAGES, 'WHERE page_name = :nm AND page_status = 1', 'nm=contato');
     if (!$Read->getResult()) {
         require REQUIRE_PATH . '/404.php';
 
@@ -40,6 +40,13 @@
         $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH'])
             && strtolower((string)$_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
+        if ($isAjax) {
+            if (ob_get_level() > 0) {
+                ob_clean();
+            }
+            header('Content-Type: text/html; charset=UTF-8');
+        }
+
         unset($Contato['action']);
         $Contato = array_map(static fn(mixed $value): string => is_string($value) ? trim($value) : '', $Contato);
 
@@ -59,12 +66,12 @@
         if ($camposPendentes) {
             echo Check::erro('Preencha todos os campos obrigatórios para enviar seu contato!', E_USER_WARNING);
             if ($isAjax) {
-                return;
+                exit;
             }
         } elseif (!filter_var($Contato['email'], FILTER_VALIDATE_EMAIL)) {
             echo Check::erro('O e-mail informado não tem um formato válido!', E_USER_WARNING);
             if ($isAjax) {
-                return;
+                exit;
             }
         } else {
             $templatesFolder = REQUIRE_PATH . '/assets/html/';
@@ -74,7 +81,7 @@
             if ($clienteTemplate === '' || $adminTemplate === '') {
                 echo Check::erro('Templates de e-mail não encontrados. Verifique a pasta assets/html.', E_USER_WARNING);
                 if ($isAjax) {
-                    return;
+                    exit;
                 }
             } else {
                 $assuntoContato = $Contato['assunto'] !== '' ? $Contato['assunto'] : 'Contato pelo site';
@@ -140,9 +147,9 @@
                 if (!$EmailAdmin->getError() && !$EmailCliente->getError()) {
                     $sucesso = "Obrigado, {$Contato['nome']}! Sua mensagem foi enviada.";
                     if ($isAjax) {
-                        echo Check::erro($sucesso);
+                        echo Check::erro(Check::safeHtmlChars($sucesso));
 
-                        return;
+                        exit;
                     }
 
                     $_SESSION['sucesso'] = $sucesso;
@@ -156,14 +163,14 @@
                     E_USER_WARNING
                 );
                 if ($isAjax) {
-                    return;
+                    exit;
                 }
             }
         }
     }
 
     if (!empty($_SESSION['sucesso']) && empty($Contato)) {
-        echo Check::erro($_SESSION['sucesso']);
+        echo Check::erro(Check::safeHtmlChars($_SESSION['sucesso']));
         unset($_SESSION['sucesso']);
     }
 ?>
@@ -289,7 +296,7 @@
 									<option value="" selected disabled>Selecione um serviço*</option>
                                     <?php
                                         $Read ??= new Read();
-                                        $Read->exeRead(DB_SERVICES);
+                                        $Read->exeRead(DB_SERVICES, 'WHERE svc_status = :status ORDER BY svc_title ASC', 'status=1');
                                         if ($Read->getResult()) {
                                             foreach ($Read->getResult() as $opt) {
                                                 $serviceTitle = Check::safeHtmlChars($opt['svc_title'] ?? '');

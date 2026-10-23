@@ -52,8 +52,8 @@
 								</div>
 							</div>
 						</div>
-						<h3 class='section-title__title title-animation'>Mais de 50 anos cuidando do seu
-							<span>carro com a verdade na frente</span>
+						<h3 class='section-title__title title-animation'>Mais de 50 anos cuidando e
+							<span>apaixonados por carros</span>
 						</h3>
 					</div>
 					<p class='about-one__text'>Desde 1973, a Mecânica Zé Vitor é referência em Caxias do Sul.
@@ -173,9 +173,7 @@
 									<p>Cofundador</p>
 								</div>
 							</div>
-							<div class='about-one__author-sign'>
-								<img src='<?= INCLUDE_PATH ?>/assets/images/resources/about-one-author-sign.png' alt=''>
-							</div>
+
 						</div>
 					</div>
 				</div>
