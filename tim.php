@@ -18,7 +18,10 @@
 // ------------------------------------------------------------
     $roots = [
         'uploads' => __DIR__ . '/uploads',
-        'themes' => __DIR__ . '/themes/' . THEME . '/images',
+        // Temas novos guardam as imagens em assets/images; os antigos, em images
+        'themes' => is_dir(__DIR__ . '/themes/' . THEME . '/assets/images')
+            ? __DIR__ . '/themes/' . THEME . '/assets/images'
+            : __DIR__ . '/themes/' . THEME . '/images',
         'admin' => __DIR__ . '/admin/_img',
     ];
 
@@ -68,8 +71,12 @@
         }
 
         $low = strtolower($raw);
-        if (str_starts_with($low, '/themes/' . THEME . '/images/')) {
-            return ['themes://', substr($raw, strlen('/themes/' . THEME . '/images/'))];
+        // $raw chega sem a barra inicial (ltrim nas entradas)
+        foreach (['/assets/images/', '/images/'] as $themeDir) {
+            $themePrefix = strtolower('themes/' . THEME . $themeDir);
+            if (str_starts_with($low, $themePrefix)) {
+                return ['themes://', substr($raw, strlen($themePrefix))];
+            }
         }
         if (str_starts_with($low, 'uploads/')) {
             return ['uploads://', substr($raw, strlen('uploads/'))];

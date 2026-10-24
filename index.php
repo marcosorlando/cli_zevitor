@@ -121,10 +121,12 @@
 	<meta property="twitter:url" content="<?= BASE; ?>/<?= $getURL; ?>"/>
 
 	<!-- favicon -->
-	<link rel='shortcut icon' href='<?= INCLUDE_PATH; ?>/images/favicon.png'>
-	<link rel='apple-touch-icon' href='<?= INCLUDE_PATH; ?>/images/apple-touch-icon-57x57.png'>
-	<link rel='apple-touch-icon' sizes='72x72' href='<?= INCLUDE_PATH; ?>/images/apple-touch-icon-72x72.png'>
-	<link rel='apple-touch-icon' sizes='114x114' href='<?= INCLUDE_PATH; ?>/images/apple-touch-icon-114x114.png'>
+	<link rel='shortcut icon' href='<?= INCLUDE_PATH; ?>/assets/images/favicons/favicon-32x32.png'>
+	<link rel='apple-touch-icon' href='<?= INCLUDE_PATH; ?>/assets/images/favicons/apple-touch-icon.png'>
+	<link rel='apple-touch-icon' sizes='114x114'
+	      href='<?= INCLUDE_PATH; ?>/assets/images/favicons/apple-touch-icon.png'>
+	<link rel='android-chrome-192x192' sizes='192x192' href='<?= INCLUDE_PATH; ?>/images/android-chrome-192x192.png'>
+	<link rel='android-chrome-512x512' sizes='512x512' href='<?= INCLUDE_PATH; ?>/images/android-chrome-512x512.png'>
 
     <?php
         // MAIN STYLE THEME

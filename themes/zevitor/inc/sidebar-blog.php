@@ -71,7 +71,9 @@
                             // sem categoria (pesquisa), de todas as categorias listadas acima
                             $tagCategories = isset($category_id)
                                 ? [(int)$category_id]
-                                : array_filter(array_map('intval', explode(',', (string)($post_category_parent ?? ''))));
+                                : array_filter(
+                                    array_map('intval', explode(',', (string)($post_category_parent ?? '')))
+                                );
                             $tagParams = [];
                             $tagFilter = [];
                             foreach (array_values($tagCategories) as $i => $tagCategory) {
@@ -122,16 +124,16 @@
                     if ($Read->getResult()) {
                         foreach ($Read->getResult() as $post) {
                             ?>
-							<div class='sidebar__post-single'>
-								<div class='sidebar-post__img'>
-									<img src='<?= BASE ?>/tim.php?src=uploads/<?= $post['post_cover'] ?>&w=600&h=314
+							<a href="<?= BASE ?>/artigo/<?= $post['post_name'] ?>">
+								<div class='sidebar__post-single'>
+									<div class='sidebar-post__img'>
+										<img src='<?= BASE ?>/tim.php?src=uploads/<?= $post['post_cover'] ?>&w=600&h=314
 									     alt='<?= $post['post_title'] ?>'>
+									</div>
+									<div class='sidebar__post-content-box'>
+										<h3><?= $post['post_title'] ?></h3></div>
 								</div>
-								<div class='sidebar__post-content-box'>
-									<h3><a href='blog-details.html'><?= $post['post_title'] ?></a>
-									</h3>
-								</div>
-							</div>
+							</a>
                             <?php
                         }
                     }
@@ -148,7 +150,7 @@
 				<span class='fab fa-whatsapp'></span>
 			</div>
 			<div class='sidebar__contact-text'>
-				<p>Chame no Whatsapp qualquer hora</p>
+				<p>Chame no Whatsapp</p>
 				<h2><a href='<?= Check::whatsMessage(
                         SITE_ADDR_WHATS,
                         'Olá, estou no site e quero falar com atendente.'

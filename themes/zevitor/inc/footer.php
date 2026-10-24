@@ -6,10 +6,44 @@
     $FooterServices = $MenuServices ?? [];
     $FooterBlogLink = $BlogLink ?? null;
     $LegalSlugs = ['termos-de-uso', 'termos-e-condicoes', 'politica-de-privacidade'];
-    $LegalPages = array_values(array_filter(
-        $FooterPages,
-        static fn(array $Page): bool => in_array($Page['page_name'], $LegalSlugs, true)
-    ));
+    $LegalPages = array_values(
+        array_filter(
+            $FooterPages,
+            static fn(array $Page): bool => in_array($Page['page_name'], $LegalSlugs, true)
+        )
+    );
+
+    // Redes sociais do Client.inc.php: só exibe as que estiverem preenchidas
+    // [constante => [url, nome, ícone do rodapé (flaticon), ícone do menu mobile (font awesome)]]
+    $SocialNetworks = [
+        'SITE_SOCIAL_INSTAGRAM' => ['https://instagram.com/%s', 'Instagram', 'icon-instagram', 'fab fa-instagram'],
+        'SITE_SOCIAL_FB_PAGE' => ['https://fb.com/%s', 'Facebook', 'icon-facebook-app-symbol', 'fab fa-facebook-square'],
+        'SITE_SOCIAL_YOUTUBE' => [
+            'https://www.youtube.com/@%s?sub_confirmation=1',
+            'YouTube',
+            'fab fa-youtube',
+            'fab fa-youtube'
+        ],
+        'SITE_SOCIAL_TWITTER' => ['https://x.com/%s', 'X (Twitter)', 'icon-twitter', 'fab fa-twitter'],
+        'SITE_SOCIAL_LINKEDIN' => [
+            'https://www.linkedin.com/company/%s',
+            'LinkedIn',
+            'icon-linkedin',
+            'fab fa-linkedin-in'
+        ],
+    ];
+    $SocialLinks = [];
+    foreach ($SocialNetworks as $Const => [$Url, $Name, $FooterIcon, $MobileIcon]) {
+        $Handle = defined($Const) ? trim((string)constant($Const), " @/") : '';
+        if ('' !== $Handle) {
+            $SocialLinks[] = [
+                'url' => sprintf($Url, rawurlencode($Handle)),
+                'name' => $Name,
+                'footer_icon' => $FooterIcon,
+                'mobile_icon' => $MobileIcon,
+            ];
+        }
+    }
 ?>
 <!--CTA One Start-->
 <section class='cta-one'>
@@ -47,12 +81,22 @@
 								                           alt='Logotipo - <?= SITE_NAME ?>'></a>
 							</div>
 							<p class='footer-widget__about-text'><?= SITE_DESC ?></p>
-							<div class='site-footer__social'>
-								<a href='#'><i class='icon-facebook-app-symbol'></i></a>
-								<a href='#'><i class='icon-twitter'></i></a>
-								<a href='#'><i class='icon-linkedin'></i></a>
-								<a href='#'><i class='icon-pinterest'></i></a>
-							</div>
+                            <?php
+                                if ($SocialLinks) {
+                                    ?>
+									<div class='site-footer__social'>
+                                        <?php
+                                            foreach ($SocialLinks as $Social) {
+                                                ?>
+												<a href='<?= $Social['url'] ?>' target='_blank' rel='noopener'
+												   title='Siga-nos no <?= $Social['name'] ?>'
+												   aria-label='<?= $Social['name'] ?>'><i
+															class='<?= $Social['footer_icon'] ?>'></i></a>
+                                                <?php
+                                            } ?>
+									</div>
+                                    <?php
+                                } ?>
 						</div>
 					</div>
 					<div class='col-xl-3 col-lg-6 col-md-6 wow fadeInUp' data-wow-delay='200ms'>
@@ -62,16 +106,24 @@
 							</div>
 							<ul class='footer-widget__quick-link-list list-unstyled'>
 								<li><a href='<?= BASE ?>'><span class='fas fa-angle-right'></span>Início</a></li>
-                                <?php foreach ($FooterPages as $Page):
-                                    if (in_array($Page['page_name'], $LegalSlugs, true)) {
-                                        continue;
-                                    }
-                                ?>
-                                    <li><a href='<?= BASE ?>/<?= rawurlencode($Page['page_name']) ?>'><span class='fas fa-angle-right'></span><?= Check::safeHtmlChars($Page['page_title'] ?: $Page['page_name']) ?></a></li>
-                                <?php endforeach; ?>
-                                <?php if ($FooterBlogLink): ?>
-                                    <li><a href='<?= Check::safeHtmlChars($FooterBlogLink) ?>'><span class='fas fa-angle-right'></span>Blog</a></li>
-                                <?php endif; ?>
+                                <?php
+                                    foreach ($FooterPages as $Page):
+                                        if (in_array($Page['page_name'], $LegalSlugs, true)) {
+                                            continue;
+                                        }
+                                        ?>
+										<li><a href='<?= BASE ?>/<?= rawurlencode($Page['page_name']) ?>'><span
+														class='fas fa-angle-right'></span><?= Check::safeHtmlChars(
+                                                    $Page['page_title'] ?: $Page['page_name']
+                                                ) ?></a></li>
+                                    <?php
+                                    endforeach; ?>
+                                <?php
+                                    if ($FooterBlogLink): ?>
+										<li><a href='<?= Check::safeHtmlChars($FooterBlogLink) ?>'><span
+														class='fas fa-angle-right'></span>Blog</a></li>
+                                    <?php
+                                    endif; ?>
 							</ul>
 						</div>
 					</div>
@@ -81,9 +133,15 @@
 								<h3 class='footer-widget__title'>Nossos serviços</h3>
 							</div>
 							<ul class='footer-widget__quick-link-list list-unstyled'>
-                                <?php foreach ($FooterServices as $Service): ?>
-                                    <li><a href='<?= BASE ?>/servico/<?= rawurlencode($Service['svc_name']) ?>'><span class='fas fa-angle-right'></span><?= Check::safeHtmlChars($Service['svc_title']) ?></a></li>
-                                <?php endforeach; ?>
+                                <?php
+                                    foreach ($FooterServices as $Service): ?>
+										<li><a href='<?= BASE ?>/servico/<?= rawurlencode(
+                                                $Service['svc_name']
+                                            ) ?>'><span class='fas fa-angle-right'></span><?= Check::safeHtmlChars(
+                                                    $Service['svc_title']
+                                                ) ?></a></li>
+                                    <?php
+                                    endforeach; ?>
 							</ul>
 						</div>
 					</div>
@@ -127,14 +185,16 @@
                                               (
                                                   SITE_ADDR_PHONE_A
                                               )
-                                              ?>'><?= SITE_ADDR_PHONE_A ?></a><span> ou </span><a class="icon-whatsapp"
-										                                                          title='Chamar no Whats: <?= SITE_ADDR_PHONE_A ?> '
-										                                                          target='_blank'
-										                                                          href='<?= Check::whatsMessage(
-                                                                                                      SITE_ADDR_WHATS,
-                                                                                                      'Escreva sua mensagem para Mecânica Zé Vitor: '
-                                                                                                  )
-                                                                                                  ?>'><?= SITE_ADDR_WHATS ?></a>
+                                              ?>'><?= SITE_ADDR_PHONE_A ?></a><span> ou </span>
+										</p>
+										<p>
+											<a title='Chamar no Whats: <?= SITE_ADDR_PHONE_A ?> '
+											   target='_blank'
+											   href='<?= Check::whatsMessage(
+                                                   SITE_ADDR_WHATS,
+                                                   'Escreva sua mensagem para Mecânica Zé Vitor: '
+                                               )
+                                               ?>'><i class='icon-whatsapp'></i><?= SITE_ADDR_WHATS ?></a>
 										</p>
 									</div>
 								</li>
@@ -151,11 +211,15 @@
 				<p class='site-footer__bottom-text'>© Direitos autorais <?= date('Y') ?> por <a
 							href='https://zen.ppg.br'>Zen Agência Web</a>. Todos os direitos
 					Reservado.</p>
-						<ul class='list-unstyled site-footer__bottom-menu'>
-                        <?php foreach ($LegalPages as $Page): ?>
-                            <li><a href='<?= BASE ?>/<?= rawurlencode($Page['page_name']) ?>'><?= Check::safeHtmlChars($Page['page_title'] ?: $Page['page_name']) ?></a></li>
-                        <?php endforeach; ?>
-						</ul>
+				<ul class='list-unstyled site-footer__bottom-menu'>
+                    <?php
+                        foreach ($LegalPages as $Page): ?>
+							<li><a href='<?= BASE ?>/<?= rawurlencode($Page['page_name']) ?>'><?= Check::safeHtmlChars(
+                                        $Page['page_title'] ?: $Page['page_name']
+                                    ) ?></a></li>
+                        <?php
+                        endforeach; ?>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -195,23 +259,31 @@
                        SITE_ADDR_PHONE_A
                    )
                    ?>'><?= SITE_ADDR_PHONE_A ?></a><span> ou </span>
-				<a
-						title='Chamar no Whats: <?= SITE_ADDR_PHONE_A ?> ' target='_blank'
-						href='<?= Check::whatsMessage(
-                            SITE_ADDR_WHATS,
-                            'Escreva sua mensagem para Mecânica Zé Vitor: '
-                        )
-                        ?>'><?= SITE_ADDR_WHATS ?></a>
+				<a title='Chamar no Whats: <?= SITE_ADDR_PHONE_A ?> ' target='_blank'
+				   href='<?= Check::whatsMessage(
+                       SITE_ADDR_WHATS,
+                       'Escreva sua mensagem para Mecânica Zé Vitor: '
+                   )
+                   ?>'><?= SITE_ADDR_WHATS ?></a>
 			</li>
 		</ul><!-- /.mobile-nav__contact -->
-		<div class='mobile-nav__top'>
-			<div class='mobile-nav__social'>
-				<a href='#' class='fab fa-twitter'></a>
-				<a href='#' class='fab fa-facebook-square'></a>
-				<a href='#' class='fab fa-pinterest-p'></a>
-				<a href='#' class='fab fa-instagram'></a>
-			</div><!-- /.mobile-nav__social -->
-		</div><!-- /.mobile-nav__top -->
+        <?php
+            if ($SocialLinks) {
+                ?>
+				<div class='mobile-nav__top'>
+					<div class='mobile-nav__social'>
+                        <?php
+                            foreach ($SocialLinks as $Social) {
+                                ?>
+								<a href='<?= $Social['url'] ?>' class='<?= $Social['mobile_icon'] ?>' target='_blank'
+								   rel='noopener' title='Siga-nos no <?= $Social['name'] ?>'
+								   aria-label='<?= $Social['name'] ?>'></a>
+                                <?php
+                            } ?>
+					</div><!-- /.mobile-nav__social -->
+				</div><!-- /.mobile-nav__top -->
+                <?php
+            } ?>
 
 	</div>
 	<!-- /.mobile-nav__content -->

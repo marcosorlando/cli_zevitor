@@ -128,7 +128,8 @@
 					<div class='service-details__sidebar-contact'>
 						<div class='service-details__sidebar-contact-img'>
 							<div class='inner'>
-								<img src='<?= INCLUDE_PATH ?>/assets/images/services/service-details-sidebar-img.webp'
+								<img width='285' height='285' loading='lazy'
+								     src='<?= BASE ?>/tim.php?src=<?= REQUIRE_PATH ?>/assets/images/services/service-details-sidebar-img.webp&w=285&h=285'
 								     alt='Se precisar de ajuda entre em contato'>
 							</div>
 						</div>
