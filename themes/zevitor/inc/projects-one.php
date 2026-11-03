@@ -16,6 +16,11 @@
         . 'FROM ' . DB_PROJECTS . ' WHERE project_status = :st ORDER BY project_id DESC LIMIT :limit',
         'st=1&limit=12'
     );
+
+    // Sem projeto ativo a dobra inteira some (mesma regra do menu).
+    if (!$Read->getResult()) {
+        return;
+    }
 ?>
 <!--Project One Start -->
 <section class='project-one'>
@@ -51,19 +56,13 @@
 		<div class='swiper-container project-one__carousel'>
 			<div class='swiper-wrapper'>
                 <?php
-                    if (!$Read->getResult()) {
-                        echo Check::erro(
-                            'Os projetos ainda serão cadastrados no painel. Volte em breve :)',
-                            E_USER_NOTICE
-                        );
-                    } else {
-                        foreach ($Read->getResult() as $Project) {
-                            extract($Project);
-                            $Thumb = BASE . '/tim.php?src=uploads/' . $project_cover . '&w=410&h=350';
-                            $Full = BASE . '/tim.php?src=uploads/' . $project_cover . '&w=410&h=350';
-                            $Link = BASE . '/projeto/' . $project_name;
-                            $Sub = !empty($project_subtitle) ? $project_subtitle : 'Veículos reparados';
-                            ?>
+                    foreach ($Read->getResult() as $Project) {
+                        extract($Project);
+                        $Thumb = BASE . '/tim.php?src=uploads/' . $project_cover . '&w=410&h=350';
+                        $Full = BASE . '/tim.php?src=uploads/' . $project_cover . '&w=410&h=350';
+                        $Link = BASE . '/projeto/' . $project_name;
+                        $Sub = !empty($project_subtitle) ? $project_subtitle : 'Veículos reparados';
+                        ?>
 							<!--Project One Single Start-->
 							<div class='swiper-slide'>
 								<div class='project-one__single'>
@@ -78,22 +77,21 @@
 											<div class='project-one__content'>
 												<div class='project-one__sub-title-and-shape'>
 													<span class='project-one__sub-title'><?= Check::safeHtmlChars(
-                                                            $Sub
-                                                        ) ?></span>
+                                                        $Sub
+                                                    ) ?></span>
 													<div class='project-one__sub-title-bdr'></div>
 												</div>
 												<h3 class='project-one__title'><a
 															href='<?= $Link ?>'><?= Check::safeHtmlChars(
-                                                            $project_title
-                                                        ) ?></a></h3>
+                                                        $project_title
+                                                    ) ?></a></h3>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 							<!--Project One Single End-->
-                            <?php
-                        }
+                        <?php
                     }
                 ?>
 			</div>

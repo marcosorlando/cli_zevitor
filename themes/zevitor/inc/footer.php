@@ -193,16 +193,26 @@
                                               (
                                                   SITE_ADDR_PHONE_A
                                               )
-                                              ?>'><?= SITE_ADDR_PHONE_A ?></a><span> ou </span>
+                                              ?>'><?= SITE_ADDR_PHONE_A ?></a>
 										</p>
+									</div>
+								</li>
+								<li>
+									<div class='icon'>
+										<span class='fab fa-whatsapp'></span>
+									</div>
+									<div class='content'>
+										<span>Whatsapp:</span>
+
 										<p>
-											<a title='Chamar no Whats: <?= SITE_ADDR_PHONE_A ?> '
+											<a title='Chamar no Whats: <?= SITE_ADDR_WHATS ?> '
 											   target='_blank'
 											   href='<?= Check::whatsMessage(
                                                    SITE_ADDR_WHATS,
                                                    'Escreva sua mensagem para Mecânica Zé Vitor: '
                                                )
-                                               ?>'><i class='icon-whatsapp'></i><?= SITE_ADDR_WHATS ?></a>
+                                               ?>'>
+                                                <?= SITE_ADDR_WHATS ?></a>
 										</p>
 									</div>
 								</li>

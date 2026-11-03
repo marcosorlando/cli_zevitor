@@ -12,6 +12,13 @@ use App\Helpers\Check;
         'status=1'
     );
     $Projects = $Read->getResult() ?: [];
+
+    // Sem projeto ativo a página não existe (mesma regra do menu e da home).
+    if (!$Projects) {
+        require REQUIRE_PATH . '/404.php';
+
+        return;
+    }
 ?>
 
 <section class='page-header'>
@@ -37,11 +44,6 @@ use App\Helpers\Check;
 <section class='project-page'>
 	<div class='container'>
 		<div class='project-page__inner'>
-            <?php
-                if (!$Projects) { ?>
-					<p>Nenhum projeto publicado no momento.</p>
-                <?php
-                } else { ?>
 					<div class='row'>
                         <?php
                             foreach ($Projects as $Project) {
@@ -91,8 +93,6 @@ use App\Helpers\Check;
                             <?php
                             } ?>
 					</div>
-                <?php
-                } ?>
 		</div>
 	</div>
 </section>
