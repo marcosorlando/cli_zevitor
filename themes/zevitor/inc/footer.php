@@ -17,7 +17,12 @@
     // [constante => [url, nome, ícone do rodapé (flaticon), ícone do menu mobile (font awesome)]]
     $SocialNetworks = [
         'SITE_SOCIAL_INSTAGRAM' => ['https://instagram.com/%s', 'Instagram', 'icon-instagram', 'fab fa-instagram'],
-        'SITE_SOCIAL_FB_PAGE' => ['https://fb.com/%s', 'Facebook', 'icon-facebook-app-symbol', 'fab fa-facebook-square'],
+        'SITE_SOCIAL_FB_PAGE' => [
+            'https://fb.com/%s',
+            'Facebook',
+            'icon-facebook-app-symbol',
+            'fab fa-facebook-square'
+        ],
         'SITE_SOCIAL_YOUTUBE' => [
             'https://www.youtube.com/@%s?sub_confirmation=1',
             'YouTube',
@@ -80,7 +85,9 @@
                                     ?>/assets/images/resources/logo-white-red.svg'
 								                           alt='Logotipo - <?= SITE_NAME ?>'></a>
 							</div>
-							<p class='footer-widget__about-text'><?= SITE_DESC ?></p>
+							<p class='footer-widget__about-text'>Mecânica Zé Vitor, desde 1970 garantindo segurança
+								nas ruas. Tecnologia, tradição e atenção em cada detalhe. Acesse nossas redes
+								sociais.</p>
                             <?php
                                 if ($SocialLinks) {
                                     ?>
@@ -171,7 +178,8 @@
 									</div>
 									<div class='content'>
 										<span>Horário de funcionamento:</span>
-										<p>Seg - Sex: 08h00 - 18h00</p>
+										<p>Seg - Sex (manhã): 08hs - 11:50hs</p>
+										<p>Seg - Sex (tarde): 13:30hs - 18hs</p>
 									</div>
 								</li>
 								<li>

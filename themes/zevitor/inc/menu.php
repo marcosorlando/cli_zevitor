@@ -10,12 +10,17 @@
         . ' ORDER BY page_order IS NULL, page_order ASC, page_title ASC'
     );
     $RegisteredPages = $Read->getResult() ?: [];
+
+    $Read->fullRead('SELECT project_id FROM ' . DB_PROJECTS . ' WHERE project_status = :st LIMIT 1', 'st=1');
+    $MenuProjects = (bool) $Read->getResult();
+
     $MenuPages = array_values(array_filter(
         $RegisteredPages,
         static fn(array $Page): bool => (int)$Page['page_status'] === 1
             && (int)$Page['page_menu'] === 1
             && !empty($Page['page_name'])
             && !in_array($Page['page_name'], ['index', 'home', 'projeto', 'servico', 'artigo', 'artigos'], true)
+            && ($MenuProjects || 'projetos' !== $Page['page_name'])
     ));
 
     $Read->fullRead(
@@ -23,9 +28,6 @@
         'st=1'
     );
     $MenuServices = $Read->getResult() ?: [];
-
-    $Read->fullRead('SELECT project_id FROM ' . DB_PROJECTS . ' WHERE project_status = :st LIMIT 1', 'st=1');
-    $MenuProjects = (bool) $Read->getResult();
 
     $RegisteredSlugs = array_column($RegisteredPages, 'page_name');
     if ($MenuProjects && !in_array('projetos', $RegisteredSlugs, true)) {
