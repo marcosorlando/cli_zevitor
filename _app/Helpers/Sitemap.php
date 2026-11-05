@@ -21,6 +21,7 @@
     use function is_bool;
     use function is_int;
     use function is_string;
+    use function rawurlencode;
     use function strtolower;
     use function strtotime;
     use function time;
@@ -49,8 +50,8 @@
 
             $Read = new Read();
 
+            // Sem a instrução xml-stylesheet: o Chrome removeu o suporte a XSLT e os buscadores nunca usaram o XSL.
             $this->sitemap = '<?xml version="1.0" encoding="UTF-8"?>' . "\r\n";
-            $this->sitemap .= '<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>' . "\r\n";
             $this->sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\r\n";
 
             // HOME
@@ -67,6 +68,11 @@
                     'SELECT page_name, created_at FROM ' . DB_PAGES . ' WHERE page_status = 1 ORDER BY page_title ASC'
                 );
                 $pages = $Read->getResult();
+
+                // /projetos dá 404 sem projeto ativo (themes/zevitor/projetos.php), então não entra no sitemap.
+                $Read->fullRead('SELECT project_id FROM ' . DB_PROJECTS . ' WHERE project_status = 1 LIMIT 1');
+                $hasProjects = (bool) $Read->getResult();
+
                 if (is_array($pages) && [] !== $pages) {
                     /**
                      * @var array<int, array{page_name: mixed, page_date: mixed}> $pages
@@ -74,6 +80,10 @@
                     foreach ($pages as $ReadPages) {
                         $pageName = $ReadPages['page_name'] ?? null;
                         if (!is_string($pageName) || '' === $pageName) {
+                            continue;
+                        }
+
+                        if ('projetos' === $pageName && !$hasProjects) {
                             continue;
                         }
 
@@ -88,6 +98,72 @@
                         $this->sitemap .= '<lastmod>' . date('Y-m-d\TH:i:sP', $pageTimestamp) . '</lastmod>' . "\r\n";
                         $this->sitemap .= '<changefreq>monthly</changefreq>' . "\r\n";
                         $this->sitemap .= '<priority>0.5</priority >' . "\r\n";
+                        $this->sitemap .= '</url>' . "\r\n";
+                    }
+                }
+            }
+
+            if ($this->isFeatureEnabled('APP_SERVICES')) {
+                // SERVICES
+                $Read->fullRead(
+                    'SELECT svc_name, COALESCE(svc_updated, svc_created) AS svc_date FROM ' . DB_SERVICES
+                    . ' WHERE svc_status = 1 ORDER BY svc_id ASC'
+                );
+                $services = $Read->getResult();
+                if (is_array($services) && [] !== $services) {
+                    /**
+                     * @var array<int, array{svc_name: mixed, svc_date: mixed}> $services
+                     */
+                    foreach ($services as $ReadPages) {
+                        $serviceName = $ReadPages['svc_name'] ?? null;
+                        if (!is_string($serviceName) || '' === $serviceName) {
+                            continue;
+                        }
+
+                        $serviceDateRaw = $ReadPages['svc_date'] ?? null;
+                        $serviceTimestamp = is_string($serviceDateRaw) ? strtotime($serviceDateRaw) : false;
+                        if (false === $serviceTimestamp) {
+                            $serviceTimestamp = time();
+                        }
+
+                        $this->sitemap .= '<url>' . "\r\n";
+                        $this->sitemap .= '<loc>' . BASE . '/servico/' . rawurlencode($serviceName) . '</loc>' . "\r\n";
+                        $this->sitemap .= '<lastmod>' . date('Y-m-d\TH:i:sP', $serviceTimestamp) . '</lastmod>' . "\r\n";
+                        $this->sitemap .= '<changefreq>monthly</changefreq>' . "\r\n";
+                        $this->sitemap .= '<priority>0.8</priority >' . "\r\n";
+                        $this->sitemap .= '</url>' . "\r\n";
+                    }
+                }
+            }
+
+            if ($this->isFeatureEnabled('APP_PROJECTS')) {
+                // PROJECTS
+                $Read->fullRead(
+                    'SELECT project_name, COALESCE(project_updated, project_created) AS project_date FROM ' . DB_PROJECTS
+                    . ' WHERE project_status = 1 ORDER BY project_id DESC'
+                );
+                $projects = $Read->getResult();
+                if (is_array($projects) && [] !== $projects) {
+                    /**
+                     * @var array<int, array{project_name: mixed, project_date: mixed}> $projects
+                     */
+                    foreach ($projects as $ReadPages) {
+                        $projectName = $ReadPages['project_name'] ?? null;
+                        if (!is_string($projectName) || '' === $projectName) {
+                            continue;
+                        }
+
+                        $projectDateRaw = $ReadPages['project_date'] ?? null;
+                        $projectTimestamp = is_string($projectDateRaw) ? strtotime($projectDateRaw) : false;
+                        if (false === $projectTimestamp) {
+                            $projectTimestamp = time();
+                        }
+
+                        $this->sitemap .= '<url>' . "\r\n";
+                        $this->sitemap .= '<loc>' . BASE . '/projeto/' . rawurlencode($projectName) . '</loc>' . "\r\n";
+                        $this->sitemap .= '<lastmod>' . date('Y-m-d\TH:i:sP', $projectTimestamp) . '</lastmod>' . "\r\n";
+                        $this->sitemap .= '<changefreq>monthly</changefreq>' . "\r\n";
+                        $this->sitemap .= '<priority>0.7</priority >' . "\r\n";
                         $this->sitemap .= '</url>' . "\r\n";
                     }
                 }
