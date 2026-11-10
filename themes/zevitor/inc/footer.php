@@ -58,11 +58,14 @@
 			     style='background-image: url(<?= INCLUDE_PATH ?>/assets/images/backgrounds/cta-one-inner-bg.jpg);'></div>
 			<h3 class='cta-one__title'>Inscreva-se para receber atualizações e informações.</h3>
 			<div class='cta-one__from-box'>
-				<form class='cta-one__form'>
+				<form class='cta-one__form j_newsletter' action='<?= INCLUDE_PATH ?>/ajax/Newsletter.ajax.php'
+				      method='post'>
 					<div class='cta-one__input-box'>
-						<input type='email' placeholder='Digite o endereço de e-mail' name='email'>
+						<input type='email' placeholder='Digite o endereço de e-mail' name='email' maxlength='100'
+						       autocomplete='email' aria-label='Seu e-mail' required>
 						<button type='submit' class='thm-btn'>Inscreva-se<span class='icon-next'></span></button>
 					</div>
+					<div class='result' role='status' aria-live='polite'></div>
 				</form>
 			</div>
 		</div>

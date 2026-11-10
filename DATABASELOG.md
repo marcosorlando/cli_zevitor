@@ -257,3 +257,30 @@ CREATE TABLE IF NOT EXISTS `zv_team` (
   KEY `idx_team_status_order` (`user_status`, `user_order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
+
+## Leads: campos do formulário de contato
+
+Migration: `database/migrations/2026_11_09_ws_leads_campos_contato.sql`. A página de contato, o agendamento da home e a
+landing page gravam em `ws_leads` com os mesmos campos (nome, e-mail, telefone, assunto, serviço, veículo e mensagem).
+
+```sql
+ALTER TABLE `ws_leads`
+    ADD COLUMN `lead_subject` varchar(255) DEFAULT NULL AFTER `lead_phone`,
+    ADD COLUMN `lead_service` varchar(255) DEFAULT NULL AFTER `lead_subject`,
+    ADD COLUMN `lead_vehicle` varchar(255) DEFAULT NULL AFTER `lead_service`,
+    MODIFY COLUMN `lead_conversion` varchar(255) DEFAULT NULL;
+```
+
+## Leads: double opt-in da newsletter
+
+Migration: `database/migrations/2026_11_09_ws_leads_newsletter_optin.sql`. A inscrição pelo rodapé grava o lead com
+`lead_conversion = 'Newsletter'` e `lead_confirmed` nulo; o link do e-mail (`/newsletter/confirmar/<token>`) preenche
+`lead_confirmed` e apaga o token.
+
+```sql
+ALTER TABLE `ws_leads`
+    ADD COLUMN `lead_token` char(64) DEFAULT NULL AFTER `lead_conversion`,
+    ADD COLUMN `lead_token_date` timestamp NULL DEFAULT NULL AFTER `lead_token`,
+    ADD COLUMN `lead_confirmed` timestamp NULL DEFAULT NULL AFTER `lead_token_date`,
+    ADD KEY `idx_leads_token` (`lead_token`);
+```

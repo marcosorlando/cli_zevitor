@@ -94,7 +94,7 @@ if (!defined('APP_COMMENTS')) {
 }
 
 if (!defined('APP_CTAS')) {
-    define('APP_CTAS', 1);
+    define('APP_CTAS', 0);
 }
 
 if (!defined('APP_CURIOSITIES')) {
@@ -106,7 +106,7 @@ if (!defined('APP_CV')) {
 }
 
 if (!defined('APP_DEBUG')) {
-    define('APP_DEBUG', false);
+    define('APP_DEBUG', 'true');
 }
 
 if (!defined('APP_DEPOSITIONS')) {
@@ -130,7 +130,7 @@ if (!defined('APP_LEADS')) {
 }
 
 if (!defined('APP_LINKTREE')) {
-    define('APP_LINKTREE', 0);
+    define('APP_LINKTREE', 1);
 }
 
 if (!defined('APP_LINK_PAGES')) {
@@ -150,7 +150,7 @@ if (!defined('APP_LINK_PROPERTIES')) {
 }
 
 if (!defined('APP_MATERIALS')) {
-    define('APP_MATERIALS', 1);
+    define('APP_MATERIALS', 0);
 }
 
 if (!defined('APP_OUVIDORIA')) {
@@ -210,7 +210,7 @@ if (!defined('APP_TEAM')) {
 }
 
 if (!defined('APP_THANKYOU_PAGES')) {
-    define('APP_THANKYOU_PAGES', 1);
+    define('APP_THANKYOU_PAGES', 0);
 }
 
 if (!defined('APP_USERS')) {
@@ -738,7 +738,7 @@ if (!defined('SIS_DB_USER')) {
 }
 
 if (!defined('SITE_ADDR_ADDR')) {
-    define('SITE_ADDR_ADDR', 'João Paternoster, 476');
+    define('SITE_ADDR_ADDR', 'Rua João Paternoster, 476');
 }
 
 if (!defined('SITE_ADDR_CITY')) {

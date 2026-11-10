@@ -528,6 +528,17 @@
                 return;
             }
 
+            if ('newsletter' === $this->file) {
+                $this->assignSeo(
+                    'WebSite',
+                    'Confirmar inscrição na newsletter - ' . SITE_NAME,
+                    'Confirme seu e-mail para receber as novidades da ' . SITE_NAME . '.',
+                    $this->defaultImagePath()
+                );
+
+                return;
+            }
+
             if ('conta' === $this->file) {
                 $accountManagerRaw = defined('ACC_MANAGER') ? constant('ACC_MANAGER') : null;
                 $accountManagerEnabled = in_array($accountManagerRaw, [1, '1', true, 'true', 'on', 'yes'], true);

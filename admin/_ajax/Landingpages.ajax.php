@@ -24,6 +24,33 @@ if (!APP_LANDING_PAGES || empty($_SESSION['userLogin']) || empty($_SESSION['user
 
 usleep(50000);
 
+/**
+ * Apaga uma imagem de uploads/landingpages/ só quando nenhuma outra página usa o mesmo arquivo:
+ * o "Replicar" (reply.php) copia a página apontando para as mesmas imagens.
+ */
+function removeLandingImage(?string $file, int $pageId): void
+{
+    if (empty($file)) {
+        return;
+    }
+
+    $read = new Read();
+    $read->fullRead(
+        'SELECT page_id FROM ' . DB_LANDING_PAGES . ' WHERE page_id != :id'
+        . ' AND (page_logo = :f1 OR page_cover = :f2 OR page_mockup = :f3 OR page_social_media = :f4) LIMIT 1',
+        sprintf('id=%d&f1=%2$s&f2=%2$s&f3=%2$s&f4=%2$s', $pageId, rawurlencode($file))
+    );
+    if ($read->getResult()) {
+        return;
+    }
+
+    $baseDir = realpath(__DIR__ . '/../../uploads/landingpages');
+    $path = realpath(__DIR__ . '/../../uploads/landingpages/' . $file);
+    if ($baseDir && $path && is_file($path) && str_starts_with($path, $baseDir . DIRECTORY_SEPARATOR)) {
+        unlink($path);
+    }
+}
+
 // DEFINE O CALLBACK E RECUPERA O POST
 $jSON = null;
 $CallBack = 'Landingpages';
@@ -48,43 +75,27 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
     switch ($Case) {
         // DELETE
         case 'delete':
+            $DelId = (int)filter_var($PostData['del_id'] ?? 0, FILTER_VALIDATE_INT);
             $Read->fullRead(
-                'SELECT page_logo, page_social_media, page_cover, page_mockup, page_mockup FROM ' . DB_LANDING_PAGES . ' WHERE page_id = :pi',
-                'pi=' . $PostData['del_id']
+                'SELECT page_logo, page_social_media, page_cover, page_mockup FROM ' . DB_LANDING_PAGES . ' WHERE page_id = :pi',
+                'pi=' . $DelId
             );
 
             if ($Read->getResult()) {
-                $LogoRemove = '../../uploads/landingpages/' . $Read->getResult()[0]['page_logo'];
-                $MockupRemove = '../../uploads/landingpages/' . $Read->getResult()[0]['page_mockup'];
-                $SocialRemove = '../../uploads/landingpages/' . $Read->getResult()[0]['page_social_media'];
-                $CoverRemove = '../../uploads/landingpages/' . $Read->getResult()[0]['page_cover'];
-
-                if (file_exists($LogoRemove) && !is_dir($LogoRemove)) {
-                    unlink($LogoRemove);
-                }
-
-                if (file_exists($MockupRemove) && !is_dir($MockupRemove)) {
-                    unlink($MockupRemove);
-                }
-
-                if (file_exists($SocialRemove) && !is_dir($SocialRemove)) {
-                    unlink($SocialRemove);
-                }
-
-                if (file_exists($CoverRemove) && !is_dir($CoverRemove)) {
-                    unlink($CoverRemove);
+                foreach ($Read->getResult()[0] as $Image) {
+                    removeLandingImage($Image, $DelId);
                 }
             }
 
-            $Delete->exeDelete(DB_LANDING_PAGES, 'WHERE page_id = :id', 'id=' . $PostData['del_id']);
+            $Delete->exeDelete(DB_LANDING_PAGES, 'WHERE page_id = :id', 'id=' . $DelId);
 
             $jSON['success'] = true;
 
             break;
 
-        // MANAGER
+            // MANAGER
         case 'manage':
-            $PageId = $PostData['page_id'];
+            $PageId = (int)filter_var($PostData['page_id'] ?? 0, FILTER_VALIDATE_INT);
             unset($PostData['page_id']);
 
             $PostData['page_status'] = (empty($PostData['page_status']) ? '0' : '1');
@@ -99,13 +110,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
             if (!empty($_FILES['page_logo'])) {
                 $File = $_FILES['page_logo'];
 
-                if (
-                    $ThisPage['page_logo'] && file_exists(
-                        '../../uploads/landingpages/' . $ThisPage['page_logo']
-                    ) && !is_dir('../../uploads/landingpages/' . $ThisPage['page_logo'])
-                ) {
-                    unlink('../../uploads/landingpages/' . $ThisPage['page_logo']);
-                }
+                removeLandingImage($ThisPage['page_logo'] ?? null, $PageId);
 
                 $Upload = new Upload('../../uploads/landingpages/');
                 $Upload->image($File, $PostData['page_name'] . '-logo', IMAGE_W);
@@ -132,13 +137,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
             if (!empty($_FILES['page_mockup'])) {
                 $File = $_FILES['page_mockup'];
 
-                if (
-                    $ThisPage['page_mockup'] && file_exists(
-                        '../../uploads/landingpages/' . $ThisPage['page_mockup']
-                    ) && !is_dir('../../uploads/landingpages/' . $ThisPage['page_mockup'])
-                ) {
-                    unlink('../../uploads/landingpages/' . $ThisPage['page_mockup']);
-                }
+                removeLandingImage($ThisPage['page_mockup'] ?? null, $PageId);
 
                 $Upload = new Upload('../../uploads/landingpages/');
                 $Upload->image($File, $PostData['page_name'] . '-mkp', 600);
@@ -165,13 +164,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
             if (!empty($_FILES['page_cover'])) {
                 $File = $_FILES['page_cover'];
 
-                if (
-                    $ThisPage['page_cover'] && file_exists(
-                        '../../uploads/landingpages/' . $ThisPage['page_cover']
-                    ) && !is_dir('../../uploads/landingpages/' . $ThisPage['page_cover'])
-                ) {
-                    unlink('../../uploads/landingpages/' . $ThisPage['page_cover']);
-                }
+                removeLandingImage($ThisPage['page_cover'] ?? null, $PageId);
 
                 $Upload = new Upload('../../uploads/landingpages/');
                 $Upload->image($File, $PostData['page_name'] . '-bg', IMAGE_W);
@@ -198,13 +191,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
             if (!empty($_FILES['page_social_media'])) {
                 $File = $_FILES['page_social_media'];
 
-                if (
-                    $ThisPage['page_social_media'] && file_exists(
-                        '../../uploads/landingpages/' . $ThisPage['page_social_media']
-                    ) && !is_dir('../../uploads/landingpages/' . $ThisPage['page_social_media'])
-                ) {
-                    unlink('../../uploads/landingpages/' . $ThisPage['page_social_media']);
-                }
+                removeLandingImage($ThisPage['page_social_media'] ?? null, $PageId);
 
                 $Upload = new Upload('../../uploads/landingpages/');
                 $Upload->image($File, $PostData['page_name'] . '-social', IMAGE_W);
@@ -239,7 +226,14 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
             $jSON['name'] = $PostData['page_name'];
             $jSON['view'] = BASE . ('/' . $PostData['page_name']);
 
-            $Update->exeUpdate(DB_LANDING_PAGES, $PostData, 'WHERE page_id = :id', 'id=' . $PageId);
+            $PageData = array_intersect_key($PostData, array_flip([
+                'page_title', 'page_subtitle', 'page_name', 'page_content', 'page_coluna1', 'page_coluna2',
+                'page_logo', 'page_cover', 'page_mockup', 'page_social_media',
+                'page_header_color', 'page_box_color', 'page_bg_color', 'page_footer_color',
+                'page_btn_text', 'page_btn_text_color', 'page_btn_bg_color', 'page_btn_bg_color_hover',
+                'form_title', 'form_bg_color', 'form_text_color', 'page_destino', 'page_status',
+            ]));
+            $Update->exeUpdate(DB_LANDING_PAGES, $PageData, 'WHERE page_id = :id', 'id=' . $PageId);
             $jSON['trigger'] = Check::ajaxErro('<b>Página atualizada com sucesso!</b>');
 
             break;

@@ -101,81 +101,37 @@
 					       placeholder="E-mail do lead:" required/>
 				</label>
 
-				<div class='label_50'>
-					<label class='label'>
-						<span class='legend'>Estado</span>
-						<select name='lead_state' id='UF' required='required'>
-							<option value='0'> - Selecione -</option>
-                            <?php
-
-                                $Read->exeRead(DB_STATES);
-                                if ($Read->getResult()) {
-                                    foreach ($Read->getResult() as $States) {
-                                        extract($States);
-                                        echo sprintf(
-                                                "<option value='%s' ",
-                                                $uf
-                                            ) . ($uf == $lead_state ? 'selected' : '') . sprintf(
-                                                '>%s - %s</option>',
-                                                $uf,
-                                                $name
-                                            );
-                                    }
-                                }
-                            ?>
-						</select>
-					</label>
-
+				<div class="label_50">
 					<label class="label">
-						<span class="legend">Cidade:</span>
-						<select id='lead_city' name='lead_city' class='cities_return' required="required">
-                            <?php
-                                $Read->exeRead(DB_CITIES, 'WHERE uf = :uf ORDER BY name', 'uf=' . $lead_state);
-                                if ($Read->getResult()) {
-                                    echo "<option value='0'>- Selecione a cidade -</option>";
-                                    foreach ($Read->getResult() as $Cities) {
-                                        extract($Cities);
-                                        echo sprintf(
-                                                "<option value='%s' ",
-                                                $name
-                                            ) . ($name == $lead_city ? 'selected' : '') . sprintf(
-                                                ' >%s</option>',
-                                                $name
-                                            );
-                                    }
-                                }
-                            ?>
-						</select>
-
+						<span class="legend">Telefone / WhatsApp:</span>
+						<input class="font_medium formPhone" type="text" name="lead_phone" value="<?= $lead_phone ?? ''; ?>"
+						       placeholder="Telefone do lead:"/>
+					</label>
+					<label class="label">
+						<span class="legend">Assunto:</span>
+						<input class="font_medium" type="text" name="lead_subject" value="<?= $lead_subject ?? ''; ?>"
+						       placeholder="Assunto:"/>
 					</label>
 				</div>
 
 				<div class="label_50">
 					<label class="label">
-						<span class="legend">Qual seu Cargo</span>
-						<select id='lead_cargo' name='lead_cargo' required='required'>
-							<option value='' selected disabled> - Selecione...</option>
-                            <?php
-                                foreach (Check::leadCargo() as $key => $value) {
-                                    $selected = ($lead_cargo === $key) ? ' selected="selected"' : '';
-                                    echo "<option value='{$key}' {$selected}>{$value}</option>";
-                                }
-                            ?>
-						</select>
+						<span class="legend">Serviço:</span>
+						<input class="font_medium" type="text" name="lead_service" value="<?= $lead_service ?? ''; ?>"
+						       placeholder="Serviço de interesse:"/>
 					</label>
 					<label class="label">
-						<span class="legend">Qual seu Segmento de Atuação?</span>
-						<select id='lead_segmento' name='lead_segmento' required='required'>
-							<option value='' selected disabled>Selecione</option>
-                            <?php
-                                foreach (Check::leadSegmento() as $key => $value) {
-                                    $selected = ($lead_segmento === $key) ? ' selected="selected"' : '';
-                                    echo "<option value='{$key}' {$selected}>{$value}</option>";
-                                }
-                            ?>
-						</select>
+						<span class="legend">Veículo (marca / modelo / ano):</span>
+						<input class="font_medium" type="text" name="lead_vehicle" value="<?= $lead_vehicle ?? ''; ?>"
+						       placeholder="Veículo:"/>
 					</label>
 				</div>
+
+				<label class="label">
+					<span class="legend">Mensagem:</span>
+					<textarea class="font_medium" name="lead_message" rows="6"
+					          placeholder="Mensagem do lead:"><?= $lead_message ?? ''; ?></textarea>
+				</label>
 				<div class="clear"></div>
 			</div>
 		</div>

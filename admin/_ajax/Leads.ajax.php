@@ -61,7 +61,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
     switch ($Case) {
         // DELETE
         case 'delete':
-            $LeadId = filter_var($PostData['key'] ?? null, FILTER_VALIDATE_INT);
+            $LeadId = filter_var($PostData['del_id'] ?? null, FILTER_VALIDATE_INT);
             if (!$LeadId) {
                 $jSON['trigger'] = Check::ajaxErro('<b>OPSS:</b> Lead inválido para exclusão!', E_USER_WARNING);
                 $jSON['error'] = true;
@@ -89,36 +89,7 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
         // CAPTURA DE ACORDO COM CALLBACK-ACTION
         case 'manage':
 
-            //Popula as Cidades por Estado - Recebido
-            if (!empty($PostData['lead_state'])) {
-                $jSON['city'] = null;
-
-                $Read->fullRead(
-                    'SELECT id, name, uf FROM ' . DB_CITIES . ' WHERE uf = :uf',
-                    'uf=' . $PostData['lead_state']
-                );
-
-                if ($Read->getResult()) {
-                    $jSON['city'] .= "<option value='0'>- Selecione a cidade -</option> ";
-
-                    foreach ($Read->getResult() as $Cities) {
-                        extract($Cities);
-                        $selected = (!empty($PostData['lead_city']) && $name == $PostData['lead_city'] ? 'selected' : '');
-                        $jSON['city'] .= sprintf("<option value='%s' %s>%s</option>", $name, $selected, $name);
-                    }
-                }
-            }
-
             if (
-                in_array('', $PostData, true) &&
-                !empty($PostData['lead_thumb']) &&
-                !empty($PostData['lead_job_title'])
-            ) {
-                $jSON['trigger'] = Check::ajaxErro(
-                    '<strong>OPPSSS:</strong> Favor preencha todos os campos!',
-                    E_USER_NOTICE
-                );
-            } elseif (
                 !Check::email((string) ($PostData['lead_email'] ?? '')) || !filter_var($PostData['lead_email'] ?? null, FILTER_VALIDATE_EMAIL)
             ) {
                 $jSON['trigger'] = Check::ajaxErro(
@@ -133,8 +104,17 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                     break;
                 }
 
-                unset($PostData['lead_id']);
-                $PostData['lead_status'] = (($PostData['lead_status'] ?? '') === '' ? '0' : '1');
+                // Só as colunas editáveis no formulário; lead_conversion fica como foi capturado.
+                $LeadData = array_intersect_key($PostData, array_flip([
+                    'lead_name',
+                    'lead_email',
+                    'lead_phone',
+                    'lead_subject',
+                    'lead_service',
+                    'lead_vehicle',
+                    'lead_message',
+                ]));
+                $LeadData['lead_status'] = (($PostData['lead_status'] ?? '') === '' ? '0' : '1');
 
                 $Read->exeRead(DB_LEADS, 'WHERE lead_id= :id', "id={$LeadId}");
                 $ThisPage = $Read->getResult()[0] ?? [];
@@ -152,10 +132,10 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
                     }
 
                     $Upload = new Upload('../../uploads/leads/');
-                    $Upload->image($File, $PostData['lead_name'], AVATAR_W);
+                    $Upload->image($File, (string) ($LeadData['lead_name'] ?? 'lead'), AVATAR_W);
 
                     if ($Upload->getResult()) {
-                        $PostData['lead_thumb'] = $Upload->getResult();
+                        $LeadData['lead_thumb'] = $Upload->getResult();
                     } else {
                         $jSON['trigger'] = Check::ajaxErro(
                             sprintf(
@@ -168,11 +148,9 @@ if (isset($PostData['callback_action'], $PostData['callback']) && $PostData['cal
 
                         return;
                     }
-                } else {
-                    unset($PostData['lead_thumb']);
                 }
 
-                $Update->exeUpdate(DB_LEADS, $PostData, 'WHERE lead_id = :id', "id={$LeadId}");
+                $Update->exeUpdate(DB_LEADS, $LeadData, 'WHERE lead_id = :id', "id={$LeadId}");
                 $jSON['trigger'] = Check::ajaxErro('<b>OK!</b> Lead atualizado com sucesso!');
             }
 

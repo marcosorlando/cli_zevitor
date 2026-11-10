@@ -698,6 +698,63 @@
 
 
 
+  // reCAPTCHA (chave baseada em pontuação): gera um token novo a cada envio, pois ele vale
+  // por 2 minutos e só pode ser validado uma vez. Sem o script na página, envia sem token.
+  function withRecaptchaToken(form, action, callback) {
+    var script = document.getElementById("recaptcha-js");
+    if (!script || typeof grecaptcha === "undefined" || !grecaptcha.enterprise) {
+      callback();
+      return;
+    }
+
+    grecaptcha.enterprise.ready(function () {
+      grecaptcha.enterprise
+        .execute(script.getAttribute("data-site-key"), { action: action })
+        .then(function (token) {
+          var field = $(form).find('input[name="recaptcha_token"]');
+          if (!field.length) {
+            field = $('<input type="hidden" name="recaptcha_token">').appendTo(form);
+          }
+          field.val(token);
+          callback();
+        }, callback);
+    });
+  }
+
+  // Usado também pelo formulário da landing page (lp/js/lp.js).
+  window.withRecaptchaToken = withRecaptchaToken;
+
+  // Newsletter do rodapé: grava o e-mail como lead (ajax/Newsletter.ajax.php).
+  $(".j_newsletter").on("submit", function (event) {
+    event.preventDefault();
+
+    var form = this;
+    var result = $(form).find(".result");
+    var submitButton = $(form).find('button[type="submit"]');
+    if (submitButton.prop("disabled")) {
+      return;
+    }
+
+    submitButton.prop("disabled", true);
+    result.empty();
+
+    withRecaptchaToken(form, "newsletter", function () {
+      $.post($(form).attr("action"), $(form).serialize(), null, "json")
+        .done(function (data) {
+          result.html(data.trigger || "");
+          if (data.success) {
+            form.reset();
+          }
+        })
+        .fail(function () {
+          result.html("<div class='trigger trigger_alert'><span>Não foi possível enviar agora. Tente novamente.</span></div>");
+        })
+        .always(function () {
+          submitButton.prop("disabled", false);
+        });
+    });
+  });
+
   $(".contact-form-validated").each(function () {
     $(this).validate({
       rules: {
@@ -712,20 +769,22 @@
         submitButton.prop("disabled", true);
         result.empty();
 
-        $.post($(form).attr("action"), $(form).serialize())
-          .done(function (response) {
-            result.html(response);
-            if (result.find(".trigger_success").length) {
-              form.reset();
-              $(form).find("select:not(.ignore)").niceSelect("update");
-            }
-          })
-          .fail(function () {
-            result.html("<div class='trigger trigger_alert'><span>Não foi possível enviar agora. Tente novamente.</span></div>");
-          })
-          .always(function () {
-            submitButton.prop("disabled", false);
-          });
+        withRecaptchaToken(form, "contact", function () {
+          $.post($(form).attr("action"), $(form).serialize())
+            .done(function (response) {
+              result.html(response);
+              if (result.find(".trigger_success").length) {
+                form.reset();
+                $(form).find("select:not(.ignore)").niceSelect("update");
+              }
+            })
+            .fail(function () {
+              result.html("<div class='trigger trigger_alert'><span>Não foi possível enviar agora. Tente novamente.</span></div>");
+            })
+            .always(function () {
+              submitButton.prop("disabled", false);
+            });
+        });
         return false;
       }
     });

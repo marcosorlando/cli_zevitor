@@ -6501,6 +6501,13 @@ xs sidebar
 
 .appointment-one__form .result {
     margin-top: 20px;
+    font-size: 15px;
+}
+
+.appointment-one__form .result,
+.appointment-one__form .result span,
+.appointment-one__form .recaptcha-notice {
+    color: var(--servixa-white);
 }
 
 .appointment-one__input-box-icon {
@@ -9689,6 +9696,20 @@ Brand Three
 .cta-one__input-box .thm-btn > span {
     height: 40px;
     width: 40px;
+}
+
+.cta-one__form .result {
+    margin-top: 12px;
+    font-size: 15px;
+    color: var(--servixa-white);
+}
+
+.cta-one__form .result span {
+    color: inherit;
+}
+
+.newsletter-confirm .thm-btn {
+    border: none;
 }
 
 
@@ -24469,6 +24490,23 @@ testimonials Page V3
     padding-top: 30px;
 }
 
+
+/* reCAPTCHA: selo oculto, substituído pelo aviso abaixo dos formulários (inc/recaptcha-notice.php) */
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
+.recaptcha-notice {
+    margin: 15px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: .75;
+}
+
+.recaptcha-notice a {
+    color: inherit;
+    text-decoration: underline;
+}
 
 /*--------------------------------------------------------------
 # End

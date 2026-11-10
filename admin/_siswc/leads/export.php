@@ -7,12 +7,21 @@ require_once __DIR__.'/../../../vendor/autoload.php';
 use App\Conn\Read;
 use App\Helpers\Check;
 
+/**
+ * Exporta a base de leads em CSV (botão "Download" de leads/home.php).
+ * Um contato por e-mail (o mais recente); newsletter sem double opt-in confirmado fica de fora.
+ */
 $read = new Read();
 
-$adminLevelRequired = 10;
-$adminId = \filter_input(INPUT_GET, 'a', FILTER_VALIDATE_INT);
+if (\session_status() !== PHP_SESSION_ACTIVE) {
+    \session_start();
+}
 
-if (null === $adminId || false === $adminId || $adminId < $adminLevelRequired) {
+// O nível vem da sessão do painel; o antigo ?a=<nível> da URL não é confiável.
+$adminLevel = (int) ($_SESSION['userLogin']['user_level'] ?? 0);
+
+if ($adminLevel < (int) LEVEL_WC_LEADS) {
+    \http_response_code(403);
     exit(
         '<div style="text-align: center; margin: 5% 0; color: #C54550; font-size: 1.6em; font-weight: 400; background: #fff; float: left; width: 100%; padding: 30px 0;">'
         .'<b>ACESSO NEGADO:</b> Você não esta logado<br>ou não tem permissão para acessar essa página!'
@@ -20,18 +29,38 @@ if (null === $adminId || false === $adminId || $adminId < $adminLevelRequired) {
     );
 }
 
-$read->exeRead(DB_LEADS, 'ORDER BY lead_name DESC');
+$read->exeRead(DB_LEADS, 'ORDER BY lead_email ASC, lead_date DESC, lead_id DESC');
 
-if (!$read->getResult()) {
+$leads = [];
+$emails = [];
+
+foreach ($read->getResult() ?? [] as $lead) {
+    if (($lead['lead_conversion'] ?? '') === 'Newsletter' && empty($lead['lead_confirmed'])) {
+        continue;
+    }
+
+    $email = \strtolower(\trim((string) ($lead['lead_email'] ?? '')));
+    if ('' === $email || isset($emails[$email])) {
+        continue;
+    }
+
+    $emails[$email] = true;
+    $leads[] = $lead;
+}
+
+if (!$leads) {
     echo Check::erro('<span>Ainda não existem conversões para esse material!</span>', E_USER_NOTICE);
 
     exit;
 }
 
-$filename = 'base-de-leads.csv';
+\usort($leads, static fn (array $a, array $b): int => \strcasecmp(
+    (string) ($a['lead_name'] ?? ''),
+    (string) ($b['lead_name'] ?? '')
+));
 
 \header('Content-Type: text/csv; charset=UTF-8');
-\header('Content-Disposition: attachment; filename="'.$filename.'"');
+\header('Content-Disposition: attachment; filename="base-de-leads.csv"');
 \header('Cache-Control: max-age=0');
 \header('Pragma: public');
 \header('Expires: 0');
@@ -45,23 +74,14 @@ if (false === $output) {
 // Adiciona BOM para compatibilidade com o Excel.
 \fwrite($output, "\xEF\xBB\xBF");
 
-$columns = ['Nome', 'E-mail', 'Profissão', 'Cidade', 'Conversão', 'Data'];
+$columns = ['Nome', 'E-mail', 'Telefone', 'Assunto', 'Serviço', 'Veículo', 'Mensagem', 'Conversão', 'Data'];
 \fputcsv($output, $columns, ';', '"', '');
 
-foreach ($read->getResult() as $lead) {
-    $leadName = isset($lead['lead_name']) ? Check::getCapilalize((string) $lead['lead_name']) : '';
-    $leadEmail = isset($lead['lead_email']) ? \strtolower((string) $lead['lead_email']) : '';
-    $leadProfession = isset($lead['lead_job_title']) ? Check::getCapilalize(
-        (string) $lead['lead_job_title']
-    ) : '';
-    $leadCity = isset($lead['lead_city']) ? Check::getCapilalize((string) $lead['lead_city']) : '';
-    $leadConversion = isset($lead['lead_conversion']) ? Check::getCapilalize((string) $lead['lead_conversion']) : '';
-
+foreach ($leads as $lead) {
     $leadDate = '';
     if (!empty($lead['lead_date'])) {
         try {
-            $leadDateTime = new DateTimeImmutable((string) $lead['lead_date']);
-            $leadDate = $leadDateTime->format('d/m/Y');
+            $leadDate = (new DateTimeImmutable((string) $lead['lead_date']))->format('d/m/Y');
         } catch (Exception) {
             // Mantém a data vazia caso não seja possível convertê-la.
         }
@@ -70,11 +90,15 @@ foreach ($read->getResult() as $lead) {
     \fputcsv(
         $output,
         [
-            $leadName,
-            $leadEmail,
-            $leadProfession,
-            $leadCity,
-            $leadConversion,
+            Check::getCapilalize((string) ($lead['lead_name'] ?? '')),
+            \strtolower((string) ($lead['lead_email'] ?? '')),
+            (string) ($lead['lead_phone'] ?? ''),
+            (string) ($lead['lead_subject'] ?? ''),
+            (string) ($lead['lead_service'] ?? ''),
+            (string) ($lead['lead_vehicle'] ?? ''),
+            (string) ($lead['lead_message'] ?? ''),
+            // Sem capitalizar: "Landing page: <título>" sai como foi gravado.
+            (string) ($lead['lead_conversion'] ?? ''),
             $leadDate,
         ],
         ';',

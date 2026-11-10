@@ -34,6 +34,7 @@ $AppointmentServices = $Read->getResult() ?: [];
 						</div>
 						<form class='contact-form-validated appointment-one__form' action='<?= BASE ?>/contato' method='post'>
 							<input type='hidden' name='action' value='contact'>
+							<input type='hidden' name='origem' value='agendamento'>
 							<div class='row'>
 								<div class='col-xl-6 col-lg-6 col-md-6'>
 									<div class='appointment-one__input-box'>
@@ -83,6 +84,7 @@ $AppointmentServices = $Read->getResult() ?: [];
 									</div>
 								</div>
 							</div>
+							<?php require REQUIRE_PATH . '/inc/recaptcha-notice.php'; ?>
 							<div class='result' role='status' aria-live='polite'></div>
 						</form>
 					</div>

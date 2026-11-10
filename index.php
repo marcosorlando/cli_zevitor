@@ -16,6 +16,7 @@
     use App\Conn\Read;
     use App\Conn\Update;
     use App\Helpers\Check;
+    use App\Helpers\Recaptcha;
     use App\Models\Seo;
     use App\Models\Session;
 
@@ -30,6 +31,7 @@
     // READ CLASS AUTO INSTANCE
     $Read ??= new Read();
     $Sesssion = new Session(SIS_CACHE_TIME);
+    $Recaptcha = Recaptcha::fromEnv();
 
     // USER SESSION VALIDATION
     if (!empty($_SESSION['userLogin']) && !empty($_SESSION['userLogin']['user_id'])) {
@@ -661,6 +663,15 @@
 <script src='<?= INCLUDE_PATH ?>/assets/js/gsap/gsap.js'></script>
 <script src='<?= INCLUDE_PATH ?>/assets/js/gsap/ScrollTrigger.js'></script>
 <script src='<?= INCLUDE_PATH ?>/assets/js/gsap/SplitText.js'></script>
+<?php
+    if ($Recaptcha->isEnabled()) {
+        $RecaptchaSiteKey = htmlspecialchars($Recaptcha->getSiteKey(), ENT_QUOTES, 'UTF-8');
+        ?>
+	<script src='https://www.google.com/recaptcha/enterprise.js?render=<?= $RecaptchaSiteKey ?>' id='recaptcha-js'
+	        data-site-key='<?= $RecaptchaSiteKey ?>' async defer></script>
+        <?php
+    }
+?>
 <!-- template js -->
 <script src='<?= INCLUDE_PATH ?>/assets/js/script.js'></script>
 <!--END THEME JS-->

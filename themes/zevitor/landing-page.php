@@ -1,6 +1,7 @@
 <?php
 
 use App\Conn\Read;
+use App\Helpers\Check;
 
     if (!$Read){
         $Read = new Read;
@@ -223,11 +224,11 @@ use App\Conn\Read;
 <div id="logo">
     <div class="container">
         <div class="l-box">
-            <img src="<?= $page_logo ? BASE . "/tim.php?src=uploads/landingpages/{$page_logo}&w=&h=60" : INCLUDE_PATH . "/images/logo.png"; ?>" alt="<?= SITE_ADDR_NAME; ?> - logotipo">
+            <img src="<?= $page_logo ? BASE . "/tim.php?src=uploads/landingpages/{$page_logo}&w=&h=60" : INCLUDE_PATH . "/assets/images/resources/logo.svg"; ?>" alt="<?= SITE_ADDR_NAME; ?> - logotipo">
         </div>
     </div>
 </div>
-<section id="header-and-image" style="background: <?= $page_box_color ?> url(<?= BASE . '/uploads/landingpages/' . $page_cover; ?>) no-repeat center center ;">
+<section id="header-and-image" style="background: <?= !empty($page_box_color) ? $page_box_color : '#062738' ?><?= !empty($page_cover) ? ' url(' . BASE . '/uploads/landingpages/' . $page_cover . ') no-repeat center center' : '' ?>;">
     <div class="container">
         <div class="pure-u-1">
             <div class="l-box">
@@ -247,45 +248,59 @@ use App\Conn\Read;
             <h3><?= $form_title; ?></h3>
         </header>
         <section>
-            <form class="j_landing_page" method="post" action="" enctype="multipart/form-data">
+            <form class="j_landing_page" method="post" action="<?= INCLUDE_PATH; ?>/lp/ajax/Lp.ajax.php">
                 <div class="callback_return"></div>
                 <input type="hidden" name="callback" value="Lp"/>
                 <input type="hidden" name="callback_action" value="manage"/>
-                <input type="hidden" name="callback_title" value="<?= $page_title; ?>"/>
-                <input type="hidden" name="callback_link" value="<?= $page_name; ?>"/>
-                <input type="hidden" name="lead_conversion" value="<?= $page_title; ?>"/>
-                <input type="hidden" name="page_destino" value="<?= $page_destino; ?>"/>
-                <input type="hidden" name="page_mockup" value="<?= $page_mockup; ?>"/>
+                <input type="hidden" name="lp_id" value="<?= (int)$page_id; ?>"/>
 
-                <div id="error-container">
-                    <p>Preencha corretamente os campos marcados</p>
+                <div class="field">
+                    <label for="lp_nome">Nome</label>
+                    <input type="text" id="lp_nome" name="nome" class="form-control" tabindex="1" autofocus required>
                 </div>
                 <div class="field">
-                    <label>Nome*</label><input type="text" name="lead_name" value="" class="form-control required" tabindex="1" autofocus required>
+                    <label for="lp_email">E-mail</label>
+                    <input type="email" id="lp_email" name="email" class="form-control" tabindex="2" required>
                 </div>
                 <div class="field">
-                    <label>Email*</label><input type="email" name="lead_email" value="" class="form-control required" tabindex="2" required>
+                    <label for="lp_telefone">WhatsApp</label>
+                    <input type="text" id="lp_telefone" name="telefone" class="form-control formPhone" tabindex="3" required>
                 </div>
                 <div class="field">
-                    <label>Cidade*</label><input type="text" name="lead_city" value="" class="form-control  required" tabindex="3" required>
+                    <label for="lp_assunto">Assunto</label>
+                    <input type="text" id="lp_assunto" name="assunto" class="form-control" tabindex="4"
+                           value="<?= Check::safeHtmlChars((string)$page_title); ?>" required>
                 </div>
                 <div class="field">
-                    <label>Profissão*</label><input type="text" name="lead_job_title" value="" class="form-control  required" tabindex="4" required>
+                    <label for="lp_servico">Serviço</label>
+                    <select id="lp_servico" name="servico" class="form-control ignore" tabindex="5" required>
+                        <option value="" selected disabled>Selecione um serviço</option>
+                        <?php
+                            $Read->exeRead(DB_SERVICES, 'WHERE svc_status = :status ORDER BY svc_title ASC', 'status=1');
+                            foreach ($Read->getResult() ?? [] as $Service) {
+                                $ServiceTitle = Check::safeHtmlChars((string)$Service['svc_title']);
+                                echo "<option value='{$ServiceTitle}'>{$ServiceTitle}</option>";
+                            }
+                        ?>
+                        <option value="Outro">Outro</option>
+                    </select>
                 </div>
-                <!-- security start -->
                 <div class="field">
-                    <label>Realize a Soma*</label>
-                    <input type="number" name="senderHuman" id="senderHuman" class="input-md input-rounded form-control" placeholder="" required>
-                    <input type="hidden" name="checkHuman_a" id="checkHuman_a">
-                    <input type="hidden" name="checkHuman_b" id="checkHuman_b">
+                    <label for="lp_veiculo">Marca / Modelo / Ano do carro</label>
+                    <input type="text" id="lp_veiculo" name="veiculo" class="form-control" tabindex="6" required>
                 </div>
-                <!-- security end -->
+                <div class="field">
+                    <label for="lp_mensagem">Mensagem</label>
+                    <textarea id="lp_mensagem" name="mensagem" class="form-control" tabindex="7" required
+                              placeholder="Descreva o que está ocorrendo com seu veículo"></textarea>
+                </div>
                 <div class="actions">
-                    <button type="submit" class="call_button"><?= (!empty($page_btn_text) ? $page_btn_text : 'Acessar Conteúdo') ?>
+                    <button type="submit" class="call_button"><?= (!empty($page_btn_text) ? $page_btn_text : 'Enviar') ?>
                         <img class="form_load none" style="margin-left: 10px;" alt="Enviando Requisição!" title="Enviando Requisição!" src="<?= INCLUDE_PATH; ?>/lp/ajax-loader.gif"/>
                     </button>
                 </div>
                 <p class="notice">Prometemos não utilizar suas informações de contato para enviar qualquer tipo de SPAM.</p>
+                <?php require REQUIRE_PATH . '/inc/recaptcha-notice.php'; ?>
             </form>
         </section>
     </div>
@@ -306,48 +321,3 @@ use App\Conn\Read;
     </div>
 </section>
 </body>
-<script>
-    $(function () {
-        //SELETOR, EVENTO/EFEITO, CALLBACK, AÇÃO
-        $('.j_landing_page').submit(function () {
-            var form = $(this);
-            var data = $(this).serialize();
-
-            $.ajax({
-                url: '<?= INCLUDE_PATH; ?>/lp/ajax/Lp.ajax.php',
-                data: data,
-                type: 'POST',
-                dataType: 'json',
-                beforeSend: function () {
-                    form.find('.form_load').fadeIn(500);
-                },
-                success: function (data) {
-                    //REMOVE LOAD
-                    form.find('.form_load').fadeOut('slow', function () {
-                        //EXIBE CALLBACKS
-                        if (data.trigger) {
-                            var CallBackPresent = form.find('.callback_return');
-                            if (CallBackPresent.length) {
-                                CallBackPresent.html(data.trigger);
-                                $('.trigger_ajax').fadeIn('slow');
-                                window.setTimeout(function () {
-                                    $(window.document.location).attr('href', data.redirect);
-                                }, 5000);
-
-                            } else {
-                                Trigger(data.trigger);
-                            }
-                        }
-                        if(data.field){
-                            $("[name='" + data.field + "']").removeClass('sucess').addClass('error').focus().val('');
-                             $("input[name!='" + data.field + "']").removeClass('error');
-                        }else{
-                            $("input").removeClass('error').addClass('sucess').focus();
-                        }
-                    });
-                }
-            });
-            return false;
-        });
-    });
-</script>

@@ -2,8 +2,6 @@
 
     use App\Conn\Read;
     use App\Helpers\Check;
-    use App\Models\Email;
-    use App\View\Template;
 
     /**
      * Página "Contato" — tema Zevitor.
@@ -20,19 +18,7 @@
     }
     extract($Read->getResult()[0]);
 
-    $contatoEmail = defined('SITE_ADDR_EMAIL') ? SITE_ADDR_EMAIL : 'contato@zevitor.com.br';
-    $contatoNome = defined('SITE_ADDR_NAME') ? SITE_ADDR_NAME : SITE_NAME;
     $mapsUrl = 'https://maps.app.goo.gl/AiMXbGrVdaji2qLV9';
-    $whatsappUrl = Check::whatsMessage(
-        SITE_ADDR_WHATS,
-        'Olá, Mecânica Zé Vitor! Vim pelo site e gostaria de atendimento.'
-    );
-    $facebookUrl = defined('SITE_SOCIAL_FB_PAGE') && SITE_SOCIAL_FB_PAGE !== ''
-        ? 'https://www.facebook.com/' . SITE_SOCIAL_FB_PAGE
-        : BASE;
-    $instagramUrl = defined('SITE_SOCIAL_INSTAGRAM') && SITE_SOCIAL_INSTAGRAM !== ''
-        ? 'https://www.instagram.com/' . SITE_SOCIAL_INSTAGRAM . '/'
-        : BASE;
 
     $Contato = filter_input_array(INPUT_POST) ?: [];
 
@@ -47,125 +33,24 @@
             header('Content-Type: text/html; charset=UTF-8');
         }
 
-        unset($Contato['action']);
-        $Contato = array_map(static fn(mixed $value): string => is_string($value) ? trim($value) : '', $Contato);
+        $ContatoOrigem = ($Contato['origem'] ?? '') === 'agendamento'
+            ? 'Agendamento de serviço'
+            : 'Formulário de contato';
+        $ContatoAcao = 'contact';
+        require REQUIRE_PATH . '/inc/contato-envio.php';
 
-        $Contato['nome'] = $Contato['nome'] ?? $Contato['name'] ?? '';
-        $Contato['telefone'] = $Contato['telefone'] ?? $Contato['phone'] ?? '';
-        $Contato['assunto'] = $Contato['assunto'] ?? $Contato['subject'] ?? '';
-        $Contato['servico'] = $Contato['servico'] ?? $Contato['service'] ?? '';
-        $Contato['veiculo'] = $Contato['veiculo'] ?? $Contato['brand_model_year'] ?? '';
-        $Contato['mensagem'] = $Contato['mensagem'] ?? $Contato['message'] ?? '';
+        if ($ContatoSucesso !== null && !$isAjax) {
+            $_SESSION['sucesso'] = $ContatoSucesso;
+            header('Location: ' . BASE . '/contato#form');
 
-        $camposObrigatorios = ['nome', 'email', 'telefone', 'assunto', 'servico', 'veiculo', 'mensagem'];
-        $camposPendentes = array_filter(
-            $camposObrigatorios,
-            static fn(string $campo): bool => ($Contato[$campo] ?? '') === ''
-        );
+            return;
+        }
 
-        if ($camposPendentes) {
-            echo Check::erro('Preencha todos os campos obrigatórios para enviar seu contato!', E_USER_WARNING);
-            if ($isAjax) {
-                exit;
-            }
-        } elseif (!filter_var($Contato['email'], FILTER_VALIDATE_EMAIL)) {
-            echo Check::erro('O e-mail informado não tem um formato válido!', E_USER_WARNING);
-            if ($isAjax) {
-                exit;
-            }
-        } else {
-            $templatesFolder = REQUIRE_PATH . '/assets/html/';
-            $clienteTemplate = Template::getTemplate('contato-cliente.html', $templatesFolder);
-            $adminTemplate = Template::getTemplate('contato-admin.html', $templatesFolder);
-
-            if ($clienteTemplate === '' || $adminTemplate === '') {
-                echo Check::erro('Templates de e-mail não encontrados. Verifique a pasta assets/html.', E_USER_WARNING);
-                if ($isAjax) {
-                    exit;
-                }
-            } else {
-                $assuntoContato = $Contato['assunto'] !== '' ? $Contato['assunto'] : 'Contato pelo site';
-                $clienteWhatsappUrl = $Contato['telefone'] !== ''
-                    ? Check::whatsMessage(
-                        $Contato['telefone'],
-                        'Olá, ' . $Contato['nome'] . '! Recebemos sua mensagem pelo site da Mecânica Zé Vitor.'
-                    )
-                    : 'mailto:' . $Contato['email'];
-                $templateData = [
-                    'site_name' => Check::safeHtmlChars(SITE_NAME),
-                    'cliente_nome' => Check::safeHtmlChars($Contato['nome']),
-                    'cliente_email' => Check::safeHtmlChars($Contato['email']),
-                    'cliente_telefone' => Check::safeHtmlChars($Contato['telefone'] ?: 'Não informado'),
-                    'assunto' => Check::safeHtmlChars($assuntoContato),
-                    'servico' => Check::safeHtmlChars($Contato['servico'] ?: 'Não informado'),
-                    'veiculo' => Check::safeHtmlChars($Contato['veiculo'] ?: 'Não informado'),
-                    'mensagem' => nl2br(Check::safeHtmlChars($Contato['mensagem'])),
-                    'data_envio' => date('d/m/Y H:i'),
-                    'empresa_nome' => Check::safeHtmlChars($contatoNome),
-                    'empresa_razao' => Check::safeHtmlChars(SITE_ADDR_RS),
-                    'empresa_cnpj' => Check::safeHtmlChars(SITE_ADDR_CNPJ),
-                    'empresa_email' => Check::safeHtmlChars($contatoEmail),
-                    'empresa_site' => Check::safeHtmlChars(SITE_ADDR_SITE),
-                    'empresa_telefone' => Check::safeHtmlChars(SITE_ADDR_PHONE_A),
-                    'empresa_telefone_url' => Check::safeHtmlChars(Check::clearNumber(SITE_ADDR_PHONE_A)),
-                    'empresa_whatsapp' => Check::safeHtmlChars(SITE_ADDR_WHATS),
-                    'empresa_endereco' => Check::safeHtmlChars(
-                        SITE_ADDR_ADDR . ' - ' . SITE_ADDR_DISTRICT . ', ' . SITE_ADDR_CITY . '/' . SITE_ADDR_UF
-                    ),
-                    'logo_url' => Check::safeHtmlChars(INCLUDE_PATH . '/assets/images/resources/logo-white-red.svg'),
-                    'site_url' => Check::safeHtmlChars(BASE),
-                    'whatsapp_url' => Check::safeHtmlChars($whatsappUrl),
-                    'cliente_whatsapp_url' => Check::safeHtmlChars($clienteWhatsappUrl),
-                    'facebook_url' => Check::safeHtmlChars($facebookUrl),
-                    'instagram_url' => Check::safeHtmlChars($instagramUrl),
-                    'maps_url' => Check::safeHtmlChars($mapsUrl),
-                ];
-
-                $MailContentAdmin = Template::setTemplate($adminTemplate, $templateData);
-                $MailContentCliente = Template::setTemplate($clienteTemplate, $templateData);
-
-                $EmailAdmin = new Email();
-                $EmailAdmin->enviarMontando(
-                    'Novo contato pelo site — ' . SITE_NAME,
-                    $MailContentAdmin,
-                    $Contato['nome'],
-                    $Contato['email'],
-                    $contatoNome,
-                    $contatoEmail
-                );
-
-                $EmailCliente = new Email();
-                $EmailCliente->enviarMontando(
-                    'Recebemos sua mensagem — ' . SITE_NAME,
-                    $MailContentCliente,
-                    $contatoNome,
-                    $contatoEmail,
-                    $Contato['nome'],
-                    $Contato['email']
-                );
-
-                if (!$EmailAdmin->getError() && !$EmailCliente->getError()) {
-                    $sucesso = "Obrigado, {$Contato['nome']}! Sua mensagem foi enviada.";
-                    if ($isAjax) {
-                        echo Check::erro(Check::safeHtmlChars($sucesso));
-
-                        exit;
-                    }
-
-                    $_SESSION['sucesso'] = $sucesso;
-                    header('Location: ' . BASE . '/contato#form');
-
-                    return;
-                }
-
-                echo Check::erro(
-                    'Não foi possível enviar agora. Tente novamente ou escreva para ' . $contatoEmail . '.',
-                    E_USER_WARNING
-                );
-                if ($isAjax) {
-                    exit;
-                }
-            }
+        echo $ContatoSucesso !== null
+            ? Check::erro(Check::safeHtmlChars($ContatoSucesso))
+            : Check::erro(Check::safeHtmlChars((string)$ContatoErro), E_USER_WARNING);
+        if ($isAjax) {
+            exit;
         }
     }
 
@@ -337,6 +222,7 @@
 							</div>
 						</div>
 					</div>
+					<?php require REQUIRE_PATH . '/inc/recaptcha-notice.php'; ?>
 					<div class='result'></div>
 				</form>
 			</div>
